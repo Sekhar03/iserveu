@@ -74,9 +74,6 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
                 <span>{userSession.title || 'Finance Admin'}</span>
                 <ShieldCheck className="w-3.5 h-3.5 text-[#10b981]" />
               </div>
-              <div className="text-[11px] font-medium text-[#475569] leading-tight mt-0.5">
-                {userSession.role || 'Reconciliation Lead'}
-              </div>
             </div>
 
             <ChevronDown className={`w-4 h-4 text-[#475569] group-hover:text-[#119db0] transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
@@ -94,9 +91,6 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-[#1b2a3e] truncate">
                       {userSession.title || 'Finance Admin'}
-                    </p>
-                    <p className="text-[11px] font-medium text-[#475569] truncate">
-                      {userSession.role || 'Reconciliation Lead'}
                     </p>
                     <p className="text-[10px] text-[#119db0] truncate mt-0.5 font-medium">
                       {userSession.username || 'admin@iserveu.in'}

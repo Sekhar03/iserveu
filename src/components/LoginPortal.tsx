@@ -21,7 +21,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
       setIsLoading(false);
       onLoginSuccess({
         username: username || 'admin@iserveu.in',
-        role: 'Reconciliation Lead',
+        role: '',
         title: 'Finance Admin',
         isLoggedIn: true
       });
@@ -55,9 +55,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
             <h1 className="text-xl font-extrabold text-[#0f172a] tracking-tight">
               Reconciliation Platform
             </h1>
-            <p className="text-xs font-semibold text-slate-500 mt-1">
-              Enterprise Multi-Rail Settlement Suite
-            </p>
           </div>
         </div>
 

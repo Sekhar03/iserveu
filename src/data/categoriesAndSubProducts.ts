@@ -26,7 +26,7 @@ export const BUSINESS_VERTICALS: BusinessVertical[] = [
   {
     id: 'agency-banking',
     name: 'Agency Banking',
-    description: 'AEPS, MATM, DMT, Recharge & RBL Payout Modules',
+    description: 'AEPS, MATM, DMT, Recharge & Payout Modules',
     badge: '5 Categories',
     iconName: 'Building2'
   },
@@ -45,7 +45,7 @@ export const CATEGORIES: Category[] = [
   { id: 'matm', name: 'MATM', iconName: 'CreditCard', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
   { id: 'dmt', name: 'DMT', iconName: 'ArrowRightLeft', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
   { id: 'recharge', name: 'RECHARGE', iconName: 'Zap', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
-  { id: 'cashout', name: 'RBL Payout', iconName: 'Wallet', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
+  { id: 'cashout', name: 'Payout', iconName: 'Wallet', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
 
   // BBPS Section
   { id: 'bbps', name: 'BBPS', iconName: 'Receipt', verticalId: 'bbps', verticalName: 'BBPS' },
@@ -347,7 +347,7 @@ export const SUB_PRODUCTS: SubProduct[] = [
     ]
   },
 
-  // 9. RBL Payout
+  // 9. Payout
   {
     id: 'wallet2cashout',
     categoryId: 'cashout',

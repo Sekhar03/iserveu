@@ -22,7 +22,7 @@ archive6.job.id = 'RECON-20260725-002';
 const archive7 = generateReconDataset('pos_sub', 'POS', 'POS', '2026-07-24', 'Cycle 1 (00:00 - 08:00 Window)', 14500);
 archive7.job.id = 'RECON-20260724-005';
 
-const archive8 = generateReconDataset('wallet2cashout', 'Wallet2Cashout', 'RBL Payout', '2026-07-24', 'Cycle 2 (08:00 - 16:00 Window)', 16800);
+const archive8 = generateReconDataset('wallet2cashout', 'Wallet2Cashout', 'Payout', '2026-07-24', 'Cycle 2 (08:00 - 16:00 Window)', 16800);
 archive8.job.id = 'RECON-20260724-009';
 
 const archive9 = generateReconDataset('rechargekrack', 'Recharge Krack', 'RECHARGE', '2026-07-23', 'All Cycles (Daily Consolidated)', 24500);

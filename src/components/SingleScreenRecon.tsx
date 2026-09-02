@@ -269,30 +269,22 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
     { value: 'Daily Consolidated EOD', label: 'Daily Consolidated EOD (All Cycles)' }
   ];
 
+  // Synchronize vertical selection when initialVertical prop changes from sidebar
+  useEffect(() => {
+    setActiveVertical(initialVertical);
+    const cats = CATEGORIES.filter((c) => c.verticalId === initialVertical);
+    if (cats.length > 0) {
+      setSelectedCategory(cats[0]);
+      const subs = SUB_PRODUCTS.filter((sp) => sp.categoryId === cats[0].id);
+      if (subs.length > 0) {
+        setSelectedSubProduct(subs[0]);
+      }
+    }
+  }, [initialVertical]);
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* 1. TOP VERTICAL SELECTION PILLS */}
-      <div className="flex flex-wrap items-center gap-3">
-        {BUSINESS_VERTICALS.map((vert) => {
-          const isVertActive = activeVertical === vert.id;
-          return (
-            <button
-              key={vert.id}
-              type="button"
-              onClick={() => handleSelectVertical(vert.id)}
-              className={`px-6 py-2.5 rounded-full font-bold text-xs transition-all flex items-center gap-2 cursor-pointer ${
-                isVertActive
-                  ? 'bg-[#0f1d2e] text-white shadow-md ring-2 ring-[#0f1d2e]/20'
-                  : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
-              }`}
-            >
-              <span>{vert.name}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 2. CATEGORY SELECTION CARDS ROW */}
+      {/* 1. CATEGORY SELECTION CARDS ROW */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {availableCategories.map((cat) => {
           const isSelected = selectedCategory?.id === cat.id;

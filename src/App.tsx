@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserSession, ModuleKey, Category, SubProduct, FileState, ReconRecord, ReconJob } from './types';
+import { UserSession, ModuleKey, BusinessVerticalId, Category, SubProduct, FileState, ReconRecord, ReconJob } from './types';
 import { CheckCircle2, X, FileSpreadsheet, ExternalLink, ArrowRight } from 'lucide-react';
 import { LoginPortal } from './components/LoginPortal';
 import { Sidebar } from './components/Sidebar';
@@ -19,6 +19,12 @@ export default function App() {
 
   // Sidebar & Module State
   const [activeModule, setActiveModule] = useState<ModuleKey>('product-recon');
+  const [activeVertical, setActiveVertical] = useState<BusinessVerticalId>('acquiring');
+
+  const handleSelectVertical = (vertId: BusinessVerticalId) => {
+    setActiveVertical(vertId);
+    setActiveModule('product-recon');
+  };
 
   // Active Reconciliation State
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -99,6 +105,8 @@ export default function App() {
       <Sidebar
         activeModule={activeModule}
         onSelectModule={setActiveModule}
+        activeVertical={activeVertical}
+        onSelectVertical={handleSelectVertical}
         userSession={userSession}
         onLogout={handleLogout}
       />
@@ -111,9 +119,9 @@ export default function App() {
           {activeModule === 'product-recon' && (
             <SingleScreenRecon
               onReconciliationInitiated={handleReconciliationInitiated}
-              initialVertical="acquiring"
-              initialCategoryId="upi"
-              initialSubProductId="nsdlpaupi"
+              initialVertical={activeVertical}
+              initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
+              initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou_bob' : 'aadharpay'}
               initialDate="2026-07-28"
               initialCycle="Cycle 1 (00:00 - 08:00 Window)"
             />

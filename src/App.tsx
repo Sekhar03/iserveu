@@ -11,10 +11,10 @@ import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
 export default function App() {
   // Authentication State
   const [userSession, setUserSession] = useState<UserSession>({
-    username: 'admin@iserveu.in',
-    role: 'Reconciliation Lead',
-    title: 'Finance Admin',
-    isLoggedIn: true
+    username: '',
+    role: '',
+    title: '',
+    isLoggedIn: false
   });
 
   // Sidebar & Module State

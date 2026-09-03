@@ -40,11 +40,11 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
   const nodeConfigs = [
     { label: 'BBPS', icon: FileText, angle: -65, color: '#00A8B5' },
     { label: 'CASHOUT PAYOUT', icon: Banknote, angle: -35, color: '#00A8B5' },
-    { label: 'LENDING', icon: TrendingUp, angle: -5, color: '#F26522' },
-    { label: 'LOS', icon: FileText, angle: 25, color: '#F26522' },
+    { label: 'LENDING', icon: TrendingUp, angle: -5, color: '#00A8B5' },
+    { label: 'LOS', icon: FileText, angle: 25, color: '#00A8B5' },
     { label: 'RECON', icon: RefreshCw, angle: 55, color: '#00A8B5', isRecon: true },
-    { label: 'FRM', icon: ShieldAlert, angle: 85, color: '#F26522' },
-    { label: 'COMMISSION', icon: PieChart, angle: 115, color: '#F26522' },
+    { label: 'FRM', icon: ShieldAlert, angle: 85, color: '#00A8B5' },
+    { label: 'COMMISSION', icon: PieChart, angle: 115, color: '#00A8B5' },
     { label: 'UPI', icon: QrCode, angle: 145, color: '#00A8B5' },
     { label: 'CARDS', icon: CreditCard, angle: 170, color: '#00A8B5' },
     { label: 'POS', icon: Smartphone, angle: 195, color: '#00A8B5' },
@@ -74,12 +74,12 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
         <path d="M-100 440 C 160 360, 260 340, 360 160" stroke="#00838F" strokeWidth="1" />
       </svg>
 
-      {/* Decorative Wave Lines - Top Right (Coral Orange) */}
-      <svg className="absolute top-0 right-0 w-[450px] h-[450px] opacity-30 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
-        <path d="M 600 -100 C 350 100, 450 250, 200 400" stroke="#F26522" strokeWidth="1.5" />
-        <path d="M 580 -100 C 370 120, 430 270, 220 420" stroke="#E05318" strokeWidth="1" />
-        <path d="M 560 -100 C 390 140, 410 290, 240 440" stroke="#F26522" strokeWidth="1.5" />
-        <path d="M 540 -100 C 410 160, 390 310, 260 460" stroke="#FF7A38" strokeWidth="1" />
+      {/* Decorative Wave Lines - Top Right (Teal Cyan) */}
+      <svg className="absolute top-0 right-0 w-[450px] h-[450px] opacity-25 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
+        <path d="M 600 -100 C 350 100, 450 250, 200 400" stroke="#00A8B5" strokeWidth="1.5" />
+        <path d="M 580 -100 C 370 120, 430 270, 220 420" stroke="#00D2D3" strokeWidth="1" />
+        <path d="M 560 -100 C 390 140, 410 290, 240 440" stroke="#00A8B5" strokeWidth="1.5" />
+        <path d="M 540 -100 C 410 160, 390 310, 260 460" stroke="#00838F" strokeWidth="1" />
       </svg>
 
       {/* Top Header Bar */}
@@ -157,8 +157,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                         <div className={`w-13 h-13 rounded-full bg-white shadow-md border flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
                           node.isRecon
                             ? 'border-2 border-[#00A8B5] text-[#00A8B5] shadow-[#00A8B5]/25 ring-4 ring-[#00A8B5]/15'
-                            : node.color === '#F26522'
-                            ? 'border-orange-200 text-[#F26522] hover:border-[#F26522]'
                             : 'border-slate-200 text-[#00A8B5] hover:border-[#00A8B5]'
                         }`}>
                           <IconComp className="w-5 h-5" />
@@ -194,10 +192,10 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
 
               <div className="space-y-1">
                 <p className="text-xs font-semibold text-slate-500">
-                  Welcome to Internal Portals
+                  Welcome to Reconciliation Portal
                 </p>
                 <h2 className="text-base font-bold text-slate-800">
-                  Login to continue to Internal Application.
+                  Login to continue to Reconciliation Engine.
                 </h2>
               </div>
             </div>
@@ -260,11 +258,11 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                 </label>
               </div>
 
-              {/* Primary Coral Orange Button */}
+              {/* Primary iServeU Cyan Logo Gradient Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-4 py-3 px-6 rounded-xl bg-[#F26522] hover:bg-[#D95318] text-white font-bold text-sm shadow-md shadow-[#F26522]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                className="w-full mt-4 py-3 px-6 rounded-xl bg-gradient-to-r from-[#00D2D3] via-[#00A8B5] to-[#00838F] hover:opacity-95 text-white font-bold text-sm shadow-md shadow-[#00A8B5]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
               >
                 {isLoading ? (
                   <>

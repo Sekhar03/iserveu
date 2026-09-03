@@ -280,41 +280,45 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* 1. CATEGORY SELECTION CARDS ROW */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {availableCategories.map((cat) => {
-          const isSelected = selectedCategory?.id === cat.id;
-          return (
-            <div
-              key={cat.id}
-              onClick={() => handleSelectCategory(cat)}
-              className={`relative bg-white rounded-2xl p-5 border transition-all cursor-pointer select-none flex flex-col justify-between h-[104px] ${
-                isSelected
-                  ? 'border-2 border-[#10b981] shadow-sm ring-1 ring-[#10b981]/20'
-                  : 'border-slate-200 hover:border-slate-300 hover:shadow-xs'
-              }`}
-            >
-              {/* Checkmark circle badge when active */}
-              {isSelected && (
-                <div className="absolute top-3.5 right-3.5 w-5 h-5 rounded-full bg-[#10b981] text-white flex items-center justify-center shadow-xs">
-                  <Check className="w-3 h-3 stroke-[3]" />
+      {/* 1. CATEGORY SELECTION CARDS ROW (Only shown if vertical has multiple categories) */}
+      {availableCategories.length > 1 && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {availableCategories.map((cat) => {
+              const isSelected = selectedCategory?.id === cat.id;
+              return (
+                <div
+                  key={cat.id}
+                  onClick={() => handleSelectCategory(cat)}
+                  className={`relative bg-white rounded-2xl p-5 border transition-all cursor-pointer select-none flex flex-col justify-between h-[104px] ${
+                    isSelected
+                      ? 'border-2 border-[#10b981] shadow-sm ring-1 ring-[#10b981]/20'
+                      : 'border-slate-200 hover:border-slate-300 hover:shadow-xs'
+                  }`}
+                >
+                  {/* Checkmark circle badge when active */}
+                  {isSelected && (
+                    <div className="absolute top-3.5 right-3.5 w-5 h-5 rounded-full bg-[#10b981] text-white flex items-center justify-center shadow-xs">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </div>
+                  )}
+
+                  {/* Icon Container with subtle teal background */}
+                  <div className="w-10 h-10 rounded-xl bg-[#e6f7f8] text-[#0e8696] flex items-center justify-center">
+                    {getCategoryIcon(cat.iconName)}
+                  </div>
+
+                  {/* Category Name */}
+                  <div className="font-bold text-sm text-[#0f172a]">{cat.name}</div>
                 </div>
-              )}
+              );
+            })}
+          </div>
 
-              {/* Icon Container with subtle teal background */}
-              <div className="w-10 h-10 rounded-xl bg-[#e6f7f8] text-[#0e8696] flex items-center justify-center">
-                {getCategoryIcon(cat.iconName)}
-              </div>
-
-              {/* Category Name */}
-              <div className="font-bold text-sm text-[#0f172a]">{cat.name}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* DIVIDER LINE */}
-      <div className="border-t border-dashed border-slate-200 pt-2" />
+          {/* DIVIDER LINE */}
+          <div className="border-t border-dashed border-slate-200 pt-2" />
+        </>
+      )}
 
       {/* 3. SELECT SUB-PRODUCT SECTION */}
       <div>

@@ -95,10 +95,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
         </div>
       </div>
 
-      <div className="hidden lg:flex absolute top-28 right-24 p-3.5 px-4.5 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl text-white items-center gap-2.5 animate-float-slow pointer-events-none z-0">
-        <ShieldCheck className="w-5 h-5 text-[#34D399]" />
-        <span className="text-xs font-extrabold text-slate-200">256-bit Bank Grade Encrypted</span>
-      </div>
 
       {/* Main Content Area: Centered Login Card */}
       <div className="flex-1 flex items-center justify-center p-4 relative z-10 my-auto">

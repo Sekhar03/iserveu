@@ -85,3 +85,24 @@ body {
   animation: pulse-glow 8s ease-in-out infinite;
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes dash-flow {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-dash-flow {
+  stroke-dasharray: 12;
+  animation: dash-flow 3s linear infinite;
+}
+

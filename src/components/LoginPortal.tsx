@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Lock, Mail, Loader2, Eye, EyeOff, Globe,
   Fingerprint, FileText, Banknote, RefreshCw, Send,
-  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert, TrendingUp
+  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert, TrendingUp, Zap
 } from 'lucide-react';
 import { UserSession } from '../types';
 
@@ -32,25 +32,22 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
     }, 800);
   };
 
-  // 13 Product Nodes mapped with Polar Angle Coordinates for Perfect Alignment
+  // 10 Reconciliation Product Categories mapped around the central hub
   const cx = 300;
   const cy = 300;
   const radius = 205;
 
   const nodeConfigs = [
-    { label: 'BBPS', icon: FileText, angle: -65, color: '#00A8B5' },
-    { label: 'CASHOUT PAYOUT', icon: Banknote, angle: -35, color: '#00A8B5' },
-    { label: 'LENDING', icon: TrendingUp, angle: -5, color: '#00A8B5' },
-    { label: 'LOS', icon: FileText, angle: 25, color: '#00A8B5' },
-    { label: 'RECON', icon: RefreshCw, angle: 55, color: '#00A8B5', isRecon: true },
-    { label: 'FRM', icon: ShieldAlert, angle: 85, color: '#00A8B5' },
-    { label: 'COMMISSION', icon: PieChart, angle: 115, color: '#00A8B5' },
-    { label: 'UPI', icon: QrCode, angle: 145, color: '#00A8B5' },
-    { label: 'CARDS', icon: CreditCard, angle: 170, color: '#00A8B5' },
-    { label: 'POS', icon: Smartphone, angle: 195, color: '#00A8B5' },
-    { label: 'DMT', icon: Send, angle: 220, color: '#00A8B5' },
-    { label: 'SOUNDBOX', icon: Volume2, angle: 245, color: '#00A8B5' },
-    { label: 'AEPS', icon: Fingerprint, angle: 275, color: '#00A8B5' },
+    { label: 'AEPS', icon: Fingerprint, angle: -90, color: '#00A8B5' },
+    { label: 'BHARAT CONNECT', icon: FileText, angle: -54, color: '#00A8B5' },
+    { label: 'UPI', icon: QrCode, angle: -18, color: '#00A8B5' },
+    { label: 'IMPS', icon: RefreshCw, angle: 18, color: '#00A8B5' },
+    { label: 'PREPAID CARD', icon: CreditCard, angle: 54, color: '#00A8B5' },
+    { label: 'MATM', icon: CreditCard, angle: 90, color: '#00A8B5' },
+    { label: 'PAYOUT', icon: Banknote, angle: 126, color: '#00A8B5' },
+    { label: 'DMT', icon: Send, angle: 162, color: '#00A8B5' },
+    { label: 'POS', icon: Smartphone, angle: 198, color: '#00A8B5' },
+    { label: 'RECHARGE', icon: Zap, angle: 234, color: '#00A8B5' },
   ];
 
   const computedNodes = nodeConfigs.map((cfg) => {
@@ -122,15 +119,15 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                     x2={node.x}
                     y2={node.y}
                     stroke={node.color}
-                    strokeWidth={node.isRecon ? "2.5" : "1.5"}
-                    strokeDasharray={node.isRecon ? "none" : "3 3"}
-                    opacity={node.isRecon ? "0.9" : "0.55"}
+                    strokeWidth="1.5"
+                    strokeDasharray="3 3"
+                    opacity="0.6"
                   />
                   {/* Data dot on orbit line */}
                   <circle
                     cx={node.midX}
                     cy={node.midY}
-                    r={node.isRecon ? "4.5" : "3.5"}
+                    r="3.5"
                     fill={node.color}
                   />
                 </g>
@@ -139,10 +136,12 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
               {/* CENTRAL HUB NODE */}
               <g transform={`translate(${cx - 70}, ${cy - 70})`} filter="url(#hub-shadow)">
                 <circle cx="70" cy="70" r="68" fill="#ffffff" stroke="#f1f5f9" strokeWidth="4" />
-                <foreignObject x="15" y="25" width="110" height="90">
-                  <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                <foreignObject x="10" y="20" width="120" height="100">
+                  <div className="w-full h-full flex flex-col items-center justify-center text-center px-1">
                     <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-8 w-auto object-contain" />
-                    <span className="text-[10px] font-extrabold text-[#00A8B5] mt-1 tracking-wider uppercase">RECON HUB</span>
+                    <span className="text-[9px] font-black text-[#00A8B5] mt-1.5 tracking-wider uppercase leading-snug">
+                      RECONCILIATION<br/>PORTAL
+                    </span>
                   </div>
                 </foreignObject>
               </g>
@@ -154,16 +153,10 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                   <g key={idx} transform={`translate(${node.x - 26}, ${node.y - 26})`}>
                     <foreignObject x="-30" y="-30" width="112" height="110" className="overflow-visible">
                       <div className="w-full h-full flex flex-col items-center justify-center group cursor-pointer">
-                        <div className={`w-13 h-13 rounded-full bg-white shadow-md border flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
-                          node.isRecon
-                            ? 'border-2 border-[#00A8B5] text-[#00A8B5] shadow-[#00A8B5]/25 ring-4 ring-[#00A8B5]/15'
-                            : 'border-slate-200 text-[#00A8B5] hover:border-[#00A8B5]'
-                        }`}>
+                        <div className="w-13 h-13 rounded-full bg-white shadow-md border border-slate-200 text-[#00A8B5] hover:border-[#00A8B5] hover:shadow-[#00A8B5]/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                           <IconComp className="w-5 h-5" />
                         </div>
-                        <span className={`text-[9px] font-extrabold mt-1 uppercase tracking-wider text-center leading-tight max-w-[85px] ${
-                          node.isRecon ? 'text-[#00A8B5] font-black' : 'text-slate-700'
-                        }`}>
+                        <span className="text-[9px] font-extrabold mt-1 text-slate-700 uppercase tracking-wider text-center leading-tight max-w-[85px] group-hover:text-[#00A8B5] transition-colors">
                           {node.label}
                         </span>
                       </div>

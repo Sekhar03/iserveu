@@ -426,22 +426,15 @@ export interface CycleOption {
 }
 
 export const getCycleOptionsForCategory = (categoryId?: string): CycleOption[] => {
-  if (categoryId === 'upi') {
-    return [
-      { value: 'Cycle 1 (00:00 - 06:00 Window)', label: 'Cycle 1 (00:00 - 06:00 Window)', scope: '00:00 - 06:00 Window' },
-      { value: 'Cycle 2 (06:00 - 12:00 Window)', label: 'Cycle 2 (06:00 - 12:00 Window)', scope: '06:00 - 12:00 Window' },
-      { value: 'Cycle 3 (12:00 - 18:00 Window)', label: 'Cycle 3 (12:00 - 18:00 Window)', scope: '12:00 - 18:00 Window' },
-      { value: 'Cycle 4 (18:00 - 24:00 Window)', label: 'Cycle 4 (18:00 - 24:00 Window)', scope: '18:00 - 24:00 Window' },
-      { value: 'Dispute Cycle DC1 (00:00 - 16:00 Window)', label: 'Dispute Cycle DC1 (00:00 - 16:00 Window)', scope: 'NPCI Dispute Window 1 (00:00 - 16:00)' },
-      { value: 'Dispute Cycle DC2 (16:00 - 24:00 Window)', label: 'Dispute Cycle DC2 (16:00 - 24:00 Window)', scope: 'NPCI Dispute Window 2 (16:00 - 24:00)' },
-      { value: 'All Cycles (Daily Consolidated)', label: 'All Cycles (Daily Consolidated)', scope: 'Full 24-Hour Consolidated Batch' }
-    ];
-  }
   return [
-    { value: 'Cycle 1 (00:00 - 06:00 Window)', label: 'Cycle 1 (00:00 - 06:00 Window)', scope: '00:00 - 06:00 Window' },
-    { value: 'Cycle 2 (06:00 - 12:00 Window)', label: 'Cycle 2 (06:00 - 12:00 Window)', scope: '06:00 - 12:00 Window' },
-    { value: 'Cycle 3 (12:00 - 18:00 Window)', label: 'Cycle 3 (12:00 - 18:00 Window)', scope: '12:00 - 18:00 Window' },
-    { value: 'Cycle 4 (18:00 - 24:00 Window)', label: 'Cycle 4 (18:00 - 24:00 Window)', scope: '18:00 - 24:00 Window' },
+    { value: 'Cycle 1 (00:00 - 03:00 Window)', label: 'Cycle 1 (00:00 - 03:00 Window)', scope: '00:00 - 03:00 Window' },
+    { value: 'Cycle 2 (03:00 - 06:00 Window)', label: 'Cycle 2 (03:00 - 06:00 Window)', scope: '03:00 - 06:00 Window' },
+    { value: 'Cycle 3 (06:00 - 09:00 Window)', label: 'Cycle 3 (06:00 - 09:00 Window)', scope: '06:00 - 09:00 Window' },
+    { value: 'Cycle 4 (09:00 - 12:00 Window)', label: 'Cycle 4 (09:00 - 12:00 Window)', scope: '09:00 - 12:00 Window' },
+    { value: 'Cycle 5 (12:00 - 15:00 Window)', label: 'Cycle 5 (12:00 - 15:00 Window)', scope: '12:00 - 15:00 Window' },
+    { value: 'Cycle 6 (15:00 - 18:00 Window)', label: 'Cycle 6 (15:00 - 18:00 Window)', scope: '15:00 - 18:00 Window' },
+    { value: 'Cycle 7 (18:00 - 21:00 Window)', label: 'Cycle 7 (18:00 - 21:00 Window)', scope: '18:00 - 21:00 Window' },
+    { value: 'Cycle 8 (21:00 - 24:00 Window)', label: 'Cycle 8 (21:00 - 24:00 Window)', scope: '21:00 - 24:00 Window' },
     { value: 'All Cycles (Daily Consolidated)', label: 'All Cycles (Daily Consolidated)', scope: 'Full 24-Hour Consolidated Batch' }
   ];
 };

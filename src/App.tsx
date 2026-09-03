@@ -30,7 +30,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedSubProduct, setSelectedSubProduct] = useState<SubProduct | null>(null);
   const [targetDate, setTargetDate] = useState<string>('2026-07-28');
-  const [targetCycle, setTargetCycle] = useState<string>('Cycle 1 (00:00 - 06:00 Window)');
+  const [targetCycle, setTargetCycle] = useState<string>('Cycle 1 (00:00 - 03:00 Window)');
   const [collectedFiles, setCollectedFiles] = useState<FileState[]>([]);
 
   // Generated Dataset State
@@ -123,7 +123,7 @@ export default function App() {
               initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
               initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
               initialDate="2026-07-28"
-              initialCycle="Cycle 1 (00:00 - 06:00 Window)"
+              initialCycle="Cycle 1 (00:00 - 03:00 Window)"
             />
           )}
 

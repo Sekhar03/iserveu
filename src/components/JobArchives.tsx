@@ -140,6 +140,10 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
         if (filterCycle === 'cycle2' && !job.cycle.includes('Cycle 2')) return false;
         if (filterCycle === 'cycle3' && !job.cycle.includes('Cycle 3')) return false;
         if (filterCycle === 'cycle4' && !job.cycle.includes('Cycle 4')) return false;
+        if (filterCycle === 'cycle5' && !job.cycle.includes('Cycle 5')) return false;
+        if (filterCycle === 'cycle6' && !job.cycle.includes('Cycle 6')) return false;
+        if (filterCycle === 'cycle7' && !job.cycle.includes('Cycle 7')) return false;
+        if (filterCycle === 'cycle8' && !job.cycle.includes('Cycle 8')) return false;
       }
 
       return true;
@@ -275,10 +279,14 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
             >
               <option value="all">All Cycles</option>
               <option value="daily">Daily Consolidated</option>
-              <option value="cycle1">Cycle 1 (00:00 - 06:00)</option>
-              <option value="cycle2">Cycle 2 (06:00 - 12:00)</option>
-              <option value="cycle3">Cycle 3 (12:00 - 18:00)</option>
-              <option value="cycle4">Cycle 4 (18:00 - 24:00)</option>
+              <option value="cycle1">Cycle 1 (00:00 - 03:00)</option>
+              <option value="cycle2">Cycle 2 (03:00 - 06:00)</option>
+              <option value="cycle3">Cycle 3 (06:00 - 09:00)</option>
+              <option value="cycle4">Cycle 4 (09:00 - 12:00)</option>
+              <option value="cycle5">Cycle 5 (12:00 - 15:00)</option>
+              <option value="cycle6">Cycle 6 (15:00 - 18:00)</option>
+              <option value="cycle7">Cycle 7 (18:00 - 21:00)</option>
+              <option value="cycle8">Cycle 8 (21:00 - 24:00)</option>
             </select>
           </div>
         </div>

@@ -96,8 +96,8 @@ export const Page6Results: React.FC<Page6ResultsProps> = ({
     previewData: []
   }))).map((f, idx) => {
     const varianceOffset = idx === 0 ? 0 : idx === 1 ? -20 : -60;
-    const totalInput = Math.max(10, (f.recordCount || 38500) + varianceOffset);
-    const participatedMatched = Math.min(matchedRecords.length || 38400, totalInput);
+    const totalInput = Math.max(10, (f.recordCount || subProduct.requiredFiles[0]?.defaultRecordCount || 15800) + varianceOffset);
+    const participatedMatched = Math.min(matchedRecords.length, totalInput);
     const unmatched = totalInput - participatedMatched;
 
     const reasons = [
@@ -185,7 +185,7 @@ export const Page6Results: React.FC<Page6ResultsProps> = ({
                 {file.totalInputRecords.toLocaleString()} <span className="text-xs font-semibold text-[#475569]">Records</span>
               </div>
               <span className="text-[10px] font-semibold text-[#119db0] bg-[#119db0]/15 px-2.5 py-0.5 rounded-full mt-2 inline-block truncate max-w-[200px]">
-                {file.channel || (file.type === 'internal' ? 'Internal GCP' : 'Counterparty Bank')}
+                {(file.channel || (file.type === 'internal' ? 'Internal GCP' : 'Counterparty Bank')).replace(/\s*\(gs:\/\/[^)]*\)/gi, '').trim()}
               </span>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-[#119db0]/15 text-[#119db0] flex items-center justify-center font-bold shrink-0">

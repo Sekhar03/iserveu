@@ -21,7 +21,7 @@ export interface RequiredSourceFile {
   id: string;
   name: string;
   type: 'internal' | 'counterparty';
-  channel: string; // e.g. "GCP Bucket (gs://prod-isurecon/...)" or "SFTP Bank Portal"
+  channel: string; // e.g. "GCP Bucket" or "SFTP Bank Portal"
   defaultRecordCount: number;
 }
 

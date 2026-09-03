@@ -240,13 +240,14 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
     setIsProcessingRecon(true);
 
     setTimeout(() => {
+      const baseRecordCount = selectedSubProduct.requiredFiles[0]?.defaultRecordCount || 15800;
       const { matchedRecords, mismatchedRecords, job } = generateReconDataset(
         selectedSubProduct.id,
         selectedSubProduct.name,
         selectedCategory.name,
         targetDate,
         targetCycle,
-        200
+        baseRecordCount
       );
 
       setIsProcessingRecon(false);

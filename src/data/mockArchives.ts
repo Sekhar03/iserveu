@@ -1,22 +1,22 @@
 import { ReconJob } from '../types';
 import { generateReconDataset } from '../utils/mockDataGenerator';
 
-const archive1 = generateReconDataset('nsdlaeps', 'NSDL AEPS', 'AEPS', '2026-07-28', 'Cycle 1 (00:00 - 08:00 Window)', 18450);
+const archive1 = generateReconDataset('nsdlaeps', 'NSDL AEPS', 'AEPS', '2026-07-28', 'Cycle 1 (00:00 - 08:00 Window)', 15800);
 archive1.job.id = 'RECON-20260728-001';
 
-const archive2 = generateReconDataset('aadharpay', 'Aadharpay', 'AEPS', '2026-07-27', 'All Cycles (Daily Consolidated)', 24200);
+const archive2 = generateReconDataset('aadharpay', 'Aadharpay', 'AEPS', '2026-07-27', 'All Cycles (Daily Consolidated)', 18450);
 archive2.job.id = 'RECON-20260727-004';
 
-const archive3 = generateReconDataset('matm4way', 'MATM 4-Way Txn Recon', 'MATM', '2026-07-27', 'Cycle 3 (16:00 - 24:00 Window)', 12800);
+const archive3 = generateReconDataset('matm4way', 'MATM 4-Way Txn Recon', 'MATM', '2026-07-27', 'Cycle 3 (16:00 - 24:00 Window)', 8900);
 archive3.job.id = 'RECON-20260727-003';
 
-const archive4 = generateReconDataset('dynamicupi', 'Dynamic UPI', 'UPI', '2026-07-26', 'All Cycles (Daily Consolidated)', 45000);
+const archive4 = generateReconDataset('dynamicupi', 'Dynamic UPI', 'UPI', '2026-07-26', 'All Cycles (Daily Consolidated)', 38500);
 archive4.job.id = 'RECON-20260726-012';
 
-const archive5 = generateReconDataset('airteldmt', 'Airtel DMT', 'DMT', '2026-07-25', 'Cycle 2 (08:00 - 16:00 Window)', 15600);
+const archive5 = generateReconDataset('airteldmt', 'Airtel DMT', 'DMT', '2026-07-25', 'Cycle 2 (08:00 - 16:00 Window)', 17800);
 archive5.job.id = 'RECON-20260725-008';
 
-const archive6 = generateReconDataset('bbpsbou', 'Bharat Connect BOU Reconciliation', 'BHARAT CONNECT', '2026-07-25', 'All Cycles (Daily Consolidated)', 9800);
+const archive6 = generateReconDataset('bbpsbou', 'Bharat Connect BOU Reconciliation', 'BHARAT CONNECT', '2026-07-25', 'All Cycles (Daily Consolidated)', 11200);
 archive6.job.id = 'RECON-20260725-002';
 
 const archive7 = generateReconDataset('pos_sub', 'POS', 'POS', '2026-07-24', 'Cycle 1 (00:00 - 08:00 Window)', 14500);

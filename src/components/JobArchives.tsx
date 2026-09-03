@@ -60,14 +60,14 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
           id: 'middleware',
           name: 'MIDDLEWARE TXN LOG',
           type: 'internal',
-          channel: 'GCP Bucket (gs://prod-isurecon/...)',
+          channel: 'GCP Bucket',
           defaultRecordCount: Math.max(10, job.totalRecords - 20)
         },
         {
           id: 'switch',
           name: 'AEPS SWITCH / CBS LOG',
           type: 'internal' as const,
-          channel: 'GCP Bucket (gs://prod-isurecon/...)',
+          channel: 'GCP Bucket',
           defaultRecordCount: Math.max(10, job.totalRecords - 60)
         }
       ]

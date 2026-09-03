@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, ShieldCheck, Cpu, TrendingUp, DollarSign, CheckCircle2, Zap, BarChart3 } from 'lucide-react';
+import {
+  Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, Globe,
+  Fingerprint, FileText, Banknote, RefreshCw, Send,
+  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert
+} from 'lucide-react';
 import { UserSession } from '../types';
 
 interface LoginPortalProps {
@@ -28,210 +32,248 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
     }, 800);
   };
 
-  const tickerItems = [
-    { label: 'UPI Settlement Batch C10', val: '₹8,420 Cr', status: '100% Matched', color: 'text-emerald-400' },
-    { label: 'BBPS BOU Cycle 9', val: '₹1,250 Cr', status: 'Cleared', color: 'text-cyan-400' },
-    { label: 'AePS Settlement C8', val: '₹3,140 Cr', status: '99.98% Precision', color: 'text-emerald-400' },
-    { label: 'IMPS Batch C4', val: '₹4,890 Cr', status: 'Processed', color: 'text-cyan-400' },
-    { label: 'RuPay PPI Daily', val: '₹940 Cr', status: 'Settled', color: 'text-emerald-400' },
+  // Node Positions around the Central iServeU Hub
+  const nodes = [
+    { label: 'AEPS', icon: Fingerprint, x: 230, y: 120, color: '#00A8B5' },
+    { label: 'BBPS', icon: FileText, x: 440, y: 80, color: '#00A8B5' },
+    { label: 'CASHOUT PAYOUT', icon: Banknote, x: 490, y: 175, color: '#00A8B5' },
+    { label: 'LENDING', icon: Banknote, x: 505, y: 280, color: '#F26522' },
+    { label: 'LOS', icon: FileText, x: 505, y: 390, color: '#F26522' },
+    { label: 'RECON', icon: RefreshCw, x: 490, y: 500, color: '#00A8B5', isRecon: true },
+    { label: 'FRM', icon: ShieldAlert, x: 440, y: 590, color: '#F26522' },
+    { label: 'COMMISSION', icon: PieChart, x: 400, y: 650, color: '#F26522' },
+    { label: 'UPI', icon: QrCode, x: 240, y: 670, color: '#00A8B5' },
+    { label: 'CARDS', icon: CreditCard, x: 165, y: 600, color: '#00A8B5' },
+    { label: 'POS', icon: Smartphone, x: 120, y: 500, color: '#00A8B5' },
+    { label: 'DMT', icon: Send, x: 110, y: 380, color: '#00A8B5' },
+    { label: 'SOUNDBOX', icon: Volume2, x: 135, y: 250, color: '#00A8B5' },
   ];
 
-  return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#0B1E36] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#10B981]/20 via-[#0B1E36] to-[#040D1A] relative overflow-hidden font-sans select-none">
-      {/* 1. Dynamic Financial Background Orbs */}
-      <div className="absolute top-1/6 left-1/12 w-[600px] h-[600px] bg-[#10B981]/15 rounded-full blur-[150px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute bottom-1/6 right-1/12 w-[550px] h-[550px] bg-[#00A8B5]/20 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute top-1/2 left-1/3 w-[450px] h-[450px] bg-[#059669]/10 rounded-full blur-[120px] pointer-events-none animate-float-slow" />
+  const hubCenterX = 320;
+  const hubCenterY = 380;
 
-      {/* 2. Background Animated SVG Financial Trend Wave */}
-      <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M -100 400 Q 300 200, 700 450 T 1600 300 T 2400 500"
-          fill="none"
-          stroke="#10B981"
-          strokeWidth="3"
-          className="animate-dash-flow"
-        />
-        <path
-          d="M -100 500 Q 400 300, 900 550 T 1800 350 T 2600 600"
-          fill="none"
-          stroke="#00D2D3"
-          strokeWidth="2"
-          className="animate-dash-flow"
-          style={{ animationDuration: '4.5s' }}
-        />
+  return (
+    <div className="min-h-screen w-full bg-[#FCFDFE] relative flex flex-col justify-between overflow-hidden font-sans select-none">
+      
+      {/* Decorative Wave Lines - Bottom Left (Teal) */}
+      <svg className="absolute bottom-0 left-0 w-[420px] h-[420px] opacity-25 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
+        <path d="M-100 500 C 100 300, 200 400, 300 100" stroke="#00A8B5" strokeWidth="1.5" />
+        <path d="M-100 480 C 120 320, 220 380, 320 120" stroke="#00D2D3" strokeWidth="1" />
+        <path d="M-100 460 C 140 340, 240 360, 340 140" stroke="#00A8B5" strokeWidth="1.5" />
+        <path d="M-100 440 C 160 360, 260 340, 360 160" stroke="#00838F" strokeWidth="1" />
       </svg>
 
-      {/* 3. Floating Financial Currency & Math Symbols */}
-      <div className="hidden lg:block absolute top-16 left-1/4 text-3xl font-extrabold text-[#10B981]/25 animate-float-slow pointer-events-none">₹</div>
-      <div className="hidden lg:block absolute bottom-36 left-1/5 text-4xl font-black text-[#00D2D3]/20 animate-float-delayed pointer-events-none">%</div>
-      <div className="hidden lg:block absolute top-28 right-1/4 text-3xl font-bold text-[#10B981]/20 animate-float-slow pointer-events-none">📈</div>
-      <div className="hidden lg:block absolute bottom-44 right-1/6 text-4xl font-extrabold text-[#00D2D3]/25 animate-float-delayed pointer-events-none">₹</div>
+      {/* Decorative Wave Lines - Top Right (Coral Orange) */}
+      <svg className="absolute top-0 right-0 w-[450px] h-[450px] opacity-30 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
+        <path d="M 600 -100 C 350 100, 450 250, 200 400" stroke="#F26522" strokeWidth="1.5" />
+        <path d="M 580 -100 C 370 120, 430 270, 220 420" stroke="#E05318" strokeWidth="1" />
+        <path d="M 560 -100 C 390 140, 410 290, 240 440" stroke="#F26522" strokeWidth="1.5" />
+        <path d="M 540 -100 C 410 160, 390 310, 260 460" stroke="#FF7A38" strokeWidth="1" />
+      </svg>
 
-      {/* 4. Floating Live Financial Metric Cards */}
-      <div className="hidden lg:flex absolute top-24 left-16 p-4 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl text-white items-center gap-3.5 animate-float-slow pointer-events-none max-w-xs z-0">
-        <div className="w-11 h-11 rounded-xl bg-[#10B981]/25 text-[#34D399] flex items-center justify-center border border-[#10B981]/40 shrink-0 shadow-lg shadow-[#10B981]/20">
-          <TrendingUp className="w-6 h-6" />
+      {/* Top Header Bar */}
+      <header className="p-6 px-10 flex items-center justify-between relative z-20">
+        <div className="flex items-center gap-2 text-slate-600 text-xs font-semibold hover:text-[#00A8B5] transition cursor-pointer">
+          <Globe className="w-4 h-4 text-slate-500" />
+          <span>English</span>
         </div>
-        <div>
-          <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Daily Recon Volume</div>
-          <div className="text-base font-black text-[#34D399] flex items-center gap-1.5 leading-tight">
-            <span>₹18,450 Cr / Day</span>
-            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-[#10B981]/20 text-[#34D399] border border-[#10B981]/30">+14.2%</span>
-          </div>
-        </div>
-      </div>
+      </header>
 
-      <div className="hidden lg:flex absolute bottom-28 right-16 p-4 rounded-2xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl text-white items-center gap-3.5 animate-float-delayed pointer-events-none max-w-xs z-0">
-        <div className="w-11 h-11 rounded-xl bg-[#00A8B5]/25 text-[#00D2D3] flex items-center justify-center border border-[#00A8B5]/40 shrink-0 shadow-lg shadow-[#00A8B5]/20">
-          <BarChart3 className="w-6 h-6" />
-        </div>
-        <div>
-          <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Auto Matching Rate</div>
-          <div className="text-base font-black text-[#00D2D3] flex items-center gap-2">
-            <span>99.98% Precision</span>
-            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-ping" />
-          </div>
-        </div>
-      </div>
-
-
-      {/* Main Content Area: Centered Login Card */}
-      <div className="flex-1 flex items-center justify-center p-4 relative z-10 my-auto">
-        <div className="w-full max-w-[425px] bg-white/95 backdrop-blur-3xl border border-white/60 rounded-3xl p-8 shadow-2xl shadow-[#040D1A]/60 relative z-10 space-y-6 transform transition-all duration-300 hover:shadow-[#10B981]/20">
+      {/* Main Workspace: Grid with Left Network Constellation & Right Login Card */}
+      <div className="flex-1 max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 py-4">
+        
+        {/* LEFT SIDE: iServeU Reconciliation Hub Network Visual (7 Cols) */}
+        <div className="lg:col-span-7 relative h-[620px] hidden sm:flex items-center justify-center">
           
-          {/* Brand Header with Official iServeU Logo */}
-          <div className="text-center space-y-3">
-            <div className="flex items-center justify-center pt-1 pb-2">
-              <img
-                src="/iserveu_official_logo.svg"
-                alt="iServeU Registered Logo"
-                className="h-16 w-auto max-w-[250px] object-contain drop-shadow-sm transition-transform duration-300 hover:scale-105"
-              />
-            </div>
+          {/* SVG Connecting Paths & Orbital Rings */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 640 760">
+            {/* Concentric Orbits */}
+            <circle cx={hubCenterX} cy={hubCenterY} r="70" stroke="#00A8B5" strokeWidth="1" strokeDasharray="3 3" opacity="0.4" />
+            <circle cx={hubCenterX} cy={hubCenterY} r="130" stroke="#00A8B5" strokeWidth="1" strokeDasharray="4 4" opacity="0.3" />
+            <circle cx={hubCenterX} cy={hubCenterY} r="190" stroke="#00A8B5" strokeWidth="1" strokeDasharray="5 5" opacity="0.25" />
+            <circle cx={hubCenterX} cy={hubCenterY} r="250" stroke="#00A8B5" strokeWidth="1" strokeDasharray="6 6" opacity="0.2" />
 
-            <div>
-              <h1 className="text-xl font-extrabold text-[#0B1E36] tracking-tight flex items-center justify-center gap-1.5">
-                <span>Reconciliation Platform</span>
-                <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#10B981]/15 text-[#059669] border border-[#10B981]/30 uppercase">
-                  FINTECH
-                </span>
-              </h1>
-              <p className="text-xs text-slate-500 font-semibold mt-1">
-                NPCI Automated Settlement & Financial Clearing
-              </p>
+            {/* Connecting Dotted Lines to Nodes */}
+            {nodes.map((node, i) => (
+              <g key={i}>
+                <line
+                  x1={hubCenterX}
+                  y1={hubCenterY}
+                  x2={node.x}
+                  y2={node.y}
+                  stroke={node.color}
+                  strokeWidth={node.isRecon ? "2.5" : "1.5"}
+                  strokeDasharray={node.isRecon ? "none" : "4 4"}
+                  opacity={node.isRecon ? "0.85" : "0.5"}
+                />
+                {/* Glowing Data Point Dot along line */}
+                <circle
+                  cx={hubCenterX + (node.x - hubCenterX) * 0.5}
+                  cy={hubCenterY + (node.y - hubCenterY) * 0.5}
+                  r={node.isRecon ? "5" : "3.5"}
+                  fill={node.color}
+                />
+              </g>
+            ))}
+          </svg>
+
+          {/* CENTRAL HUB NODE */}
+          <div className="absolute z-20 flex flex-col items-center justify-center">
+            <div className="w-36 h-36 rounded-full bg-white shadow-2xl border-4 border-slate-100 flex flex-col items-center justify-center p-4 text-center group cursor-pointer transition-transform duration-300 hover:scale-105">
+              <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-10 w-auto object-contain" />
+              <span className="text-[10px] font-extrabold text-[#00A8B5] mt-1 tracking-wider uppercase">Recon Hub</span>
             </div>
           </div>
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-            {/* Username Input */}
-            <div className="space-y-1.5">
-              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
-                Corporate ID / Email
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#059669]" />
-                <input
-                  type="email"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50/70 text-[#0B1E36] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] focus:bg-white transition-all shadow-xs"
-                  placeholder="name@iserveu.in"
-                  required
+          {/* PERIPHERAL PRODUCT NODES */}
+          {nodes.map((node, idx) => {
+            const IconComp = node.icon;
+            return (
+              <div
+                key={idx}
+                className="absolute flex flex-col items-center justify-center group cursor-pointer transition-all duration-300 hover:scale-110"
+                style={{
+                  left: `${node.x - 30}px`,
+                  top: `${node.y - 30}px`,
+                }}
+              >
+                <div className={`w-14 h-14 rounded-full bg-white shadow-lg border flex items-center justify-center transition-colors ${
+                  node.isRecon
+                    ? 'border-[#00A8B5] text-[#00A8B5] shadow-[#00A8B5]/20 ring-4 ring-[#00A8B5]/10'
+                    : node.color === '#F26522'
+                    ? 'border-orange-200 text-[#F26522] hover:border-[#F26522]'
+                    : 'border-slate-200 text-[#00A8B5] hover:border-[#00A8B5]'
+                }`}>
+                  <IconComp className="w-6 h-6" />
+                </div>
+                <span className={`text-[10px] font-extrabold mt-1.5 uppercase tracking-wider text-center ${
+                  node.isRecon ? 'text-[#00A8B5] font-black' : 'text-slate-600'
+                }`}>
+                  {node.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* RIGHT SIDE: Login Card Form (5 Cols) */}
+        <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          <div className="w-full max-w-[420px] bg-white rounded-3xl p-8 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-6 relative z-10">
+            
+            {/* Header Brand */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-start">
+                <img
+                  src="/iserveu_official_logo.svg"
+                  alt="iServeU Logo"
+                  className="h-11 w-auto object-contain"
                 />
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-xs font-semibold text-slate-500">
+                  Welcome to Internal Portals
+                </p>
+                <h2 className="text-base font-bold text-slate-800">
+                  Login to continue to Internal Application.
+                </h2>
               </div>
             </div>
 
-            {/* Password Input */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
-                  Password
+            {/* Login Form */}
+            <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+              
+              {/* Username Input */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#00838F]">
+                  Username <span className="text-red-500">*</span>
                 </label>
-                <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-bold text-[#059669] hover:text-[#047857] transition">
-                  Forgot password?
-                </a>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-sm focus:outline-none focus:border-[#00A8B5] focus:ring-2 focus:ring-[#00A8B5]/20 transition"
+                    placeholder="Username"
+                    required
+                  />
+                </div>
               </div>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#059669]" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50/70 text-[#0B1E36] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] focus:bg-white transition-all shadow-xs"
-                  placeholder="••••••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#059669] transition cursor-pointer p-1"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
 
-            {/* Remember Me Checkbox */}
-            <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer select-none group">
+              {/* Password Input */}
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-[#00838F]">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-sm focus:outline-none focus:border-[#00A8B5] focus:ring-2 focus:ring-[#00A8B5]/20 transition"
+                    placeholder="••••••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition p-1 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me Checkbox */}
+              <div className="flex items-center gap-2 pt-1">
                 <input
                   type="checkbox"
+                  id="rememberMe"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-300 text-[#10B981] focus:ring-[#10B981] cursor-pointer"
+                  className="w-4 h-4 rounded border-slate-300 text-[#00A8B5] focus:ring-[#00A8B5] cursor-pointer"
                 />
-                <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900 transition">Remember this device</span>
-              </label>
+                <label htmlFor="rememberMe" className="text-xs font-semibold text-slate-600 cursor-pointer">
+                  Remember me on this device
+                </label>
+              </div>
+
+              {/* Primary Coral Orange Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full mt-4 py-3 px-6 rounded-xl bg-[#F26522] hover:bg-[#D95318] text-white font-bold text-sm shadow-md shadow-[#F26522]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <span>Log in</span>
+                )}
+              </button>
+            </form>
+
+            {/* Forgot Credentials Link */}
+            <div className="pt-2 text-center">
+              <a
+                href="#forgot"
+                onClick={(e) => e.preventDefault()}
+                className="text-xs font-bold text-[#00A8B5] hover:underline"
+              >
+                Forgot username or password?
+              </a>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full mt-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#00A8B5] via-[#059669] to-[#10B981] hover:opacity-95 text-white font-extrabold text-sm transition-all duration-300 shadow-lg shadow-[#10B981]/30 hover:shadow-[#10B981]/50 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 transform hover:-translate-y-0.5 active:translate-y-0"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin text-white" />
-                  <span>Verifying Session...</span>
-                </>
-              ) : (
-                <>
-                  <span>Sign In to Portal</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Footer info */}
-          <div className="pt-2 text-center space-y-1 border-t border-slate-100">
-            <p className="text-[11px] font-bold text-[#059669] tracking-wide">
-              Powered by iServeU Financial Technologies
-            </p>
           </div>
         </div>
+
       </div>
 
-      {/* 5. Live Moving Financial Ticker Banner Across Bottom */}
-      <div className="w-full bg-[#040D1A]/90 backdrop-blur-xl border-t border-[#10B981]/30 py-2.5 overflow-hidden z-20">
-        <div className="animate-marquee flex items-center gap-12 whitespace-nowrap">
-          {[...tickerItems, ...tickerItems].map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2.5 text-xs font-extrabold text-slate-300">
-              <Zap className="w-3.5 h-3.5 text-[#34D399]" />
-              <span>{item.label}:</span>
-              <span className="text-white font-black">{item.val}</span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full bg-white/10 font-bold ${item.color} border border-white/10`}>
-                {item.status}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Footer */}
+      <footer className="p-4 text-center text-[11px] font-semibold text-slate-400 border-t border-slate-100 relative z-10">
+        Powered by iServeU Financial Technologies
+      </footer>
     </div>
   );
 };
-
-

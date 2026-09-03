@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, Building2 } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, ShieldCheck, Cpu, Activity, CheckCircle2 } from 'lucide-react';
 import { UserSession } from '../types';
 
 interface LoginPortalProps {
@@ -29,17 +29,46 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#06101e] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#00bcd4]/30 via-[#0b1c30] to-[#030812] p-4 relative overflow-hidden font-sans">
-      {/* Dynamic Glowing Mesh Orbs */}
-      <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-[#00bcd4]/15 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#10b981]/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute -top-20 right-1/3 w-[350px] h-[350px] bg-[#3b82f6]/10 rounded-full blur-[100px] pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center bg-[#071322] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0e8696]/25 via-[#0b1c30] to-[#040914] p-4 relative overflow-hidden font-sans">
+      {/* 1. Dynamic Glowing Background Mesh Orbs */}
+      <div className="absolute top-1/6 left-1/10 w-[550px] h-[550px] bg-[#119db0]/20 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute bottom-1/8 right-1/10 w-[500px] h-[500px] bg-[#10b981]/15 rounded-full blur-[130px] pointer-events-none animate-pulse-glow" />
+      <div className="absolute -top-10 right-1/4 w-[400px] h-[400px] bg-[#3b82f6]/15 rounded-full blur-[110px] pointer-events-none animate-float-slow" />
 
-      {/* Subtle Geometric Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+      {/* Subtle Animated Grid Lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
 
-      {/* Main Card */}
-      <div className="w-full max-w-[420px] bg-white/95 backdrop-blur-2xl border border-white/40 rounded-3xl p-8 shadow-2xl shadow-slate-950/40 relative z-10 space-y-6">
+      {/* 2. Floating Live Metric Cards (Background Decorators) */}
+      <div className="hidden lg:flex absolute top-24 left-16 p-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl text-white items-center gap-3 animate-float-slow pointer-events-none max-w-xs z-0">
+        <div className="w-10 h-10 rounded-xl bg-[#10b981]/20 text-[#10b981] flex items-center justify-center border border-[#10b981]/30 shrink-0">
+          <CheckCircle2 className="w-5 h-5" />
+        </div>
+        <div>
+          <div className="text-xs font-bold text-slate-200">Recon Engine Status</div>
+          <div className="text-sm font-extrabold text-[#10b981] flex items-center gap-1.5">
+            <span>99.98% Precision</span>
+            <span className="w-2 h-2 rounded-full bg-[#10b981] animate-ping" />
+          </div>
+        </div>
+      </div>
+
+      <div className="hidden lg:flex absolute bottom-28 right-16 p-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl text-white items-center gap-3 animate-float-delayed pointer-events-none max-w-xs z-0">
+        <div className="w-10 h-10 rounded-xl bg-[#119db0]/20 text-[#23c5da] flex items-center justify-center border border-[#119db0]/30 shrink-0">
+          <Cpu className="w-5 h-5" />
+        </div>
+        <div>
+          <div className="text-xs font-bold text-slate-200">NPCI Clearing Batches</div>
+          <div className="text-sm font-extrabold text-[#23c5da]">10 Settlement Cycles</div>
+        </div>
+      </div>
+
+      <div className="hidden lg:flex absolute top-32 right-24 p-3.5 px-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl text-white items-center gap-2.5 animate-float-slow pointer-events-none z-0">
+        <ShieldCheck className="w-4 h-4 text-[#10b981]" />
+        <span className="text-xs font-bold text-slate-200">256-bit Bank Grade Security</span>
+      </div>
+
+      {/* 3. Main Login Glass Card */}
+      <div className="w-full max-w-[425px] bg-white/95 backdrop-blur-3xl border border-white/60 rounded-3xl p-8 shadow-2xl shadow-slate-950/50 relative z-10 space-y-6 transform transition-all duration-300 hover:shadow-[#119db0]/20">
         
         {/* Brand Header with Official iServeU Logo */}
         <div className="text-center space-y-3">
@@ -47,14 +76,17 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
             <img
               src="/iserveu_official_logo.svg"
               alt="iServeU Registered Logo"
-              className="h-16 w-auto max-w-[250px] object-contain drop-shadow-xs"
+              className="h-16 w-auto max-w-[250px] object-contain drop-shadow-sm transition-transform duration-300 hover:scale-105"
             />
           </div>
 
           <div>
-            <h1 className="text-xl font-extrabold text-[#0f172a] tracking-tight">
+            <h1 className="text-xl font-extrabold text-[#1b2a3e] tracking-tight">
               Reconciliation Platform
             </h1>
+            <p className="text-xs text-slate-500 font-medium mt-1">
+              Automated Transaction Settlement & Analytics
+            </p>
           </div>
         </div>
 
@@ -66,12 +98,12 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
               Corporate ID / Email
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#119db0]" />
               <input
                 type="email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0f172a] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#0e8696] focus:bg-white transition"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50/70 text-[#1b2a3e] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#119db0] focus:border-[#119db0] focus:bg-white transition-all shadow-xs"
                 placeholder="name@company.com"
                 required
               />
@@ -84,24 +116,24 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
               <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
                 Password
               </label>
-              <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-bold text-[#0e8696] hover:text-[#0b6c7a] transition">
+              <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-[11px] font-bold text-[#119db0] hover:text-[#0e8696] transition">
                 Forgot password?
               </a>
             </div>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#119db0]" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-[#0f172a] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#0e8696] focus:bg-white transition"
+                className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50/70 text-[#1b2a3e] font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#119db0] focus:border-[#119db0] focus:bg-white transition-all shadow-xs"
                 placeholder="••••••••••••"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition cursor-pointer p-1"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#119db0] transition cursor-pointer p-1"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -110,14 +142,14 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
 
           {/* Remember Me Checkbox */}
           <div className="flex items-center justify-between pt-1">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
+            <label className="flex items-center gap-2 cursor-pointer select-none group">
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded border-slate-300 text-[#0e8696] focus:ring-[#0e8696] cursor-pointer"
+                className="w-4 h-4 rounded border-slate-300 text-[#119db0] focus:ring-[#119db0] cursor-pointer"
               />
-              <span className="text-xs font-semibold text-slate-600">Remember this device</span>
+              <span className="text-xs font-semibold text-slate-600 group-hover:text-slate-900 transition">Remember this device</span>
             </label>
           </div>
 
@@ -125,7 +157,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#0e8696] via-[#00a3b8] to-[#10b981] hover:opacity-95 text-white font-bold text-sm transition-all duration-200 shadow-md shadow-[#0e8696]/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+            className="w-full mt-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#119db0] via-[#0e8696] to-[#10b981] hover:opacity-95 text-white font-bold text-sm transition-all duration-300 shadow-lg shadow-[#119db0]/30 hover:shadow-[#119db0]/50 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 transform hover:-translate-y-0.5 active:translate-y-0"
           >
             {isLoading ? (
               <>
@@ -143,7 +175,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
 
         {/* Footer info */}
         <div className="pt-2 text-center space-y-1 border-t border-slate-100">
-          <p className="text-[11px] font-semibold text-slate-400">
+          <p className="text-[11px] font-bold text-[#119db0] tracking-wide">
             Powered by iServeU Financial Technologies
           </p>
         </div>

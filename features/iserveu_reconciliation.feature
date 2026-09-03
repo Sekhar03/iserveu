@@ -48,17 +48,18 @@ Feature: iServeU Reconciliation Platform
   # ===========================================================================
 
         @wizard @vertical_selection
-        Scenario Outline: Step 1 presents 3 core business verticals with grouped product categories
+        Scenario Outline: Step 1 presents business verticals with grouped product categories
             Given the user is on Step 1 "Category Selection"
-             Then the page presents 3 main options: "Agency Banking", "Acquiring", and "BBPS"
+             Then the page presents main options: "Agency Banking", "Acquiring", "Issuance", and "Bharat Connect"
              When the user selects business vertical "<VerticalName>"
              Then the product categories under "<VerticalName>" are displayed as "<ProductList>"
 
         Examples:
                   | VerticalName   | ProductList                                                                    |
-                  | Agency Banking | AEPS, MATM, DMT, RECHARGE, PREPAID CARD                                        |
-                  | Acquiring      | UPI, IMPS, POS / Cashpoint, RBL CASHOUT/PAYOUT, WALLET RECON, COMMISSION RECON |
-                  | BBPS           | BBPS                                                                           |
+                  | Agency Banking | AEPS, MATM, DMT, Payout, RECHARGE                                              |
+                  | Acquiring      | UPI, POS                                                                       |
+                  | Issuance       | IMPS, PREPAID CARD                                                             |
+                  | Bharat Connect | BHARAT CONNECT                                                                 |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: AEPS
@@ -148,11 +149,11 @@ Feature: iServeU Reconciliation Platform
                   | IPPB IMPS      | 2                  | IPPB IMPS Switch Log, IPPB Settlement Report         | RRN        | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / RET Code -> Callback API Refund Wallet |
 
   # ---------------------------------------------------------------------------
-  # Category Workflow Execution: BBPS
+  # Category Workflow Execution: Bharat Connect
   # ---------------------------------------------------------------------------
         @wizard @category_bbps
-        Scenario Outline: Sequential 6-step wizard execution for BBPS sub-products
-            Given the user selects category "BBPS" on Step 1 "Category Selection"
+        Scenario Outline: Sequential 6-step wizard execution for Bharat Connect sub-products
+            Given the user selects category "BHARAT CONNECT" on Step 1 "Category Selection"
              When the user selects sub-product "<SubProductName>" on Step 2
              Then the wizard advances to Step 3 "Date & Settlement Cycle Configuration"
               And the user selects Business Date "2026-07-28" and Settlement Cycle "Cycle 1"
@@ -169,11 +170,11 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                          | RequiredFilesCount | RequiredFileNames                             | JoinColumn    | MatchingRule                  | MismatchingRule                   |
-                  | BBPS COU (Bank of Baroda / BB11)        | 2                  | BOB BB11 COU Gateway, BOB BBPS Settlement     | TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | BBPS BOU Reconciliation                 | 2                  | BOU Outlet Gateway Log, NPCI BBPS Settlement  | TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | NSDL BBPS                               | 2                  | NSDL BBPS Switch Log, NSDL Bank Cleared File  | Client_Txn_Id | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | IPPB BBPS                               | 2                  | IPPB Bill Pay Switch, IPPB Settlement Statement| RRN          | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName                                   | RequiredFilesCount | RequiredFileNames                                     | JoinColumn    | MatchingRule                  | MismatchingRule                   |
+                  | Bharat Connect COU (Bank of Baroda / BB11)       | 2                  | BOB BB11 COU Gateway, BOB Bharat Connect Settlement   | TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Bharat Connect BOU Reconciliation                | 2                  | BOU Outlet Gateway Log, NPCI Bharat Connect Settlement| TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | NSDL Bharat Connect                              | 2                  | NSDL Bharat Connect Switch Log, NSDL Bank Cleared File| Client_Txn_Id | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | IPPB Bharat Connect                              | 2                  | IPPB Bill Pay Switch, IPPB Settlement Statement       | RRN          | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: RECHARGE

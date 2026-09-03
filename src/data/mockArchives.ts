@@ -16,7 +16,7 @@ archive4.job.id = 'RECON-20260726-012';
 const archive5 = generateReconDataset('airteldmt', 'Airtel DMT', 'DMT', '2026-07-25', 'Cycle 2 (08:00 - 16:00 Window)', 15600);
 archive5.job.id = 'RECON-20260725-008';
 
-const archive6 = generateReconDataset('bbpsbou', 'BBPS BOU Reconciliation', 'BBPS', '2026-07-25', 'All Cycles (Daily Consolidated)', 9800);
+const archive6 = generateReconDataset('bbpsbou', 'Bharat Connect BOU Reconciliation', 'BHARAT CONNECT', '2026-07-25', 'All Cycles (Daily Consolidated)', 9800);
 archive6.job.id = 'RECON-20260725-002';
 
 const archive7 = generateReconDataset('pos_sub', 'POS', 'POS', '2026-07-24', 'Cycle 1 (00:00 - 08:00 Window)', 14500);

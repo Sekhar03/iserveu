@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react';
 import { SubProduct } from '../../types';
-import { SUB_PRODUCTS } from '../../data/categoriesAndSubProducts';
+import { SUB_PRODUCTS, getCycleOptionsForCategory } from '../../data/categoriesAndSubProducts';
 
 interface Page3DateCycleProps {
   subProduct: SubProduct;
@@ -23,12 +23,7 @@ export const Page3DateCycle: React.FC<Page3DateCycleProps> = ({
 
   const isSingleSubProduct = SUB_PRODUCTS.filter(sp => sp.categoryId === subProduct.categoryId).length <= 1;
 
-  const cycleOptions = [
-    { value: 'All Cycles (Daily Consolidated)', label: 'All Cycles (Daily Consolidated)', scope: 'Full 24-Hour Consolidated Batch' },
-    { value: 'Cycle 1 (00:00 - 08:00 Window)', label: 'Cycle 1', scope: '00:00 - 08:00 Window' },
-    { value: 'Cycle 2 (08:00 - 16:00 Window)', label: 'Cycle 2', scope: '08:00 - 16:00 Window' },
-    { value: 'Cycle 3 (16:00 - 24:00 Window)', label: 'Cycle 3', scope: '16:00 - 24:00 Window' }
-  ];
+  const cycleOptions = getCycleOptionsForCategory(subProduct.categoryId);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

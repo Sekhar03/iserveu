@@ -18,7 +18,7 @@ export const BUSINESS_VERTICALS: BusinessVertical[] = [
   },
   {
     id: 'issuing',
-    name: 'Issuing',
+    name: 'Issuance',
     description: 'IMPS & Prepaid Cards Modules',
     badge: '2 Categories',
     iconName: 'CreditCard'
@@ -26,14 +26,14 @@ export const BUSINESS_VERTICALS: BusinessVertical[] = [
   {
     id: 'agency-banking',
     name: 'Agency Banking',
-    description: 'AEPS, MATM, DMT, Recharge & Payout Modules',
+    description: 'AEPS, MATM, DMT, Payout & Recharge Modules',
     badge: '5 Categories',
     iconName: 'Building2'
   },
   {
     id: 'bbps',
-    name: 'BBPS',
-    description: 'BBPS COU, BOU, NSDL BBPS & IPPB BBPS Modules',
+    name: 'Bharat Connect',
+    description: 'Bharat Connect COU, BOU, NSDL & IPPB Modules',
     badge: '4 Categories',
     iconName: 'Receipt'
   }
@@ -44,19 +44,19 @@ export const CATEGORIES: Category[] = [
   { id: 'aeps', name: 'AEPS', iconName: 'Fingerprint', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
   { id: 'matm', name: 'MATM', iconName: 'CreditCard', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
   { id: 'dmt', name: 'DMT', iconName: 'ArrowRightLeft', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
-  { id: 'recharge', name: 'RECHARGE', iconName: 'Zap', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
   { id: 'cashout', name: 'Payout', iconName: 'Wallet', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
+  { id: 'recharge', name: 'RECHARGE', iconName: 'Zap', verticalId: 'agency-banking', verticalName: 'Agency Banking' },
 
   // BBPS Section
-  { id: 'bbps', name: 'BBPS', iconName: 'Receipt', verticalId: 'bbps', verticalName: 'BBPS' },
+  { id: 'bbps', name: 'BHARAT CONNECT', iconName: 'Receipt', verticalId: 'bbps', verticalName: 'Bharat Connect' },
 
   // Acquiring
   { id: 'upi', name: 'UPI', iconName: 'QrCode', verticalId: 'acquiring', verticalName: 'Acquiring' },
   { id: 'pos', name: 'POS', iconName: 'Building2', verticalId: 'acquiring', verticalName: 'Acquiring' },
 
   // Issuing
-  { id: 'imps', name: 'IMPS', iconName: 'Send', verticalId: 'issuing', verticalName: 'Issuing' },
-  { id: 'prepaidcard', name: 'PREPAID CARD', iconName: 'CreditCard', verticalId: 'issuing', verticalName: 'Issuing' }
+  { id: 'imps', name: 'IMPS', iconName: 'Send', verticalId: 'issuing', verticalName: 'Issuance' },
+  { id: 'prepaidcard', name: 'PREPAID CARD', iconName: 'CreditCard', verticalId: 'issuing', verticalName: 'Issuance' }
 ];
 
 export const SUB_PRODUCTS: SubProduct[] = [
@@ -201,38 +201,38 @@ export const SUB_PRODUCTS: SubProduct[] = [
     ]
   },
 
-  // 4. BBPS
+  // 4. Bharat Connect
   {
     id: 'bbpscou_bob',
     categoryId: 'bbps',
-    name: 'BBPS COU (Bank of Baroda / BB11)',
+    name: 'Bharat Connect COU (Bank of Baroda / BB11)',
     requiredFiles: [
       { id: 'bbpscou_mw', name: 'BOB BB11 COU Gateway Log', type: 'internal', channel: 'GCP Bucket (gs://prod-isurecon/bbps/)', defaultRecordCount: 14200 },
-      { id: 'bbpscou_bob_cbs', name: 'Bank of Baroda BBPS Settlement', type: 'counterparty', channel: 'BOB Dedicated SFTP', defaultRecordCount: 14200 }
+      { id: 'bbpscou_bob_cbs', name: 'Bank of Baroda Bharat Connect Settlement', type: 'counterparty', channel: 'BOB Dedicated SFTP', defaultRecordCount: 14200 }
     ]
   },
   {
     id: 'bbpsbou',
     categoryId: 'bbps',
-    name: 'BBPS BOU Reconciliation',
+    name: 'Bharat Connect BOU Reconciliation',
     requiredFiles: [
       { id: 'bbpsbou_mw', name: 'BOU Outlet Gateway Log', type: 'internal', channel: 'GCP Bucket (gs://prod-isurecon/bbps/)', defaultRecordCount: 11200 },
-      { id: 'bbpsbou_npci', name: 'NPCI BBPS Settlement File', type: 'counterparty', channel: 'NPCI BBPS Portal', defaultRecordCount: 11200 }
+      { id: 'bbpsbou_npci', name: 'NPCI Bharat Connect Settlement File', type: 'counterparty', channel: 'NPCI BBPS Portal', defaultRecordCount: 11200 }
     ]
   },
   {
     id: 'nsdlbbps',
     categoryId: 'bbps',
-    name: 'NSDL BBPS',
+    name: 'NSDL Bharat Connect',
     requiredFiles: [
-      { id: 'nsdlbbps_mw', name: 'NSDL BBPS Switch Log', type: 'internal', channel: 'GCP Bucket (gs://prod-isurecon/nsdl/)', defaultRecordCount: 12800 },
+      { id: 'nsdlbbps_mw', name: 'NSDL Bharat Connect Switch Log', type: 'internal', channel: 'GCP Bucket (gs://prod-isurecon/nsdl/)', defaultRecordCount: 12800 },
       { id: 'nsdlbbps_cbs', name: 'NSDL Bank Cleared File', type: 'counterparty', channel: 'NSDL SFTP Portal', defaultRecordCount: 12800 }
     ]
   },
   {
     id: 'ippbbbps',
     categoryId: 'bbps',
-    name: 'IPPB BBPS',
+    name: 'IPPB Bharat Connect',
     requiredFiles: [
       { id: 'ippbbbps_mw', name: 'IPPB Bill Pay Switch', type: 'internal', channel: 'GCP Bucket (gs://prod-isurecon/ippb/)', defaultRecordCount: 10600 },
       { id: 'ippbbbps_cbs', name: 'IPPB Settlement Statement', type: 'counterparty', channel: 'IPPB Host SFTP', defaultRecordCount: 10600 }
@@ -422,5 +422,29 @@ export const SUB_PRODUCTS: SubProduct[] = [
     ]
   }
 ];
+
+export interface CycleOption {
+  value: string;
+  label: string;
+  scope?: string;
+}
+
+export const getCycleOptionsForCategory = (categoryId?: string): CycleOption[] => {
+  if (categoryId === 'bbps') {
+    return [
+      { value: 'Cycle 1 (00:00 - 06:00 Window)', label: 'Cycle 1 (00:00 - 06:00 Window)', scope: '00:00 - 06:00 Window' },
+      { value: 'Cycle 2 (06:00 - 12:00 Window)', label: 'Cycle 2 (06:00 - 12:00 Window)', scope: '06:00 - 12:00 Window' },
+      { value: 'Cycle 3 (12:00 - 18:00 Window)', label: 'Cycle 3 (12:00 - 18:00 Window)', scope: '12:00 - 18:00 Window' },
+      { value: 'Cycle 4 (18:00 - 24:00 Window)', label: 'Cycle 4 (18:00 - 24:00 Window)', scope: '18:00 - 24:00 Window' },
+      { value: 'All Cycles (Daily Consolidated)', label: 'All Cycles (Daily Consolidated)', scope: 'Full 24-Hour Consolidated Batch' }
+    ];
+  }
+  return [
+    { value: 'Cycle 1 (00:00 - 08:00 Window)', label: 'Cycle 1 (00:00 - 08:00 Window)', scope: '00:00 - 08:00 Window' },
+    { value: 'Cycle 2 (08:00 - 16:00 Window)', label: 'Cycle 2 (08:00 - 16:00 Window)', scope: '08:00 - 16:00 Window' },
+    { value: 'Cycle 3 (16:00 - 24:00 Window)', label: 'Cycle 3 (16:00 - 24:00 Window)', scope: '16:00 - 24:00 Window' },
+    { value: 'All Cycles (Daily Consolidated)', label: 'All Cycles (Daily Consolidated)', scope: 'Full 24-Hour Consolidated Batch' }
+  ];
+};
 
 

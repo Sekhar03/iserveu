@@ -10,7 +10,8 @@ import {
 import {
   BUSINESS_VERTICALS,
   CATEGORIES,
-  SUB_PRODUCTS
+  SUB_PRODUCTS,
+  getCycleOptionsForCategory
 } from '../data/categoriesAndSubProducts';
 import {
   Check,
@@ -262,12 +263,7 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
     }, 700);
   };
 
-  const cycleOptions = [
-    { value: 'Cycle 1 (00:00 - 08:00 Window)', label: 'Cycle 1 (00:00 - 08:00 Window)' },
-    { value: 'Cycle 2 (08:00 - 16:00 Window)', label: 'Cycle 2 (08:00 - 16:00 Window)' },
-    { value: 'Cycle 3 (16:00 - 24:00 Window)', label: 'Cycle 3 (16:00 - 24:00 Window)' },
-    { value: 'Daily Consolidated EOD', label: 'Daily Consolidated EOD (All Cycles)' }
-  ];
+  const cycleOptions = getCycleOptionsForCategory(selectedCategory?.id);
 
   // Synchronize vertical selection when initialVertical prop changes from sidebar
   useEffect(() => {

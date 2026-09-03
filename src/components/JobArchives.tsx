@@ -144,6 +144,8 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
         if (filterCycle === 'cycle6' && !job.cycle.includes('Cycle 6')) return false;
         if (filterCycle === 'cycle7' && !job.cycle.includes('Cycle 7')) return false;
         if (filterCycle === 'cycle8' && !job.cycle.includes('Cycle 8')) return false;
+        if (filterCycle === 'cycle9' && !job.cycle.includes('Cycle 9')) return false;
+        if (filterCycle === 'cycle10' && !job.cycle.includes('Cycle 10')) return false;
       }
 
       return true;
@@ -287,6 +289,8 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
               <option value="cycle6">Cycle 6 (15:00 - 18:00)</option>
               <option value="cycle7">Cycle 7 (18:00 - 21:00)</option>
               <option value="cycle8">Cycle 8 (21:00 - 24:00)</option>
+              <option value="cycle9">Cycle 9 (17:00 - 19:00)</option>
+              <option value="cycle10">Cycle 10 (19:00 - 21:00)</option>
             </select>
           </div>
         </div>

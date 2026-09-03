@@ -275,9 +275,9 @@ export const JobArchives: React.FC<JobArchivesProps> = ({ jobs, onStartNewRecon 
             >
               <option value="all">All Cycles</option>
               <option value="daily">Daily Consolidated</option>
-              <option value="cycle1">Cycle 1 (00:00 - 08:00)</option>
-              <option value="cycle2">Cycle 2 (08:00 - 16:00)</option>
-              <option value="cycle3">Cycle 3 (16:00 - 24:00)</option>
+              <option value="cycle1">Cycle 1 (00:00 - 06:00)</option>
+              <option value="cycle2">Cycle 2 (06:00 - 12:00)</option>
+              <option value="cycle3">Cycle 3 (12:00 - 18:00)</option>
               <option value="cycle4">Cycle 4 (18:00 - 24:00)</option>
             </select>
           </div>

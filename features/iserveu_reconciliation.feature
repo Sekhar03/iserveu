@@ -78,7 +78,7 @@ Feature: iServeU Reconciliation Platform
              When bank files are uploaded on Step 4
              Then internal files auto fetch from bucket
               And reconciliation engine automatically initiates for <SubProductName>
-             Then an initiation modal appears stating "Reconciliation process for <SubProductName> (2026-07-28 — Cycle 1 (00:00 - 08:00 Window)) has been initiated. Completed results are available in the Report section." without timer countdown
+             Then an initiation modal appears stating "Reconciliation process for <SubProductName> (2026-07-28 — Cycle 1 (00:00 - 06:00 Window)) has been initiated. Completed results are available in the Report section." without timer countdown
               And presents action buttons "Start New Reconciliation" and "View in Report Section"
              When the user views the results on Step 6
              Then Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics, and "matching file" and "mismatched file" reports are available to download
@@ -401,11 +401,11 @@ Feature: iServeU Reconciliation Platform
 
         Examples:
                   | SearchQuery | CategoryFilter | SubProductFilter | BusinessDate | CycleFilter | SubProductName                                       | CategoryName       | Cycle                          | ExecutionStatus |
-                  | Aadharpay   | aeps           | aadharpay        | 2026-07-28   | cycle1      | Aadharpay                                            | AEPS               | Cycle 1 (00:00 - 08:00 Window) | Completed       |
-                  | MATM        | matm           | matm4way         | 2026-07-27   | cycle3      | MATM 4-Way Txn Recon                                 | MATM               | Cycle 3 (16:00 - 24:00 Window) | Completed       |
+                  | Aadharpay   | aeps           | aadharpay        | 2026-07-28   | cycle1      | Aadharpay                                            | AEPS               | Cycle 1 (00:00 - 06:00 Window) | Completed       |
+                  | MATM        | matm           | matm4way         | 2026-07-27   | cycle3      | MATM 4-Way Txn Recon                                 | MATM               | Cycle 3 (12:00 - 18:00 Window) | Completed       |
                   | IMPS        | imps           | nsdlimps         | 2026-07-28   | all         | NSDL IMPS                                            | IMPS               | All Cycles (Daily Consolidated)| Completed       |
                   | UPI         | upi            | khatabook_upi    | 2026-07-28   | all         | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation)| UPI                | All Cycles (Daily Consolidated)| Completed       |
-                  | Airtel      | dmt            | airteldmt        | 2026-07-25   | cycle2      | Airtel DMT                                           | DMT                | Cycle 2 (08:00 - 16:00 Window) | Completed       |
+                  | Airtel      | dmt            | airteldmt        | 2026-07-25   | cycle2      | Airtel DMT                                           | DMT                | Cycle 2 (06:00 - 12:00 Window) | Completed       |
 
         @archives @download_reports
         Scenario Outline: Re-download historical Matched and Mismatched reconciliation report files directly from GCP Bucket

@@ -88,7 +88,7 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
   initialCategoryId = 'upi',
   initialSubProductId = 'nsdlpaupi',
   initialDate = '2026-07-28',
-  initialCycle = 'Cycle 1 (00:00 - 08:00 Window)'
+  initialCycle = 'Cycle 1 (00:00 - 06:00 Window)'
 }) => {
   // 1. Vertical State (Acquiring, Issuing, Agency Banking, BBPS)
   const [activeVertical, setActiveVertical] = useState<BusinessVerticalId>(initialVertical);

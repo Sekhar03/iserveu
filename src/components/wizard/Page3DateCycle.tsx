@@ -16,7 +16,7 @@ export const Page3DateCycle: React.FC<Page3DateCycleProps> = ({
   onProceed,
   onBackToSubProducts,
   initialDate = '2026-07-28',
-  initialCycle = 'Cycle 1 (00:00 - 08:00 Window)'
+  initialCycle = 'Cycle 1 (00:00 - 06:00 Window)'
 }) => {
   const [date, setDate] = useState(initialDate);
   const [cycle, setCycle] = useState(initialCycle);

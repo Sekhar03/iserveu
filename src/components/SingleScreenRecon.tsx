@@ -138,6 +138,7 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
 
   // 5. Source Files & Upload State
   const requiredFiles = selectedSubProduct?.requiredFiles || [];
+  const hasInternalFiles = requiredFiles.some((f) => f.type === 'internal');
   const [activeFileIndex, setActiveFileIndex] = useState<number>(0);
   const [fileStates, setFileStates] = useState<Record<string, FileState>>({});
   const [isAutoFetchingAll, setIsAutoFetchingAll] = useState<boolean>(false);
@@ -431,24 +432,7 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
 
       {/* 5. SOURCE FILE COLLECTION */}
       <div className="space-y-4">
-        {/* Top Header Card */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-bold text-[#0f172a]">
-              File Collection
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {requiredFiles.length} files required for {selectedSubProduct?.name} ({targetDate} - {targetCycle})
-            </p>
-          </div>
 
-          {isAutoIngestCategory && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold shrink-0">
-              <Server className="w-4 h-4 text-emerald-600" />
-              <span>Auto-Ingest Active</span>
-            </span>
-          )}
-        </div>
 
         {/* POS & PREPAID CARD AUTO-INGEST NOTICE BANNER */}
         {isAutoIngestCategory ? (
@@ -508,29 +492,12 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
             <div className="flex items-center gap-3 overflow-x-auto pb-1">
               {requiredFiles.map((file, idx) => {
                 const isTabActive = activeFileIndex === idx;
-                const isAutoDisabled = idx > 0; // Files 2, 3, 4 are marked disabled for manual demo step
-
-                if (isAutoDisabled) {
-                  return (
-                    <div
-                      key={file.id}
-                      className="px-5 py-3 rounded-full text-xs font-semibold transition-all flex items-center gap-2.5 whitespace-nowrap bg-[#f8fafc] text-[#94a3b8] border border-slate-200/80 cursor-not-allowed select-none"
-                    >
-                      <span className="w-5 h-5 rounded-full bg-[#e2e8f0] text-[#94a3b8] flex items-center justify-center text-[11px] font-bold">
-                        {idx + 1}
-                      </span>
-                      <span className="tracking-tight">
-                        File {idx + 1} of {requiredFiles.length}: {file.name}
-                      </span>
-                    </div>
-                  );
-                }
 
                 return (
                   <button
                     key={file.id}
                     type="button"
-                    onClick={() => setActiveFileIndex(0)}
+                    onClick={() => setActiveFileIndex(idx)}
                     className={`px-5 py-3 rounded-full text-xs font-bold transition-all flex items-center gap-2.5 whitespace-nowrap cursor-pointer ${
                       isTabActive
                         ? 'bg-[#0f1d2e] text-white shadow-md'
@@ -544,10 +511,10 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
                           : 'bg-[#e2e8f0] text-[#94a3b8]'
                       }`}
                     >
-                      1
+                      {idx + 1}
                     </span>
                     <span className="tracking-tight">
-                      File 1 of {requiredFiles.length}: {file.name}
+                      File {idx + 1} of {requiredFiles.length}: {file.name}
                     </span>
                   </button>
                 );
@@ -619,10 +586,12 @@ export const SingleScreenRecon: React.FC<SingleScreenReconProps> = ({
 
                     <div>
                       <h5 className="font-bold text-lg text-[#0f172a]">
-                        Uploading & Ingesting File... (Auto-fetching Switch & Middleware Logs in Backend)
+                        Uploading & Ingesting File... {hasInternalFiles ? '(Auto-fetching Switch & Middleware Logs in Backend)' : ''}
                       </h5>
                       <p className="text-xs text-slate-500 mt-1">
-                        Ingesting file and fetching corresponding Switch / Middleware journals from GCP Bucket
+                        {hasInternalFiles
+                          ? 'Ingesting file and fetching corresponding Switch / Middleware journals from GCP Bucket'
+                          : 'Ingesting file and validating file parameters'}
                       </p>
                     </div>
 

@@ -121,7 +121,7 @@ export default function App() {
               onReconciliationInitiated={handleReconciliationInitiated}
               initialVertical={activeVertical}
               initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
-              initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou_bob' : 'aadharpay'}
+              initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
               initialDate="2026-07-28"
               initialCycle="Cycle 1 (00:00 - 08:00 Window)"
             />

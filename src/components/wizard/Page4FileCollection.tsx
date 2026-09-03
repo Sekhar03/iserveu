@@ -205,39 +205,40 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
 
         const previewRecords = generatePreviewRecords(f);
         
-        // Prepare final states for ALL required files for this subproduct
-        const finalStates: Record<string, FileState> = {};
-        
-        requiredFiles.forEach((reqFile) => {
-          if (reqFile.id === f.id) {
-            finalStates[reqFile.id] = {
-              fileId: reqFile.id,
-              name: reqFile.name,
-              type: reqFile.type,
-              channel: reqFile.channel,
-              status: 'success',
-              recordCount: reqFile.defaultRecordCount,
-              previewData: previewRecords
-            };
-          } else {
-            // Auto-fetch internal files (Middleware, Switch, CBS) in backend without showing fetching animation UI
-            finalStates[reqFile.id] = {
-              fileId: reqFile.id,
-              name: reqFile.name,
-              type: reqFile.type,
-              channel: reqFile.channel,
-              status: 'success',
-              recordCount: reqFile.defaultRecordCount,
-              previewData: generatePreviewRecords(reqFile)
-            };
-          }
+        let updatedStates: Record<string, FileState> = {};
+        setFileStates(prev => {
+          updatedStates = { ...prev };
+          updatedStates[f.id] = {
+            fileId: f.id,
+            name: f.name,
+            type: f.type,
+            channel: f.channel,
+            status: 'success',
+            recordCount: f.defaultRecordCount,
+            previewData: previewRecords
+          };
+
+          // Auto-fetch internal files (Middleware, Switch, etc.) in backend without showing fetching animation UI
+          requiredFiles.forEach((reqFile) => {
+            if (reqFile.id !== f.id && reqFile.type === 'internal') {
+              updatedStates[reqFile.id] = {
+                fileId: reqFile.id,
+                name: reqFile.name,
+                type: reqFile.type,
+                channel: reqFile.channel,
+                status: 'success',
+                recordCount: reqFile.defaultRecordCount,
+                previewData: generatePreviewRecords(reqFile)
+              };
+            }
+          });
+
+          return updatedStates;
         });
 
-        setFileStates(finalStates);
-
-        // Immediately trigger RECON INITIATED popup
+        // Advance to next step or initiate processing when all files are uploaded/ready
         setTimeout(() => {
-          onProceedToProcessing(Object.values(finalStates));
+          advanceToNextStep(updatedStates);
         }, 300);
       } else {
         setFetchProgress(prev => ({ ...prev, [f.id]: progress }));
@@ -260,7 +261,7 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
     <div className="space-y-6">
       {/* Top Banner Info with Prominent Upper Back Button */}
       <div className="bg-white border border-[#e2e8f0] rounded-[20px] p-6 shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#e2e8f0]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <button
             onClick={onBackToDateCycle}
             className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-[#1b2a3e] hover:bg-[#119db0] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg shadow-[#1b2a3e]/15 group cursor-pointer shrink-0"
@@ -272,15 +273,6 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
           <span className="text-xs font-bold text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/30 px-3.5 py-1.5 rounded-full self-start sm:self-auto">
             {subProduct.name} ({targetDate})
           </span>
-        </div>
-
-        <div className="pt-1">
-          <h2 className="text-xl font-bold text-[#1b2a3e]">
-            File Collection & Data Fetching
-          </h2>
-          <p className="text-xs text-[#475569] font-medium mt-0.5">
-            Collecting <span className="font-semibold text-[#1b2a3e]">{requiredFiles.length} source files</span> for {subProduct.name} ({targetDate} - {targetCycle})
-          </p>
         </div>
       </div>
 

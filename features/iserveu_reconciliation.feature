@@ -170,11 +170,9 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                                   | RequiredFilesCount | RequiredFileNames                                     | JoinColumn    | MatchingRule                  | MismatchingRule                   |
-                  | Bharat Connect COU (Bank of Baroda / BB11)       | 2                  | BOB BB11 COU Gateway, BOB Bharat Connect Settlement   | TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | Bharat Connect BOU Reconciliation                | 2                  | BOU Outlet Gateway Log, NPCI Bharat Connect Settlement| TxnRefID      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | NSDL Bharat Connect                              | 2                  | NSDL Bharat Connect Switch Log, NSDL Bank Cleared File| Client_Txn_Id | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | IPPB Bharat Connect                              | 2                  | IPPB Bill Pay Switch, IPPB Settlement Statement       | RRN          | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName      | RequiredFilesCount | RequiredFileNames               | JoinColumn | MatchingRule                  | MismatchingRule                   |
+                  | Bharat Connect BOU  | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Bharat Connect COU  | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: RECHARGE

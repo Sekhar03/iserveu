@@ -33,8 +33,8 @@ export const BUSINESS_VERTICALS: BusinessVertical[] = [
   {
     id: 'bbps',
     name: 'Bharat Connect',
-    description: 'Bharat Connect COU, BOU, NSDL & IPPB Modules',
-    badge: '4 Categories',
+    description: 'Bharat Connect BOU & COU Modules',
+    badge: '2 Sub-Products',
     iconName: 'Receipt'
   }
 ];
@@ -203,39 +203,35 @@ export const SUB_PRODUCTS: SubProduct[] = [
 
   // 4. Bharat Connect
   {
-    id: 'bbpscou_bob',
-    categoryId: 'bbps',
-    name: 'Bharat Connect COU (Bank of Baroda / BB11)',
-    requiredFiles: [
-      { id: 'bbpscou_mw', name: 'BOB BB11 COU Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 14200 },
-      { id: 'bbpscou_bob_cbs', name: 'Bank of Baroda Bharat Connect Settlement', type: 'counterparty', channel: 'BOB Dedicated SFTP', defaultRecordCount: 14200 }
-    ]
-  },
-  {
     id: 'bbpsbou',
     categoryId: 'bbps',
-    name: 'Bharat Connect BOU Reconciliation',
+    name: 'Bharat Connect BOU',
+    description: 'BOU (Biller Operating Unit) Reconciliation',
+    matchingCriteriaRules: [
+      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
+      { system: 'NPCI File', matchingKey: 'TxnRefID', amountField: 'SettlementAmount', statusField: 'ResponseCode' },
+      { system: 'Switch File', matchingKey: 'TxnRefID', amountField: 'Amount', statusField: 'TxnStatus' }
+    ],
     requiredFiles: [
-      { id: 'bbpsbou_mw', name: 'BOU Outlet Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 },
-      { id: 'bbpsbou_npci', name: 'NPCI Bharat Connect Settlement File', type: 'counterparty', channel: 'NPCI BBPS Portal', defaultRecordCount: 11200 }
+      { id: 'bbpsbou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 },
+      { id: 'bbpsbou_npci', name: 'NPCI File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 },
+      { id: 'bbpsbou_switch', name: 'Switch File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 }
     ]
   },
   {
-    id: 'nsdlbbps',
+    id: 'bbpscou',
     categoryId: 'bbps',
-    name: 'NSDL Bharat Connect',
+    name: 'Bharat Connect COU',
+    description: 'COU (Customer Operating Unit) Reconciliation',
+    matchingCriteriaRules: [
+      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
+      { system: 'NPCI File', matchingKey: 'TxnRefID', amountField: 'SettlementAmount', statusField: 'ResponseCode' },
+      { system: 'Switch File', matchingKey: 'TxnRefID', amountField: 'Amount', statusField: 'TxnStatus' }
+    ],
     requiredFiles: [
-      { id: 'nsdlbbps_mw', name: 'NSDL Bharat Connect Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12800 },
-      { id: 'nsdlbbps_cbs', name: 'NSDL Bank Cleared File', type: 'counterparty', channel: 'NSDL SFTP Portal', defaultRecordCount: 12800 }
-    ]
-  },
-  {
-    id: 'ippbbbps',
-    categoryId: 'bbps',
-    name: 'IPPB Bharat Connect',
-    requiredFiles: [
-      { id: 'ippbbbps_mw', name: 'IPPB Bill Pay Switch', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 10600 },
-      { id: 'ippbbbps_cbs', name: 'IPPB Settlement Statement', type: 'counterparty', channel: 'IPPB Host SFTP', defaultRecordCount: 10600 }
+      { id: 'bbpscou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 },
+      { id: 'bbpscou_npci', name: 'NPCI File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 },
+      { id: 'bbpscou_switch', name: 'Switch File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 }
     ]
   },
 

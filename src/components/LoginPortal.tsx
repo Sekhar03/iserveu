@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
-  Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, Globe,
+  Lock, Mail, Loader2, Eye, EyeOff, Globe,
   Fingerprint, FileText, Banknote, RefreshCw, Send,
-  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert
+  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert, TrendingUp
 } from 'lucide-react';
 import { UserSession } from '../types';
 
@@ -32,31 +32,42 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
     }, 800);
   };
 
-  // Node Positions around the Central iServeU Hub
-  const nodes = [
-    { label: 'AEPS', icon: Fingerprint, x: 230, y: 120, color: '#00A8B5' },
-    { label: 'BBPS', icon: FileText, x: 440, y: 80, color: '#00A8B5' },
-    { label: 'CASHOUT PAYOUT', icon: Banknote, x: 490, y: 175, color: '#00A8B5' },
-    { label: 'LENDING', icon: Banknote, x: 505, y: 280, color: '#F26522' },
-    { label: 'LOS', icon: FileText, x: 505, y: 390, color: '#F26522' },
-    { label: 'RECON', icon: RefreshCw, x: 490, y: 500, color: '#00A8B5', isRecon: true },
-    { label: 'FRM', icon: ShieldAlert, x: 440, y: 590, color: '#F26522' },
-    { label: 'COMMISSION', icon: PieChart, x: 400, y: 650, color: '#F26522' },
-    { label: 'UPI', icon: QrCode, x: 240, y: 670, color: '#00A8B5' },
-    { label: 'CARDS', icon: CreditCard, x: 165, y: 600, color: '#00A8B5' },
-    { label: 'POS', icon: Smartphone, x: 120, y: 500, color: '#00A8B5' },
-    { label: 'DMT', icon: Send, x: 110, y: 380, color: '#00A8B5' },
-    { label: 'SOUNDBOX', icon: Volume2, x: 135, y: 250, color: '#00A8B5' },
+  // 13 Product Nodes mapped with Polar Angle Coordinates for Perfect Alignment
+  const cx = 300;
+  const cy = 300;
+  const radius = 205;
+
+  const nodeConfigs = [
+    { label: 'BBPS', icon: FileText, angle: -65, color: '#00A8B5' },
+    { label: 'CASHOUT PAYOUT', icon: Banknote, angle: -35, color: '#00A8B5' },
+    { label: 'LENDING', icon: TrendingUp, angle: -5, color: '#F26522' },
+    { label: 'LOS', icon: FileText, angle: 25, color: '#F26522' },
+    { label: 'RECON', icon: RefreshCw, angle: 55, color: '#00A8B5', isRecon: true },
+    { label: 'FRM', icon: ShieldAlert, angle: 85, color: '#F26522' },
+    { label: 'COMMISSION', icon: PieChart, angle: 115, color: '#F26522' },
+    { label: 'UPI', icon: QrCode, angle: 145, color: '#00A8B5' },
+    { label: 'CARDS', icon: CreditCard, angle: 170, color: '#00A8B5' },
+    { label: 'POS', icon: Smartphone, angle: 195, color: '#00A8B5' },
+    { label: 'DMT', icon: Send, angle: 220, color: '#00A8B5' },
+    { label: 'SOUNDBOX', icon: Volume2, angle: 245, color: '#00A8B5' },
+    { label: 'AEPS', icon: Fingerprint, angle: 275, color: '#00A8B5' },
   ];
 
-  const hubCenterX = 320;
-  const hubCenterY = 380;
+  const computedNodes = nodeConfigs.map((cfg) => {
+    const rad = (cfg.angle * Math.PI) / 180;
+    const x = cx + radius * Math.cos(rad);
+    const y = cy + radius * Math.sin(rad);
+    // Midpoint along connecting line
+    const midX = cx + (radius * 0.55) * Math.cos(rad);
+    const midY = cy + (radius * 0.55) * Math.sin(rad);
+    return { ...cfg, x, y, midX, midY };
+  });
 
   return (
     <div className="min-h-screen w-full bg-[#FCFDFE] relative flex flex-col justify-between overflow-hidden font-sans select-none">
       
       {/* Decorative Wave Lines - Bottom Left (Teal) */}
-      <svg className="absolute bottom-0 left-0 w-[420px] h-[420px] opacity-25 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
+      <svg className="absolute bottom-0 left-0 w-[440px] h-[440px] opacity-25 pointer-events-none z-0" viewBox="0 0 500 500" fill="none">
         <path d="M-100 500 C 100 300, 200 400, 300 100" stroke="#00A8B5" strokeWidth="1.5" />
         <path d="M-100 480 C 120 320, 220 380, 320 120" stroke="#00D2D3" strokeWidth="1" />
         <path d="M-100 460 C 140 340, 240 360, 340 140" stroke="#00A8B5" strokeWidth="1.5" />
@@ -80,85 +91,96 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
       </header>
 
       {/* Main Workspace: Grid with Left Network Constellation & Right Login Card */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 py-4">
+      <div className="flex-1 max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10 py-2">
         
         {/* LEFT SIDE: iServeU Reconciliation Hub Network Visual (7 Cols) */}
-        <div className="lg:col-span-7 relative h-[620px] hidden sm:flex items-center justify-center">
+        <div className="lg:col-span-7 relative h-[580px] w-full hidden sm:flex items-center justify-center">
           
-          {/* SVG Connecting Paths & Orbital Rings */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 640 760">
-            {/* Concentric Orbits */}
-            <circle cx={hubCenterX} cy={hubCenterY} r="70" stroke="#00A8B5" strokeWidth="1" strokeDasharray="3 3" opacity="0.4" />
-            <circle cx={hubCenterX} cy={hubCenterY} r="130" stroke="#00A8B5" strokeWidth="1" strokeDasharray="4 4" opacity="0.3" />
-            <circle cx={hubCenterX} cy={hubCenterY} r="190" stroke="#00A8B5" strokeWidth="1" strokeDasharray="5 5" opacity="0.25" />
-            <circle cx={hubCenterX} cy={hubCenterY} r="250" stroke="#00A8B5" strokeWidth="1" strokeDasharray="6 6" opacity="0.2" />
+          <div className="w-[580px] h-[580px] relative flex items-center justify-center">
+            {/* Unified SVG Container rendering Orbits, Lines, Hub & ForeignObjects for 100% Pixel Alignment */}
+            <svg className="w-full h-full overflow-visible" viewBox="0 0 600 600">
+              <defs>
+                <filter id="glow-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#00A8B5" floodOpacity="0.15" />
+                </filter>
+                <filter id="hub-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000000" floodOpacity="0.08" />
+                </filter>
+              </defs>
 
-            {/* Connecting Dotted Lines to Nodes */}
-            {nodes.map((node, i) => (
-              <g key={i}>
-                <line
-                  x1={hubCenterX}
-                  y1={hubCenterY}
-                  x2={node.x}
-                  y2={node.y}
-                  stroke={node.color}
-                  strokeWidth={node.isRecon ? "2.5" : "1.5"}
-                  strokeDasharray={node.isRecon ? "none" : "4 4"}
-                  opacity={node.isRecon ? "0.85" : "0.5"}
-                />
-                {/* Glowing Data Point Dot along line */}
-                <circle
-                  cx={hubCenterX + (node.x - hubCenterX) * 0.5}
-                  cy={hubCenterY + (node.y - hubCenterY) * 0.5}
-                  r={node.isRecon ? "5" : "3.5"}
-                  fill={node.color}
-                />
+              {/* Concentric Grey/Teal Orbit Bands */}
+              <circle cx={cx} cy={cy} r="205" fill="#f1f5f9" opacity="0.6" stroke="#cbd5e1" strokeWidth="1" />
+              <circle cx={cx} cy={cy} r="150" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1" strokeWidth="1" />
+              <circle cx={cx} cy={cy} r="95" fill="#94a3b8" opacity="0.4" stroke="#64748b" strokeWidth="1" />
+
+              {/* Connecting Radial Lines & Data Dots */}
+              {computedNodes.map((node, i) => (
+                <g key={i}>
+                  <line
+                    x1={cx}
+                    y1={cy}
+                    x2={node.x}
+                    y2={node.y}
+                    stroke={node.color}
+                    strokeWidth={node.isRecon ? "2.5" : "1.5"}
+                    strokeDasharray={node.isRecon ? "none" : "3 3"}
+                    opacity={node.isRecon ? "0.9" : "0.55"}
+                  />
+                  {/* Data dot on orbit line */}
+                  <circle
+                    cx={node.midX}
+                    cy={node.midY}
+                    r={node.isRecon ? "4.5" : "3.5"}
+                    fill={node.color}
+                  />
+                </g>
+              ))}
+
+              {/* CENTRAL HUB NODE */}
+              <g transform={`translate(${cx - 70}, ${cy - 70})`} filter="url(#hub-shadow)">
+                <circle cx="70" cy="70" r="68" fill="#ffffff" stroke="#f1f5f9" strokeWidth="4" />
+                <foreignObject x="15" y="25" width="110" height="90">
+                  <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                    <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-8 w-auto object-contain" />
+                    <span className="text-[10px] font-extrabold text-[#00A8B5] mt-1 tracking-wider uppercase">RECON HUB</span>
+                  </div>
+                </foreignObject>
               </g>
-            ))}
-          </svg>
 
-          {/* CENTRAL HUB NODE */}
-          <div className="absolute z-20 flex flex-col items-center justify-center">
-            <div className="w-36 h-36 rounded-full bg-white shadow-2xl border-4 border-slate-100 flex flex-col items-center justify-center p-4 text-center group cursor-pointer transition-transform duration-300 hover:scale-105">
-              <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-10 w-auto object-contain" />
-              <span className="text-[10px] font-extrabold text-[#00A8B5] mt-1 tracking-wider uppercase">Recon Hub</span>
-            </div>
+              {/* PERIPHERAL PRODUCT NODES */}
+              {computedNodes.map((node, idx) => {
+                const IconComp = node.icon;
+                return (
+                  <g key={idx} transform={`translate(${node.x - 26}, ${node.y - 26})`}>
+                    <foreignObject x="-30" y="-30" width="112" height="110" className="overflow-visible">
+                      <div className="w-full h-full flex flex-col items-center justify-center group cursor-pointer">
+                        <div className={`w-13 h-13 rounded-full bg-white shadow-md border flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
+                          node.isRecon
+                            ? 'border-2 border-[#00A8B5] text-[#00A8B5] shadow-[#00A8B5]/25 ring-4 ring-[#00A8B5]/15'
+                            : node.color === '#F26522'
+                            ? 'border-orange-200 text-[#F26522] hover:border-[#F26522]'
+                            : 'border-slate-200 text-[#00A8B5] hover:border-[#00A8B5]'
+                        }`}>
+                          <IconComp className="w-5 h-5" />
+                        </div>
+                        <span className={`text-[9px] font-extrabold mt-1 uppercase tracking-wider text-center leading-tight max-w-[85px] ${
+                          node.isRecon ? 'text-[#00A8B5] font-black' : 'text-slate-700'
+                        }`}>
+                          {node.label}
+                        </span>
+                      </div>
+                    </foreignObject>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
 
-          {/* PERIPHERAL PRODUCT NODES */}
-          {nodes.map((node, idx) => {
-            const IconComp = node.icon;
-            return (
-              <div
-                key={idx}
-                className="absolute flex flex-col items-center justify-center group cursor-pointer transition-all duration-300 hover:scale-110"
-                style={{
-                  left: `${node.x - 30}px`,
-                  top: `${node.y - 30}px`,
-                }}
-              >
-                <div className={`w-14 h-14 rounded-full bg-white shadow-lg border flex items-center justify-center transition-colors ${
-                  node.isRecon
-                    ? 'border-[#00A8B5] text-[#00A8B5] shadow-[#00A8B5]/20 ring-4 ring-[#00A8B5]/10'
-                    : node.color === '#F26522'
-                    ? 'border-orange-200 text-[#F26522] hover:border-[#F26522]'
-                    : 'border-slate-200 text-[#00A8B5] hover:border-[#00A8B5]'
-                }`}>
-                  <IconComp className="w-6 h-6" />
-                </div>
-                <span className={`text-[10px] font-extrabold mt-1.5 uppercase tracking-wider text-center ${
-                  node.isRecon ? 'text-[#00A8B5] font-black' : 'text-slate-600'
-                }`}>
-                  {node.label}
-                </span>
-              </div>
-            );
-          })}
         </div>
 
         {/* RIGHT SIDE: Login Card Form (5 Cols) */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <div className="w-full max-w-[420px] bg-white rounded-3xl p-8 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-6 relative z-10">
+          <div className="w-full max-w-[410px] bg-white rounded-3xl p-8 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-6 relative z-10">
             
             {/* Header Brand */}
             <div className="space-y-4">

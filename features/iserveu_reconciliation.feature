@@ -205,28 +205,45 @@ Feature: iServeU Reconciliation Platform
   # Category Workflow Execution: UPI
   # ---------------------------------------------------------------------------
         @wizard @category_upi
-        Scenario Outline: Sequential 6-step wizard execution for UPI sub-products
+        Scenario Outline: Sequential 6-step wizard execution for UPI sub-products with NPCI amount calculation and status code mapping
             Given the user selects category "UPI" on Step 1 "Category Selection"
-             When the user selects sub-product "<SubProductName>" on Step 2
+             When the user selects sub-product "<SubProductName>" on Step 2 "Sub-Product Selection"
+              And selects Business Date "2026-07-28" and Settlement Cycle "Cycle 1"
+              And proceeds to Step 4 "Per-File Collection"
              Then the wizard advances to Step 3 "Date & Settlement Cycle Configuration"
-              And the user selects Business Date "2026-07-28" and Settlement Cycle "Cycle 1"
-             When the user proceeds to Step 4 "Per-File Collection"
-             Then the system configures required source file count as <RequiredFilesCount>
+              And the system configures required source file count as "<RequiredFilesCount>"
               And specifies required input source files as "<RequiredFileNames>"
-              And internal files will auto fetch from bucket for <RequiredFileNames>
-              And bank files are collected via upload
-             When bank files are uploaded on Step 4
-             Then internal files auto fetch from bucket
-              And reconciliation engine automatically initiates for <SubProductName>
-             Then the processing engine joins source files on column "<JoinColumn>" using matching rule "<MatchingRule>"
+              And internal files will auto fetch from bucket for "<RequiredFileNames>"
+              And bank files are collected via upload for "<CounterpartyFiles>"
+              And reconciliation engine automatically initiates for "<SubProductName>"
+              And the processing engine joins source files on column "<JoinColumn>" using matching rule "<MatchingRule>"
+              And applies the NPCI settlement calculator formula "NPCI_AMOUNT_RUPEES = NPCI_SETTLEMENT_AMOUNT / 100" to convert paisa denominations into rupees prior to multi-system ledger matching
+              And evaluates counterparty NPCI status codes where:
+                  | NPCI Response Code | Normalized Status | Description / System Meaning                   |
+                  | 0                  | Success            | Approved / Transaction Success                 |
+                  | 1                  | Failed             | Transaction Failed / Declined                  |
+                  | Z7                 | Pending            | Transaction Pending / Incomplete               |
+                  | Z9                 | Failed             | Technical Decline / System Error / Timeout     |
               And identifies exception records using mismatching rule "<MismatchingRule>"
-              And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
+              And applies status-code-based adjustment action matrix:
+                  | NPCI Status | Switch Status | Middleware Status | Wallet Status | Resolution Action                                  |
+                  | Success     | Success       | Success           | Success       | No Action                                          |
+                  | Success     | Success       | Inprogress        | N/A           | Raise credit adjustment                            |
+                  | Success     | Success       | Inprogress        | Success       | Update the middleware status to success            |
+                  | Success     | Success       | Success           | N/A           | Process wallet operation to success                |
+                  | Pending     | Pending       | Inprogress        | N/A           | Raise RET in URCS portal                           |
+                  | Success     | Failed        | Failed            | N/A           | Raise RET in URCS portal                           |
+                  | Pending     | Success       | Success           | Success       | Raise TCC in URCS portal                           |
+                  | Success     | Pending       | Success           | Success       | No Action                                          |
+              And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics, and "matching file", "mismatched file", and "settlement file" reports are available to download
 
         Examples:
-                  | SubProductName                                      | RequiredFilesCount | RequiredFileNames                                   | JoinColumn                                                    | MatchingRule                                                  | MismatchingRule                                                            |
-                  | NSDL MA UPI (UPI Transaction Reconciliation)        | 4                  | NPCI File, Middleware File, Switch File, Wallet File| Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Status=SUCCESS & Settlement Amount/100 Equal across 4 Systems | Status!=SUCCESS / Amount Variance -> Manual Review & Middleware Adjustment |
-                  | Oxymoney UPI (UPI Transaction Reconciliation)       | 4                  | NPCI File, Middleware File, Switch File, Wallet File| Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Status=SUCCESS & Settlement Amount/100 Equal across 4 Systems | Status!=SUCCESS / Amount Variance -> Manual Review & Middleware Adjustment |
-                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation)| 4                  | NPCI File, Middleware File, Switch File, Wallet File| Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Status=SUCCESS & Settlement Amount/100 Equal across 4 Systems | Status!=SUCCESS / Amount Variance -> Manual Review & Middleware Adjustment |
+                  | SubProductName                                        | RequiredFilesCount | RequiredFileNames                                                                                      | CounterpartyFiles                                   | JoinColumn                                                    | MatchingRule                                                                                             | MismatchingRule                                                                                          |
+                  | NSDL PA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI Settlement File (with Aggregator Data), Middleware File, Switch File, Wallet File                 | NPCI Settlement File (with Aggregator Data)         | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
+                  | NSDL MA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
+                  | Oxymoney UPI (UPI Transaction Reconciliation)         | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
+                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation) | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
+                  | NSDL CASHPOINT                                        | 2                  | Cashpoint Terminal Request Log, Banking Settlement Report                                              | Banking Settlement Report                           | RRN, Terminal_Id                                              | Status=SUCCESS & Amount Equal across 2 Files                                                             | Status!=SUCCESS / Amount Variance -> Manual Investigation                                                |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: DMT

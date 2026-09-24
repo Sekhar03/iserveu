@@ -55,11 +55,11 @@ Feature: iServeU Reconciliation Platform
              Then the product categories under "<VerticalName>" are displayed as "<ProductList>"
 
         Examples:
-                  | VerticalName   | ProductList                                                                    |
-                  | Agency Banking | AEPS, MATM, DMT, Payout, RECHARGE                                              |
-                  | Acquiring      | UPI, POS                                                                       |
-                  | Issuance       | IMPS, PREPAID CARD                                                             |
-                  | Bharat Connect | BHARAT CONNECT                                                                 |
+                  | VerticalName   | ProductList                       |
+                  | Agency Banking | AEPS, MATM, DMT, Payout, RECHARGE |
+                  | Acquiring      | UPI, POS                          |
+                  | Issuance       | IMPS, PREPAID CARD                |
+                  | Bharat Connect | BHARAT CONNECT                    |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: AEPS
@@ -84,13 +84,13 @@ Feature: iServeU Reconciliation Platform
              Then Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics, and "matching file" and "mismatched file" reports are available to download
 
         Examples:
-                  | SubProductName       | RequiredFilesCount | RequiredFileNames                          | JoinColumn        | MatchingRule                      | MismatchingRule                       |
-                  | Aadharpay            | 3                  | Middleware, Switch, NPCI Settlement        | Client_Txn_Id     | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | Fino AEPS            | 3                  | Gateway, Internal Ledger, Fino Bank CBS    | Client_Txn_Id     | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | NSDL AEPS            | 4                  | Middleware, Switch, NPCI, NSDL Bank CBS    | RRN               | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | IPPB AEPS            | 3                  | Middleware, Switch, Core Banking           | RRN, relationalId | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | IPPB AEPS CD         | 2                  | Cash Deposit Gateway, CD Bank Statement    | Client_Txn_Id     | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | IPPB Wallet          | 2                  | Wallet Switch, Wallet Clearing             | relationalId      | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | SubProductName | RequiredFilesCount | RequiredFileNames                       | JoinColumn        | MatchingRule                  | MismatchingRule                   |
+                  | Aadharpay      | 3                  | Middleware, Switch, NPCI Settlement     | Client_Txn_Id     | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Fino AEPS      | 3                  | Gateway, Internal Ledger, Fino Bank CBS | Client_Txn_Id     | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | NSDL AEPS      | 4                  | Middleware, Switch, NPCI, NSDL Bank CBS | RRN               | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | IPPB AEPS      | 3                  | Middleware, Switch, Core Banking        | RRN, relationalId | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | IPPB AEPS CD   | 2                  | Cash Deposit Gateway, CD Bank Statement | Client_Txn_Id     | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | IPPB Wallet    | 2                  | Wallet Switch, Wallet Clearing          | relationalId      | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: MATM
@@ -114,13 +114,13 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName        | RequiredFilesCount | RequiredFileNames                                 | JoinColumn        | MatchingRule                      | MismatchingRule                       |
+                  | SubProductName        | RequiredFilesCount | RequiredFileNames                                  | JoinColumn        | MatchingRule                      | MismatchingRule                       |
                   | MATM 4-Way Txn Recon  | 4                  | Middleware, Terminal Batch, Switch, Acquiring Bank | RRN               | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | MATM 3-Way Txn Recon  | 3                  | Middleware Journal, Switch Log, Bank Settlement   | RRN               | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | MATM Commission Recon | 2                  | Commission Engine Log, Agent Commission Ledger    | relationalId      | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
-                  | Equitas MATM          | 2                  | Equitas Gateway Log, Small Finance Bank CBS       | RRN, apiTid       | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | NSDL MATM             | 2                  | MicroATM Switch, Payments Bank Settlement         | RRN, Id           | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | IPPB MATM             | 2                  | MicroATM Gateway Log, Host Clearing Report        | RRN, relationalId | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | MATM 3-Way Txn Recon  | 3                  | Middleware Journal, Switch Log, Bank Settlement    | RRN               | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | MATM Commission Recon | 2                  | Commission Engine Log, Agent Commission Ledger     | relationalId      | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
+                  | Equitas MATM          | 2                  | Equitas Gateway Log, Small Finance Bank CBS        | RRN, apiTid       | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | NSDL MATM             | 2                  | MicroATM Switch, Payments Bank Settlement          | RRN, Id           | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | IPPB MATM             | 2                  | MicroATM Gateway Log, Host Clearing Report         | RRN, relationalId | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: IMPS
@@ -144,9 +144,9 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName | RequiredFilesCount | RequiredFileNames                                    | JoinColumn | MatchingRule                                 | MismatchingRule                                          |
-                  | NSDL IMPS      | 3                  | IMPS Middleware Log, IMPS Switch Journal, NSDL CBS   | RRN        | Status=SUCCESS & Amount Equal across 3 Files | Status!=SUCCESS / RET Code -> Callback API Refund Wallet |
-                  | IPPB IMPS      | 2                  | IPPB IMPS Switch Log, IPPB Settlement Report         | RRN        | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / RET Code -> Callback API Refund Wallet |
+                  | SubProductName | RequiredFilesCount | RequiredFileNames                                  | JoinColumn | MatchingRule                                 | MismatchingRule                                          |
+                  | NSDL IMPS      | 3                  | IMPS Middleware Log, IMPS Switch Journal, NSDL CBS | RRN        | Status=SUCCESS & Amount Equal across 3 Files | Status!=SUCCESS / RET Code -> Callback API Refund Wallet |
+                  | IPPB IMPS      | 2                  | IPPB IMPS Switch Log, IPPB Settlement Report       | RRN        | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / RET Code -> Callback API Refund Wallet |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: Bharat Connect
@@ -170,9 +170,9 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName      | RequiredFilesCount | RequiredFileNames               | JoinColumn | MatchingRule                  | MismatchingRule                   |
-                  | Bharat Connect BOU  | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | Bharat Connect COU  | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName     | RequiredFilesCount | RequiredFileNames                | JoinColumn | MatchingRule                  | MismatchingRule                   |
+                  | Bharat Connect BOU | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Bharat Connect COU | 3                  | CBS File, NPCI File, Switch File | TxnRefID   | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: RECHARGE
@@ -196,10 +196,10 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                            | RequiredFilesCount | RequiredFileNames                                          | JoinColumn      | MatchingRule                      | MismatchingRule                       |
-                  | Recharge Krack                            | 2                  | Recharge Krack Switch Log, Operator Recon Sheet            | Operator_Txn_Id | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | Recharge Euro                             | 2                  | Euronet Recharge Gateway, Euronet Aggregator Clearing      | Operator_Txn_Id | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
-                  | Recharge Commission Recon (Krac & Euronet)| 2                  | Telecom Commission Log, Aggregator Margin Statement        | Txn_Id          | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
+                  | SubProductName                             | RequiredFilesCount | RequiredFileNames                                     | JoinColumn      | MatchingRule                      | MismatchingRule                       |
+                  | Recharge Krack                             | 2                  | Recharge Krack Switch Log, Operator Recon Sheet       | Operator_Txn_Id | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | Recharge Euro                              | 2                  | Euronet Recharge Gateway, Euronet Aggregator Clearing | Operator_Txn_Id | Status=SUCCESS & Amount Equal     | Status!=SUCCESS / Amount Variance     |
+                  | Recharge Commission Recon (Krac & Euronet) | 2                  | Telecom Commission Log, Aggregator Margin Statement   | Txn_Id          | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: UPI
@@ -219,31 +219,31 @@ Feature: iServeU Reconciliation Platform
               And the processing engine joins source files on column "<JoinColumn>" using matching rule "<MatchingRule>"
               And applies the NPCI settlement calculator formula "NPCI_AMOUNT_RUPEES = NPCI_SETTLEMENT_AMOUNT / 100" to convert paisa denominations into rupees prior to multi-system ledger matching
               And evaluates counterparty NPCI status codes where:
-                  | NPCI Response Code | Normalized Status | Description / System Meaning                   |
-                  | 0                  | Success            | Approved / Transaction Success                 |
-                  | 1                  | Failed             | Transaction Failed / Declined                  |
-                  | Z7                 | Pending            | Transaction Pending / Incomplete               |
-                  | Z9                 | Failed             | Technical Decline / System Error / Timeout     |
+                  | NPCI Response Code | Normalized Status | Description / System Meaning               |
+                  | 0                  | Success           | Approved / Transaction Success             |
+                  | 1                  | Failed            | Transaction Failed / Declined              |
+                  | Z7                 | Pending           | Transaction Pending / Incomplete           |
+                  | Z9                 | Failed            | Technical Decline / System Error / Timeout |
               And identifies exception records using mismatching rule "<MismatchingRule>"
               And applies status-code-based adjustment action matrix:
-                  | NPCI Status | Switch Status | Middleware Status | Wallet Status | Resolution Action                                  |
-                  | Success     | Success       | Success           | Success       | No Action                                          |
-                  | Success     | Success       | Inprogress        | N/A           | Raise credit adjustment                            |
-                  | Success     | Success       | Inprogress        | Success       | Update the middleware status to success            |
-                  | Success     | Success       | Success           | N/A           | Process wallet operation to success                |
-                  | Pending     | Pending       | Inprogress        | N/A           | Raise RET in URCS portal                           |
-                  | Success     | Failed        | Failed            | N/A           | Raise RET in URCS portal                           |
-                  | Pending     | Success       | Success           | Success       | Raise TCC in URCS portal                           |
-                  | Success     | Pending       | Success           | Success       | No Action                                          |
+                  | NPCI Status | Switch Status | Middleware Status | Wallet Status | Resolution Action                       |
+                  | Success     | Success       | Success           | Success       | No Action                               |
+                  | Success     | Success       | Inprogress        | N/A           | Raise credit adjustment                 |
+                  | Success     | Success       | Inprogress        | Success       | Update the middleware status to success |
+                  | Success     | Success       | Success           | N/A           | Process wallet operation to success     |
+                  | Pending     | Pending       | Inprogress        | N/A           | Raise RET in URCS portal                |
+                  | Success     | Failed        | Failed            | N/A           | Raise RET in URCS portal                |
+                  | Pending     | Success       | Success           | Success       | Raise TCC in URCS portal                |
+                  | Success     | Pending       | Success           | Success       | No Action                               |
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics, and "matching file", "mismatched file", and "settlement file" reports are available to download
 
         Examples:
-                  | SubProductName                                        | RequiredFilesCount | RequiredFileNames                                                                                      | CounterpartyFiles                                   | JoinColumn                                                    | MatchingRule                                                                                             | MismatchingRule                                                                                          |
-                  | NSDL PA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI Settlement File (with Aggregator Data), Middleware File, Switch File, Wallet File                 | NPCI Settlement File (with Aggregator Data)         | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
-                  | NSDL MA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
-                  | Oxymoney UPI (UPI Transaction Reconciliation)         | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
-                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation) | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                                   | NPCI File                                           | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix             |
-                  | NSDL CASHPOINT                                        | 2                  | Cashpoint Terminal Request Log, Banking Settlement Report                                              | Banking Settlement Report                           | RRN, Terminal_Id                                              | Status=SUCCESS & Amount Equal across 2 Files                                                             | Status!=SUCCESS / Amount Variance -> Manual Investigation                                                |
+                  | SubProductName                                        | RequiredFilesCount | RequiredFileNames                                                                      | CounterpartyFiles                           | JoinColumn                                                    | MatchingRule                                                                                              | MismatchingRule                                                                             |
+                  | NSDL PA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI Settlement File (with Aggregator Data), Middleware File, Switch File, Wallet File | NPCI Settlement File (with Aggregator Data) | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix |
+                  | NSDL MA UPI (UPI Transaction Reconciliation)          | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                   | NPCI File                                   | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix |
+                  | Oxymoney UPI (UPI Transaction Reconciliation)         | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                   | NPCI File                                   | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix |
+                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation) | 4                  | NPCI File, Middleware File, Switch File, Wallet File                                   | NPCI File                                   | Switch txn_id / client ref_id / id / txn_id / RRN / payer_vpa | Response Code=0, Status=SUCCESS & NPCI Settlement Amount/100 = Switch Amount = Middleware Amount = Wallet | Status!=SUCCESS / Amount Variance / Code!=0 -> URCS RET/TCC or Middleware Adjustment Matrix |
+                  | NSDL CASHPOINT                                        | 2                  | Cashpoint Terminal Request Log, Banking Settlement Report                              | Banking Settlement Report                   | RRN, Terminal_Id                                              | Status=SUCCESS & Amount Equal across 2 Files                                                              | Status!=SUCCESS / Amount Variance -> Manual Investigation                                   |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: DMT
@@ -267,10 +267,10 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName | RequiredFilesCount | RequiredFileNames                             | JoinColumn                        | MatchingRule                                 | MismatchingRule                   |
-                  | Airtel DMT     | 2                  | Airtel DMT Switch Log, Airtel Payment Bank    | RRN (Step 1) / gatewayId (Step 2) | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
-                  | Fino DMT       | 2                  | Fino DMT Gateway Log, Fino Bank Statement     | gatewayId (across all 2 Files)    | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
-                  | NSDL DMT       | 2                  | NSDL Money Transfer Switch, NSDL Host Clearing| rrn / gatewayId                   | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
+                  | SubProductName | RequiredFilesCount | RequiredFileNames                              | JoinColumn                        | MatchingRule                                 | MismatchingRule                   |
+                  | Airtel DMT     | 2                  | Airtel DMT Switch Log, Airtel Payment Bank     | RRN (Step 1) / gatewayId (Step 2) | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
+                  | Fino DMT       | 2                  | Fino DMT Gateway Log, Fino Bank Statement      | gatewayId (across all 2 Files)    | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
+                  | NSDL DMT       | 2                  | NSDL Money Transfer Switch, NSDL Host Clearing | rrn / gatewayId                   | Status=SUCCESS & Amount Equal across 2 Files | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: POS / Cashpoint
@@ -294,9 +294,9 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName     | RequiredFilesCount | RequiredFileNames                                 | JoinColumn       | MatchingRule                  | MismatchingRule                   |
-                  | POS                | 3                  | mPOS Terminal Log, Card Switch, Acquirer Card     | Terminal_Id, RRN | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | Cashpoint          | 2                  | Cashpoint Terminal Request, Banking Settlement    | RRN              | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName | RequiredFilesCount | RequiredFileNames                              | JoinColumn       | MatchingRule                  | MismatchingRule                   |
+                  | POS            | 3                  | mPOS Terminal Log, Card Switch, Acquirer Card  | Terminal_Id, RRN | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Cashpoint      | 2                  | Cashpoint Terminal Request, Banking Settlement | RRN              | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: RBL CASHOUT/PAYOUT
@@ -320,12 +320,12 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                  | RequiredFilesCount | RequiredFileNames                                      | JoinColumn    | MatchingRule                  | MismatchingRule                   |
-                  | Wallet2Cashout                  | 2                  | Payout Gateway Log, RBL Nodal Bank Statement           | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | W2Cashout IMPS                  | 2                  | W2Cashout IMPS Switch Log, IMPS Nodal Clearing Report  | RRN           | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | NSDL Cashout (4-Way Recon)      | 4                  | NSDL Cashout Gateway, Switch, NPCI, NSDL Bank CBS      | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | Axis Cashout & Payout Recon     | 2                  | Axis Payout Engine Log, Axis Corporate Host Statement  | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
-                  | IPPB Cashout                    | 2                  | IPPB Cashout Switch Log, IPPB Clearing Report          | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName              | RequiredFilesCount | RequiredFileNames                                     | JoinColumn    | MatchingRule                  | MismatchingRule                   |
+                  | Wallet2Cashout              | 2                  | Payout Gateway Log, RBL Nodal Bank Statement          | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | W2Cashout IMPS              | 2                  | W2Cashout IMPS Switch Log, IMPS Nodal Clearing Report | RRN           | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | NSDL Cashout (4-Way Recon)  | 4                  | NSDL Cashout Gateway, Switch, NPCI, NSDL Bank CBS     | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | Axis Cashout & Payout Recon | 2                  | Axis Payout Engine Log, Axis Corporate Host Statement | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | IPPB Cashout                | 2                  | IPPB Cashout Switch Log, IPPB Clearing Report         | Client_Ref_No | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: PREPAID CARD
@@ -374,8 +374,8 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                 | RequiredFilesCount | RequiredFileNames                              | JoinColumn        | MatchingRule                  | MismatchingRule                   |
-                  | Wallet Recon (System Wallet)   | 2                  | Internal Main Wallet Log, System Core DB Ledger| Wallet_Account_Id | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
+                  | SubProductName               | RequiredFilesCount | RequiredFileNames                               | JoinColumn        | MatchingRule                  | MismatchingRule                   |
+                  | Wallet Recon (System Wallet) | 2                  | Internal Main Wallet Log, System Core DB Ledger | Wallet_Account_Id | Status=SUCCESS & Amount Equal | Status!=SUCCESS / Amount Variance |
 
   # ---------------------------------------------------------------------------
   # Category Workflow Execution: COMMISSION RECON
@@ -399,10 +399,10 @@ Feature: iServeU Reconciliation Platform
               And Step 6 renders heading "Reconciliation Results & Reports" with KPI summary metrics and downloadable reports
 
         Examples:
-                  | SubProductName                              | RequiredFilesCount | RequiredFileNames                                         | JoinColumn    | MatchingRule                      | MismatchingRule                       |
-                  | COMMISSION RECON                             | 2                  | Commission Distribution Log, TDS & GST Commission Ledger   | Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
-                  | FINO AePS Cash Withdrawal Commission Recon  | 2                  | Fino CW Commission Log, Fino Commission Audit Sheet       | Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
-                  | FINO AePS Mini Statement Commission Recon   | 2                  | Fino Mini Statement Commission Log, Fino Commission Ledger| Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
+                  | SubProductName                             | RequiredFilesCount | RequiredFileNames                                          | JoinColumn    | MatchingRule                      | MismatchingRule                       |
+                  | COMMISSION RECON                           | 2                  | Commission Distribution Log, TDS & GST Commission Ledger   | Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
+                  | FINO AePS Cash Withdrawal Commission Recon | 2                  | Fino CW Commission Log, Fino Commission Audit Sheet        | Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
+                  | FINO AePS Mini Statement Commission Recon  | 2                  | Fino Mini Statement Commission Log, Fino Commission Ledger | Master_Txn_Id | Status=SUCCESS & Commission Equal | Status!=SUCCESS / Commission Variance |
 
   # ===========================================================================
   # SECTION 7: RECONCILIATION REPORT & HISTORICAL LOGS SPECIFICATION
@@ -417,12 +417,12 @@ Feature: iServeU Reconciliation Platform
               And the audit log table filters historical reconciliation report records displaying Sub-Product "<SubProductName>", Category "<CategoryName>", Business Date "<BusinessDate>", Cycle "<Cycle>", and Execution Status "<ExecutionStatus>"
 
         Examples:
-                  | SearchQuery | CategoryFilter | SubProductFilter | BusinessDate | CycleFilter | SubProductName                                       | CategoryName       | Cycle                          | ExecutionStatus |
-                  | Aadharpay   | aeps           | aadharpay        | 2026-07-28   | cycle1      | Aadharpay                                            | AEPS               | Cycle 1 (00:00 - 03:00 Window) | Completed       |
-                  | MATM        | matm           | matm4way         | 2026-07-27   | cycle6      | MATM 4-Way Txn Recon                                 | MATM               | Cycle 6 (15:00 - 18:00 Window) | Completed       |
-                  | IMPS        | imps           | nsdlimps         | 2026-07-28   | all         | NSDL IMPS                                            | IMPS               | All Cycles (Daily Consolidated)| Completed       |
-                  | UPI         | upi            | khatabook_upi    | 2026-07-28   | all         | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation)| UPI                | All Cycles (Daily Consolidated)| Completed       |
-                  | Airtel      | dmt            | airteldmt        | 2026-07-25   | cycle3      | Airtel DMT                                           | DMT                | Cycle 3 (06:00 - 09:00 Window) | Completed       |
+                  | SearchQuery | CategoryFilter | SubProductFilter | BusinessDate | CycleFilter | SubProductName                                        | CategoryName | Cycle                           | ExecutionStatus |
+                  | Aadharpay   | aeps           | aadharpay        | 2026-07-28   | cycle1      | Aadharpay                                             | AEPS         | Cycle 1 (00:00 - 03:00 Window)  | Completed       |
+                  | MATM        | matm           | matm4way         | 2026-07-27   | cycle6      | MATM 4-Way Txn Recon                                  | MATM         | Cycle 6 (15:00 - 18:00 Window)  | Completed       |
+                  | IMPS        | imps           | nsdlimps         | 2026-07-28   | all         | NSDL IMPS                                             | IMPS         | All Cycles (Daily Consolidated) | Completed       |
+                  | UPI         | upi            | khatabook_upi    | 2026-07-28   | all         | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation) | UPI          | All Cycles (Daily Consolidated) | Completed       |
+                  | Airtel      | dmt            | airteldmt        | 2026-07-25   | cycle3      | Airtel DMT                                            | DMT          | Cycle 3 (06:00 - 09:00 Window)  | Completed       |
 
         @archives @download_reports
         Scenario Outline: Re-download historical Matched and Mismatched reconciliation report files directly from GCP Bucket
@@ -436,8 +436,8 @@ Feature: iServeU Reconciliation Platform
               And logs the report re-download audit event in the system activity trail
 
         Examples:
-                  | SubProductName                                       | MatchedFile                       | MismatchedFile                       |
-                  | Aadharpay                                            | aadharpay_match_20260728.xlsx     | aadharpay_mismatch_20260728.xlsx     |
-                  | NSDL IMPS                                            | nsdlimps_match_20260728.xlsx      | nsdlimps_mismatch_20260728.xlsx      |
-                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation)| khatabook_upi_match_20260728.xlsx | khatabook_upi_mismatch_20260728.xlsx |
-                  | Airtel DMT                                           | airteldmt_match_20260728.xlsx     | airteldmt_mismatch_20260728.xlsx     |
+                  | SubProductName                                        | MatchedFile                       | MismatchedFile                       |
+                  | Aadharpay                                             | aadharpay_match_20260728.xlsx     | aadharpay_mismatch_20260728.xlsx     |
+                  | NSDL IMPS                                             | nsdlimps_match_20260728.xlsx      | nsdlimps_mismatch_20260728.xlsx      |
+                  | KHATA BOOK PA/PG UPI (UPI Transaction Reconciliation) | khatabook_upi_match_20260728.xlsx | khatabook_upi_mismatch_20260728.xlsx |
+                  | Airtel DMT                                            | airteldmt_match_20260728.xlsx     | airteldmt_mismatch_20260728.xlsx     |

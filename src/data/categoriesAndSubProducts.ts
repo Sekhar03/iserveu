@@ -66,9 +66,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'Aadharpay',
     requiredFiles: [
-      { id: 'mw_log', name: 'Middleware Txn Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18450 },
-      { id: 'switch_log', name: 'Aeps Switch / CBS Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18450 },
-      { id: 'npci_settlement', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / SFTP', defaultRecordCount: 18450 }
+      { id: 'npci_settlement', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 18450 },
+      { id: 'mw_log', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18450 },
+      { id: 'wallet_log', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18450 },
+      { id: 'switch_log', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18450 }
     ]
   },
   {
@@ -76,9 +77,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'Fino AEPS',
     requiredFiles: [
-      { id: 'fino_gw', name: 'Fino Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12300 },
-      { id: 'fino_wallet', name: 'Fino Internal Ledger', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12300 },
-      { id: 'fino_cbs', name: 'Fino Bank CBS File', type: 'counterparty', channel: 'Fino SFTP Portal', defaultRecordCount: 12300 }
+      { id: 'fino_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 12300 },
+      { id: 'fino_gw', name: 'Fino Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12300 },
+      { id: 'fino_wallet', name: 'Fino Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12300 },
+      { id: 'fino_switch', name: 'Fino Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 12300 }
     ]
   },
   {
@@ -86,10 +88,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'NSDL AEPS',
     requiredFiles: [
+      { id: 'nsdl_npci', name: 'NPCI Daily Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 15800 },
       { id: 'nsdl_mw', name: 'NSDL Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15800 },
-      { id: 'nsdl_switch', name: 'NSDL Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15800 },
-      { id: 'nsdl_npci', name: 'NPCI Daily Settlement', type: 'counterparty', channel: 'NPCI Clearing Portal', defaultRecordCount: 15800 },
-      { id: 'nsdl_cbs', name: 'NSDL Bank CBS Log', type: 'counterparty', channel: 'NSDL SFTP Node', defaultRecordCount: 15800 }
+      { id: 'nsdl_wallet', name: 'NSDL Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15800 },
+      { id: 'nsdl_switch', name: 'NSDL Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15800 }
     ]
   },
   {
@@ -97,9 +99,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'IPPB AEPS',
     requiredFiles: [
+      { id: 'ippb_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 9400 },
       { id: 'ippb_mw', name: 'IPPB Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9400 },
-      { id: 'ippb_switch', name: 'IPPB Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9400 },
-      { id: 'ippb_cbs', name: 'IPPB Core Banking File', type: 'counterparty', channel: 'IPPB SFTP Hub', defaultRecordCount: 9400 }
+      { id: 'ippb_wallet', name: 'IPPB Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9400 },
+      { id: 'ippb_switch', name: 'IPPB Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9400 }
     ]
   },
   {
@@ -107,8 +110,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'IPPB AEPS CD',
     requiredFiles: [
-      { id: 'ippbcd_mw', name: 'IPPB Cash Deposit Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8200 },
-      { id: 'ippbcd_cbs', name: 'IPPB CD Bank Statement', type: 'counterparty', channel: 'IPPB SFTP Portal', defaultRecordCount: 8200 }
+      { id: 'ippbcd_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 8200 },
+      { id: 'ippbcd_mw', name: 'IPPB Cash Deposit Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8200 },
+      { id: 'ippbcd_wallet', name: 'IPPB CD Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8200 },
+      { id: 'ippbcd_switch', name: 'IPPB CD Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8200 }
     ]
   },
   {
@@ -116,8 +121,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'aeps',
     name: 'IPPB Wallet',
     requiredFiles: [
-      { id: 'ippbwal_mw', name: 'IPPB Wallet Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 10500 },
-      { id: 'ippbwal_ledger', name: 'IPPB Wallet Clearing Report', type: 'counterparty', channel: 'IPPB Host SFTP', defaultRecordCount: 10500 }
+      { id: 'ippbwal_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 10500 },
+      { id: 'ippbwal_mw', name: 'IPPB Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 10500 },
+      { id: 'ippbwal_ledger', name: 'IPPB Wallet Clearing Report', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 10500 },
+      { id: 'ippbwal_switch', name: 'IPPB Wallet Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 10500 }
     ]
   },
 
@@ -127,10 +134,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'MATM 4-Way Txn Recon',
     requiredFiles: [
-      { id: 'matm4_mw', name: 'mPOS Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 },
-      { id: 'matm4_terminal', name: 'Terminal Batch File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 },
-      { id: 'matm4_switch', name: 'Switch Transaction File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 },
-      { id: 'matm4_bank', name: 'Acquiring Bank Settlement', type: 'counterparty', channel: 'Bank SFTP Node', defaultRecordCount: 8900 }
+      { id: 'matm4_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 8900 },
+      { id: 'matm4_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 },
+      { id: 'matm4_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 },
+      { id: 'matm4_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8900 }
     ]
   },
   {
@@ -138,9 +145,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'MATM 3-Way Txn Recon',
     requiredFiles: [
-      { id: 'matm3_mw', name: 'MATM Middleware Journal', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 7400 },
-      { id: 'matm3_switch', name: 'MATM Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 7400 },
-      { id: 'matm3_bank', name: 'Bank Settlement File', type: 'counterparty', channel: 'Acquirer Bank SFTP', defaultRecordCount: 7400 }
+      { id: 'matm3_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 7400 },
+      { id: 'matm3_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 7400 },
+      { id: 'matm3_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 7400 },
+      { id: 'matm3_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 7400 }
     ]
   },
   {
@@ -148,8 +156,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'MATM Commission Recon',
     requiredFiles: [
-      { id: 'matmcomm_mw', name: 'MATM Commission Engine Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 },
-      { id: 'matmcomm_ledger', name: 'Agent Commission Ledger', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 }
+      { id: 'matmcomm_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 11200 },
+      { id: 'matmcomm_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 },
+      { id: 'matmcomm_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 },
+      { id: 'matmcomm_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 }
     ]
   },
   {
@@ -157,8 +167,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'Equitas MATM',
     requiredFiles: [
-      { id: 'eqmatm_mw', name: 'Equitas Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 6800 },
-      { id: 'eqmatm_cbs', name: 'Equitas Small Finance Bank CBS', type: 'counterparty', channel: 'Equitas SFTP Portal', defaultRecordCount: 6800 }
+      { id: 'eqmatm_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 6800 },
+      { id: 'eqmatm_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 6800 },
+      { id: 'eqmatm_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 6800 },
+      { id: 'eqmatm_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 6800 }
     ]
   },
   {
@@ -166,8 +178,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'NSDL MATM',
     requiredFiles: [
-      { id: 'nsdlmatm_mw', name: 'NSDL MicroATM Switch', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9100 },
-      { id: 'nsdlmatm_cbs', name: 'NSDL Payments Bank Settlement', type: 'counterparty', channel: 'NSDL SFTP Node', defaultRecordCount: 9100 }
+      { id: 'nsdlmatm_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 9100 },
+      { id: 'nsdlmatm_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9100 },
+      { id: 'nsdlmatm_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9100 },
+      { id: 'nsdlmatm_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9100 }
     ]
   },
   {
@@ -175,8 +189,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'matm',
     name: 'IPPB MATM',
     requiredFiles: [
-      { id: 'ippbmatm_mw', name: 'IPPB MicroATM Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8300 },
-      { id: 'ippbmatm_cbs', name: 'IPPB Host Clearing Report', type: 'counterparty', channel: 'IPPB SFTP Node', defaultRecordCount: 8300 }
+      { id: 'ippbmatm_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 8300 },
+      { id: 'ippbmatm_mw', name: 'Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8300 },
+      { id: 'ippbmatm_wallet', name: 'Wallet Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8300 },
+      { id: 'ippbmatm_switch', name: 'Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 8300 }
     ]
   },
 
@@ -186,9 +202,9 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'imps',
     name: 'NSDL IMPS',
     requiredFiles: [
+      { id: 'nsdlimps_cbs', name: 'NSDL CBS Settlement File', type: 'counterparty', channel: 'Manual File Upload / NSDL SFTP', defaultRecordCount: 16500 },
       { id: 'nsdlimps_mw', name: 'IMPS Middleware Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 16500 },
-      { id: 'nsdlimps_switch', name: 'IMPS Switch Journal', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 16500 },
-      { id: 'nsdlimps_cbs', name: 'NSDL CBS Settlement File', type: 'counterparty', channel: 'NSDL SFTP', defaultRecordCount: 16500 }
+      { id: 'nsdlimps_switch', name: 'IMPS Switch Journal', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 16500 }
     ]
   },
   {
@@ -196,8 +212,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'imps',
     name: 'IPPB IMPS',
     requiredFiles: [
-      { id: 'ippbimps_mw', name: 'IPPB IMPS Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13200 },
-      { id: 'ippbimps_cbs', name: 'IPPB Settlement Report', type: 'counterparty', channel: 'IPPB SFTP Node', defaultRecordCount: 13200 }
+      { id: 'ippbimps_cbs', name: 'IPPB Settlement Report File', type: 'counterparty', channel: 'Manual File Upload / IPPB SFTP Node', defaultRecordCount: 13200 },
+      { id: 'ippbimps_mw', name: 'IPPB IMPS Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13200 }
     ]
   },
 
@@ -208,13 +224,13 @@ export const SUB_PRODUCTS: SubProduct[] = [
     name: 'Bharat Connect BOU',
     description: 'BOU (Biller Operating Unit) Reconciliation',
     matchingCriteriaRules: [
-      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
       { system: 'NPCI File', matchingKey: 'TxnRefID', amountField: 'SettlementAmount', statusField: 'ResponseCode' },
+      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
       { system: 'Switch File', matchingKey: 'TxnRefID', amountField: 'Amount', statusField: 'TxnStatus' }
     ],
     requiredFiles: [
-      { id: 'bbpsbou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 },
       { id: 'bbpsbou_npci', name: 'NPCI File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 },
+      { id: 'bbpsbou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 },
       { id: 'bbpsbou_switch', name: 'Switch File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 11200 }
     ]
   },
@@ -224,13 +240,13 @@ export const SUB_PRODUCTS: SubProduct[] = [
     name: 'Bharat Connect COU',
     description: 'COU (Customer Operating Unit) Reconciliation',
     matchingCriteriaRules: [
-      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
       { system: 'NPCI File', matchingKey: 'TxnRefID', amountField: 'SettlementAmount', statusField: 'ResponseCode' },
+      { system: 'CBS File', matchingKey: 'TxnRefID', amountField: 'TxnAmount', statusField: 'Status' },
       { system: 'Switch File', matchingKey: 'TxnRefID', amountField: 'Amount', statusField: 'TxnStatus' }
     ],
     requiredFiles: [
-      { id: 'bbpscou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 },
       { id: 'bbpscou_npci', name: 'NPCI File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 },
+      { id: 'bbpscou_cbs', name: 'CBS File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 },
       { id: 'bbpscou_switch', name: 'Switch File', type: 'counterparty', channel: 'Manual File Upload', defaultRecordCount: 14200 }
     ]
   },
@@ -241,8 +257,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'recharge',
     name: 'Recharge Krack',
     requiredFiles: [
-      { id: 'krack_mw', name: 'Recharge Krack Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 24500 },
-      { id: 'krack_op', name: 'Operator Recon Sheet', type: 'counterparty', channel: 'Operator Partner Portal', defaultRecordCount: 24500 }
+      { id: 'krack_op', name: 'Operator Recon Sheet', type: 'counterparty', channel: 'Operator Partner Portal / Manual Upload', defaultRecordCount: 24500 },
+      { id: 'krack_mw', name: 'Recharge Krack Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 24500 }
     ]
   },
   {
@@ -250,8 +266,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'recharge',
     name: 'Recharge Euro',
     requiredFiles: [
-      { id: 'euro_mw', name: 'Euronet Recharge Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18900 },
-      { id: 'euro_op', name: 'Euronet Aggregator Clearing', type: 'counterparty', channel: 'Euronet SFTP Node', defaultRecordCount: 18900 }
+      { id: 'euro_op', name: 'Operator Recon Sheet (Euronet)', type: 'counterparty', channel: 'Euronet SFTP Node / Manual Upload', defaultRecordCount: 18900 },
+      { id: 'euro_mw', name: 'Euronet Recharge Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 18900 }
     ]
   },
   {
@@ -259,8 +275,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'recharge',
     name: 'Recharge Commission Recon (Krac & Euronet)',
     requiredFiles: [
-      { id: 'rechargecomm_mw', name: 'Telecom Commission Calculation Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 31200 },
-      { id: 'rechargecomm_op', name: 'Aggregator Margin Statement', type: 'counterparty', channel: 'Partner Audit Node', defaultRecordCount: 31200 }
+      { id: 'rechargecomm_op', name: 'Operator Recon Sheet (Margin Statement)', type: 'counterparty', channel: 'Partner Audit Node / Manual Upload', defaultRecordCount: 31200 },
+      { id: 'rechargecomm_mw', name: 'Telecom Commission Calculation Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 31200 }
     ]
   },
 
@@ -296,8 +312,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     name: 'NSDL CASHPOINT',
     description: 'UPI Cashpoint Terminal Reconciliation',
     requiredFiles: [
-      { id: 'cashpt_mw', name: 'Cashpoint Terminal Request Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 },
-      { id: 'cashpt_bank', name: 'Banking Settlement Report', type: 'counterparty', channel: 'Bank SFTP Node', defaultRecordCount: 11200 }
+      { id: 'cashpt_bank', name: 'Banking Settlement Report', type: 'counterparty', channel: 'Bank SFTP Node / Manual Upload', defaultRecordCount: 11200 },
+      { id: 'cashpt_mw', name: 'Cashpoint Terminal Request Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11200 }
     ]
   },
 
@@ -307,8 +323,9 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'dmt',
     name: 'Airtel DMT',
     requiredFiles: [
-      { id: 'airtel_mw', name: 'Airtel DMT Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 17800 },
-      { id: 'airtel_bank', name: 'Airtel Payment Bank Report', type: 'counterparty', channel: 'Airtel Bank SFTP', defaultRecordCount: 17800 }
+      { id: 'airtel_bank', name: 'Bank Report File', type: 'counterparty', channel: 'Airtel Bank SFTP / Manual Upload', defaultRecordCount: 17800 },
+      { id: 'airtel_mw', name: 'Middleware Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 17800 },
+      { id: 'airtel_wallet', name: 'Wallet Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 17800 }
     ]
   },
   {
@@ -316,8 +333,9 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'dmt',
     name: 'Fino DMT',
     requiredFiles: [
-      { id: 'finodmt_mw', name: 'Fino DMT Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13900 },
-      { id: 'finodmt_cbs', name: 'Fino Bank Statement', type: 'counterparty', channel: 'Fino SFTP Portal', defaultRecordCount: 13900 }
+      { id: 'finodmt_cbs', name: 'Bank Report File', type: 'counterparty', channel: 'Fino SFTP Portal / Manual Upload', defaultRecordCount: 13900 },
+      { id: 'finodmt_mw', name: 'Middleware Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13900 },
+      { id: 'finodmt_wallet', name: 'Wallet Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13900 }
     ]
   },
   {
@@ -325,8 +343,9 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'dmt',
     name: 'NSDL DMT',
     requiredFiles: [
-      { id: 'nsdldmt_mw', name: 'NSDL Money Transfer Switch', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15400 },
-      { id: 'nsdldmt_cbs', name: 'NSDL Host Clearing Report', type: 'counterparty', channel: 'NSDL SFTP Node', defaultRecordCount: 15400 }
+      { id: 'nsdldmt_cbs', name: 'Bank Report File', type: 'counterparty', channel: 'NSDL SFTP Node / Manual Upload', defaultRecordCount: 15400 },
+      { id: 'nsdldmt_mw', name: 'Middleware Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15400 },
+      { id: 'nsdldmt_wallet', name: 'Wallet Report File', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 15400 }
     ]
   },
 
@@ -349,8 +368,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'cashout',
     name: 'Wallet2Cashout',
     requiredFiles: [
-      { id: 'w2c_mw', name: 'Payout Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 16800 },
-      { id: 'w2c_rbl', name: 'RBL Nodal Bank Statement', type: 'counterparty', channel: 'RBL Bank SFTP Node', defaultRecordCount: 16800 }
+      { id: 'w2c_rbl', name: 'RBL Nodal Bank Statement File', type: 'counterparty', channel: 'RBL Bank SFTP Node / Manual Upload', defaultRecordCount: 16800 },
+      { id: 'w2c_mw', name: 'Payout Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 16800 }
     ]
   },
   {
@@ -358,8 +377,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'cashout',
     name: 'W2Cashout IMPS',
     requiredFiles: [
-      { id: 'w2cimps_mw', name: 'W2Cashout IMPS Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 14100 },
-      { id: 'w2cimps_bank', name: 'IMPS Nodal Clearing Report', type: 'counterparty', channel: 'RBL / Sponsor SFTP', defaultRecordCount: 14100 }
+      { id: 'w2cimps_bank', name: 'Nodal Bank Clearing Report File', type: 'counterparty', channel: 'RBL / Sponsor SFTP / Manual Upload', defaultRecordCount: 14100 },
+      { id: 'w2cimps_mw', name: 'W2Cashout IMPS Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 14100 }
     ]
   },
   {
@@ -367,10 +386,10 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'cashout',
     name: 'NSDL Cashout (4-Way Recon)',
     requiredFiles: [
+      { id: 'nsdlco_cbs', name: 'NSDL Nodal Bank CBS Log File', type: 'counterparty', channel: 'NSDL SFTP Node / Manual Upload', defaultRecordCount: 11800 },
+      { id: 'nsdlco_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal / Manual Upload', defaultRecordCount: 11800 },
       { id: 'nsdlco_mw', name: 'NSDL Cashout Gateway Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11800 },
-      { id: 'nsdlco_switch', name: 'NSDL Switch Journal', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11800 },
-      { id: 'nsdlco_npci', name: 'NPCI Settlement File', type: 'counterparty', channel: 'NPCI Clearing Portal', defaultRecordCount: 11800 },
-      { id: 'nsdlco_cbs', name: 'NSDL Bank CBS Log', type: 'counterparty', channel: 'NSDL SFTP Node', defaultRecordCount: 11800 }
+      { id: 'nsdlco_switch', name: 'NSDL Switch Journal', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 11800 }
     ]
   },
   {
@@ -378,8 +397,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'cashout',
     name: 'Axis Cashout & Payout Recon',
     requiredFiles: [
-      { id: 'axisco_mw', name: 'Axis Payout Engine Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13200 },
-      { id: 'axisco_bank', name: 'Axis Corporate Host Statement', type: 'counterparty', channel: 'Axis Direct SFTP', defaultRecordCount: 13200 }
+      { id: 'axisco_bank', name: 'Axis Nodal Bank Statement File', type: 'counterparty', channel: 'Axis Direct SFTP / Manual Upload', defaultRecordCount: 13200 },
+      { id: 'axisco_mw', name: 'Axis Payout Engine Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 13200 }
     ]
   },
   {
@@ -387,8 +406,8 @@ export const SUB_PRODUCTS: SubProduct[] = [
     categoryId: 'cashout',
     name: 'IPPB Cashout',
     requiredFiles: [
-      { id: 'ippbco_mw', name: 'IPPB Cashout Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9900 },
-      { id: 'ippbco_cbs', name: 'IPPB Clearing Report', type: 'counterparty', channel: 'IPPB SFTP Node', defaultRecordCount: 9900 }
+      { id: 'ippbco_cbs', name: 'IPPB Nodal Bank Clearing Report File', type: 'counterparty', channel: 'IPPB SFTP Node / Manual Upload', defaultRecordCount: 9900 },
+      { id: 'ippbco_mw', name: 'IPPB Cashout Switch Log', type: 'internal', channel: 'GCP Bucket', defaultRecordCount: 9900 }
     ]
   },
 

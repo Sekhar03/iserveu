@@ -32,11 +32,9 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
 }) => {
   const [currentFileIndex, setCurrentFileIndex] = useState(0);
 
-  // Re-order requiredFiles so manual upload files (counterparty) come FIRST in sequence
+  // Maintain strict file sequence as configured in subProduct.requiredFiles
   const requiredFiles = useMemo(() => {
-    const manualFiles = subProduct.requiredFiles.filter((f) => f.type === 'counterparty');
-    const autoFiles = subProduct.requiredFiles.filter((f) => f.type !== 'counterparty');
-    return [...manualFiles, ...autoFiles];
+    return subProduct.requiredFiles;
   }, [subProduct.id]);
 
   const safeFileIndex = Math.min(
@@ -486,7 +484,7 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
             ← Previous File
           </button>
 
-          {currentFileIndex < requiredFiles.length - 1 && (
+          {currentFileIndex < requiredFiles.length - 1 ? (
             <button
               type="button"
               disabled={currentFileState.status !== 'success'}
@@ -502,6 +500,24 @@ export const Page4FileCollection: React.FC<Page4FileCollectionProps> = ({
               }`}
             >
               <span>Next File ({currentFileIndex + 2} of {requiredFiles.length})</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={!allFilesReady}
+              onClick={() => {
+                if (allFilesReady) {
+                  onProceedToProcessing(Object.values(fileStates));
+                }
+              }}
+              className={`px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md flex items-center gap-2 ${
+                allFilesReady
+                  ? 'bg-[#10b981] hover:bg-[#0d9668] text-white shadow-[#10b981]/25 cursor-pointer'
+                  : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+              }`}
+            >
+              <span>Run Matching & Reconciliation</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}

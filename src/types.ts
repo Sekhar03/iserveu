@@ -1,11 +1,35 @@
+export type UserRole = 'Admin' | 'Finance';
+
+export interface AppUser {
+  id: string;
+  username: string;
+  name: string;
+  role: UserRole;
+  department: string;
+  title: string;
+  status: 'Active' | 'Inactive';
+  createdAt: string;
+  password?: string;
+}
+
+export interface RolePermission {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  adminAllowed: boolean;
+  financeAllowed: boolean;
+}
+
 export interface UserSession {
   username: string;
-  role: string;
+  name: string;
+  role: UserRole;
   title: string;
   isLoggedIn: boolean;
 }
 
-export type ModuleKey = 'product-recon' | 'job-archives';
+export type ModuleKey = 'product-recon' | 'job-archives' | 'admin-settings';
 
 export type BusinessVerticalId = 'agency-banking' | 'acquiring' | 'issuing' | 'bbps';
 

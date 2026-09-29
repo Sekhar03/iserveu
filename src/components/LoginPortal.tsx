@@ -2,33 +2,74 @@ import React, { useState } from 'react';
 import {
   Lock, Mail, Loader2, Eye, EyeOff, Globe,
   Fingerprint, FileText, Banknote, RefreshCw, Send,
-  Smartphone, CreditCard, QrCode, Volume2, PieChart, ShieldAlert, TrendingUp, Zap
+  Smartphone, CreditCard, QrCode, Zap, ShieldCheck, Wallet, UserCheck, Shield
 } from 'lucide-react';
-import { UserSession } from '../types';
+import { UserSession, UserRole, AppUser } from '../types';
 
 interface LoginPortalProps {
+  usersList?: AppUser[];
   onLoginSuccess: (session: UserSession) => void;
 }
 
-export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
+export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLoginSuccess }) => {
+  const [selectedRole, setSelectedRole] = useState<UserRole>('Admin');
   const [username, setUsername] = useState('admin@iserveu.in');
   const [password, setPassword] = useState('admin@2026');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleRoleChange = (role: UserRole) => {
+    setSelectedRole(role);
+    setErrorMessage('');
+    if (role === 'Admin') {
+      setUsername('admin@iserveu.in');
+      setPassword('admin@2026');
+    } else {
+      // Find first Finance user if available in registered list, else default
+      const financeUser = usersList.find((u) => u.role === 'Finance');
+      setUsername(financeUser ? financeUser.username : 'finance@iserveu.in');
+      setPassword(financeUser?.password || 'finance@2026');
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage('');
 
     setTimeout(() => {
       setIsLoading(false);
-      onLoginSuccess({
-        username: username || 'admin@iserveu.in',
-        role: '',
-        title: 'Finance Admin',
-        isLoggedIn: true
-      });
+
+      // Check against user list if present
+      const matchedUser = usersList.find(
+        (u) => u.username.toLowerCase() === username.trim().toLowerCase()
+      );
+
+      if (matchedUser) {
+        if (matchedUser.status === 'Inactive') {
+          setErrorMessage('This user account has been deactivated by the Admin.');
+          return;
+        }
+        onLoginSuccess({
+          username: matchedUser.username,
+          name: matchedUser.name,
+          role: matchedUser.role,
+          title: matchedUser.title,
+          isLoggedIn: true
+        });
+      } else {
+        // Fallback for default demo login
+        const roleTitle = selectedRole === 'Admin' ? 'System Administrator' : 'Finance Analyst';
+        onLoginSuccess({
+          username: username.trim() || (selectedRole === 'Admin' ? 'admin@iserveu.in' : 'finance@iserveu.in'),
+          name: selectedRole === 'Admin' ? 'Admin User' : 'Finance User',
+          role: selectedRole,
+          title: roleTitle,
+          isLoggedIn: true
+        });
+      }
     }, 800);
   };
 
@@ -54,7 +95,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
     const rad = (cfg.angle * Math.PI) / 180;
     const x = cx + radius * Math.cos(rad);
     const y = cy + radius * Math.sin(rad);
-    // Midpoint along connecting line
     const midX = cx + (radius * 0.55) * Math.cos(rad);
     const midY = cy + (radius * 0.55) * Math.sin(rad);
     return { ...cfg, x, y, midX, midY };
@@ -94,18 +134,14 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
         <div className="lg:col-span-7 relative h-[580px] w-full hidden sm:flex items-center justify-center">
           
           <div className="w-[580px] h-[580px] relative flex items-center justify-center">
-            {/* Unified SVG Container rendering Orbits, Lines, Hub & ForeignObjects for 100% Pixel Alignment */}
             <svg className="w-full h-full overflow-visible" viewBox="0 0 600 600">
               <defs>
-                <filter id="glow-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#00A8B5" floodOpacity="0.15" />
-                </filter>
                 <filter id="hub-shadow" x="-20%" y="-20%" width="140%" height="140%">
                   <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#000000" floodOpacity="0.08" />
                 </filter>
               </defs>
 
-              {/* Concentric Grey/Teal Orbit Bands */}
+              {/* Concentric Orbit Bands */}
               <circle cx={cx} cy={cy} r="205" fill="#f1f5f9" opacity="0.6" stroke="#cbd5e1" strokeWidth="1" />
               <circle cx={cx} cy={cy} r="150" fill="#e2e8f0" opacity="0.6" stroke="#cbd5e1" strokeWidth="1" />
               <circle cx={cx} cy={cy} r="95" fill="#94a3b8" opacity="0.4" stroke="#64748b" strokeWidth="1" />
@@ -123,13 +159,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                     strokeDasharray="3 3"
                     opacity="0.6"
                   />
-                  {/* Data dot on orbit line */}
-                  <circle
-                    cx={node.midX}
-                    cy={node.midY}
-                    r="3.5"
-                    fill={node.color}
-                  />
+                  <circle cx={node.midX} cy={node.midY} r="3.5" fill={node.color} />
                 </g>
               ))}
 
@@ -171,34 +201,91 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
 
         {/* RIGHT SIDE: Login Card Form (5 Cols) */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <div className="w-full max-w-[410px] bg-white rounded-3xl p-8 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-6 relative z-10">
+          <div className="w-full max-w-[420px] bg-white rounded-3xl p-7 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-5 relative z-10">
             
-            {/* Header Brand */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-start">
+            {/* Header Brand & Risk Portal Badge */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
                 <img
                   src="/iserveu_official_logo.svg"
                   alt="iServeU Logo"
-                  className="h-11 w-auto object-contain"
+                  className="h-10 w-auto object-contain"
                 />
+                <span className="bg-[#e6fbf3] text-[#00838F] font-bold text-[10px] tracking-wider uppercase px-3 py-1 rounded-full border border-[#00A8B5]/30 shadow-2xs">
+                  RISK PORTAL
+                </span>
               </div>
 
-              <div className="space-y-1">
-                <p className="text-xs font-semibold text-slate-500">
-                  Welcome to Reconciliation Portal
-                </p>
-                <h2 className="text-base font-bold text-slate-800">
-                  Login to continue to Reconciliation Engine.
+              <div className="space-y-0.5">
+                <h2 className="text-2xl font-black text-[#0f172a] tracking-tight">
+                  Welcome Back!
                 </h2>
+                <p className="text-xs font-semibold text-slate-500">
+                  Please enter your details.
+                </p>
               </div>
             </div>
 
+            {/* Error Notification if any */}
+            {errorMessage && (
+              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-semibold">
+                {errorMessage}
+              </div>
+            )}
+
+            {/* Role Switcher Pill Container (Admin vs Finance) */}
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  SELECT PROFILE ROLE
+                </span>
+                <span className="bg-[#e6fbf3] text-[#00838F] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-[#00A8B5]/20">
+                  1 User : 1 Role
+                </span>
+              </div>
+
+              {/* Segmented Pill Selector */}
+              <div className="bg-slate-100 p-1.5 rounded-2xl flex items-center gap-1.5 shadow-inner">
+                {/* ADMIN ROLE TOGGLE */}
+                <button
+                  type="button"
+                  onClick={() => handleRoleChange('Admin')}
+                  className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    selectedRole === 'Admin'
+                      ? 'bg-[#1b2a3e] text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
+                >
+                  <ShieldCheck className={`w-4 h-4 ${selectedRole === 'Admin' ? 'text-[#00D2D3]' : 'text-slate-500'}`} />
+                  <span>Admin</span>
+                </button>
+
+                {/* FINANCE ROLE TOGGLE */}
+                <button
+                  type="button"
+                  onClick={() => handleRoleChange('Finance')}
+                  className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    selectedRole === 'Finance'
+                      ? 'bg-[#1b2a3e] text-white shadow-md'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                  }`}
+                >
+                  <Wallet className={`w-4 h-4 ${selectedRole === 'Finance' ? 'text-[#00D2D3]' : 'text-slate-500'}`} />
+                  <span>Finance</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] text-slate-500 font-medium leading-normal pt-0.5">
+                Enforces segregation of duties: Each operator is mapped to exactly one role.
+              </p>
+            </div>
+
             {/* Login Form */}
-            <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+            <form onSubmit={handleSubmit} className="space-y-4 pt-1">
               
               {/* Username Input */}
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#00838F]">
+                <label className="block text-xs font-bold text-slate-700">
                   Username <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -207,7 +294,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-sm focus:outline-none focus:border-[#00A8B5] focus:ring-2 focus:ring-[#00A8B5]/20 transition"
-                    placeholder="Username"
+                    placeholder={selectedRole === 'Admin' ? 'admin@iserveu.in' : 'finance@iserveu.in'}
                     required
                   />
                 </div>
@@ -215,7 +302,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
 
               {/* Password Input */}
               <div className="space-y-1">
-                <label className="block text-xs font-bold text-[#00838F]">
+                <label className="block text-xs font-bold text-slate-700">
                   Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -237,30 +324,37 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
                 </div>
               </div>
 
-              {/* Remember Me Checkbox */}
-              <div className="flex items-center gap-2 pt-1">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-300 text-[#00A8B5] focus:ring-[#00A8B5] cursor-pointer"
-                />
-                <label htmlFor="rememberMe" className="text-xs font-semibold text-slate-600 cursor-pointer">
-                  Remember me on this device
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between text-xs pt-0.5">
+                <label className="flex items-center gap-2 font-medium text-slate-600 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded border-slate-300 text-[#00A8B5] focus:ring-[#00A8B5] cursor-pointer"
+                  />
+                  <span>Remember Me</span>
                 </label>
+
+                <a
+                  href="#forgot"
+                  onClick={(e) => e.preventDefault()}
+                  className="font-bold text-[#00838F] hover:underline"
+                >
+                  Forgot password?
+                </a>
               </div>
 
-              {/* Primary iServeU Cyan Logo Gradient Button */}
+              {/* Solid Primary Blue / Cyan Action Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-4 py-3 px-6 rounded-xl bg-gradient-to-r from-[#00D2D3] via-[#00A8B5] to-[#00838F] hover:opacity-95 text-white font-bold text-sm shadow-md shadow-[#00A8B5]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                className="w-full mt-3 py-3 px-6 rounded-xl bg-[#0066ff] hover:bg-[#0052cc] text-white font-bold text-sm shadow-md shadow-[#0066ff]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>Signing in...</span>
+                    <span>Signing in as {selectedRole}...</span>
                   </>
                 ) : (
                   <span>Log in</span>
@@ -268,15 +362,13 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ onLoginSuccess }) => {
               </button>
             </form>
 
-            {/* Forgot Credentials Link */}
-            <div className="pt-2 text-center">
-              <a
-                href="#forgot"
-                onClick={(e) => e.preventDefault()}
-                className="text-xs font-bold text-[#00A8B5] hover:underline"
-              >
-                Forgot username or password?
-              </a>
+            {/* Admin Notice Hint */}
+            <div className="text-center text-[11px] text-slate-400 font-medium pt-1 border-t border-slate-100">
+              {selectedRole === 'Admin' ? (
+                <span>Admin users can create Finance users & configure role permissions.</span>
+              ) : (
+                <span>Finance role enables reconciliation matching & report viewing.</span>
+              )}
             </div>
           </div>
         </div>

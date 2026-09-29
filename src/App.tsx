@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { UserSession, ModuleKey, BusinessVerticalId, Category, SubProduct, FileState, ReconRecord, ReconJob } from './types';
-import { CheckCircle2, X, FileSpreadsheet, ExternalLink, ArrowRight } from 'lucide-react';
+import { UserSession, ModuleKey, BusinessVerticalId, Category, SubProduct, FileState, ReconRecord, ReconJob, AppUser, RolePermission } from './types';
+import { CheckCircle2, X } from 'lucide-react';
 import { LoginPortal } from './components/LoginPortal';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { SingleScreenRecon } from './components/SingleScreenRecon';
 import { JobArchives } from './components/JobArchives';
+import { AdminSettings } from './components/AdminSettings';
 import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
+import { INITIAL_USERS, INITIAL_ROLE_PERMISSIONS } from './data/initialUsers';
 
 export default function App() {
+  // Registered Users State (Admin can add new Finance users)
+  const [usersList, setUsersList] = useState<AppUser[]>(INITIAL_USERS);
+  const [permissionsList, setPermissionsList] = useState<RolePermission[]>(INITIAL_ROLE_PERMISSIONS);
+
   // Authentication State
   const [userSession, setUserSession] = useState<UserSession>({
     username: '',
-    role: '',
+    name: '',
+    role: 'Admin',
     title: '',
     isLoggedIn: false
   });
@@ -44,6 +51,25 @@ export default function App() {
   // Initiation Modal
   const [showInitiationModal, setShowInitiationModal] = useState<boolean>(false);
 
+  // User Management Handlers
+  const handleAddUser = (newUser: AppUser) => {
+    setUsersList((prev) => [newUser, ...prev]);
+  };
+
+  const handleUpdateUserStatus = (userId: string, newStatus: 'Active' | 'Inactive') => {
+    setUsersList((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
+    );
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    setUsersList((prev) => prev.filter((u) => u.id !== userId));
+  };
+
+  const handleUpdatePermissions = (updatedPerms: RolePermission[]) => {
+    setPermissionsList(updatedPerms);
+  };
+
   // Handle Login
   const handleLoginSuccess = (session: UserSession) => {
     setUserSession(session);
@@ -54,7 +80,8 @@ export default function App() {
   const handleLogout = () => {
     setUserSession({
       username: '',
-      role: '',
+      name: '',
+      role: 'Admin',
       title: '',
       isLoggedIn: false
     });
@@ -96,7 +123,7 @@ export default function App() {
 
   // Render Login Portal if not logged in
   if (!userSession.isLoggedIn) {
-    return <LoginPortal onLoginSuccess={handleLoginSuccess} />;
+    return <LoginPortal usersList={usersList} onLoginSuccess={handleLoginSuccess} />;
   }
 
   return (
@@ -129,6 +156,18 @@ export default function App() {
 
           {activeModule === 'job-archives' && (
             <JobArchives jobs={jobArchives} onStartNewRecon={handleStartNewReconFromReport} />
+          )}
+
+          {activeModule === 'admin-settings' && (
+            <AdminSettings
+              usersList={usersList}
+              onAddUser={handleAddUser}
+              onUpdateUserStatus={handleUpdateUserStatus}
+              onDeleteUser={handleDeleteUser}
+              permissionsList={permissionsList}
+              onUpdatePermissions={handleUpdatePermissions}
+              userSession={userSession}
+            />
           )}
         </main>
       </div>
@@ -186,4 +225,3 @@ export default function App() {
     </div>
   );
 }
-

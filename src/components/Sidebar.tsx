@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, History, ChevronDown, ChevronRight } from 'lucide-react';
+import { Layers, History, ChevronDown, ChevronRight, Settings } from 'lucide-react';
 import { ModuleKey, UserSession, BusinessVerticalId } from '../types';
 import { BUSINESS_VERTICALS } from '../data/categoriesAndSubProducts';
 
@@ -111,6 +111,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {activeModule === 'job-archives' && (
               <span className="ml-auto w-2 h-2 rounded-full bg-white shadow-sm" />
             )}
+          </button>
+
+          {/* 3. Admin Settings & Role Configurator Item */}
+          <button
+            type="button"
+            onClick={() => onSelectModule('admin-settings')}
+            className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer ${
+              activeModule === 'admin-settings'
+                ? 'bg-[#119db0] text-white shadow-lg shadow-[#119db0]/25 font-bold'
+                : 'text-slate-300 hover:bg-[#253650] hover:text-white'
+            }`}
+          >
+            <span className={activeModule === 'admin-settings' ? 'text-white' : 'text-[#23c5da]'}>
+              <Settings className="w-5 h-5" />
+            </span>
+            <div className="flex items-center justify-between w-full">
+              <span>Admin Settings</span>
+              {userSession.role === 'Admin' && (
+                <span className="text-[9px] bg-[#00D2D3]/20 text-[#00D2D3] font-bold px-1.5 py-0.5 rounded border border-[#00D2D3]/30">
+                  Role
+                </span>
+              )}
+            </div>
           </button>
         </nav>
       </div>

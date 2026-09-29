@@ -19,6 +19,14 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
   const titles: Record<ModuleKey, string> = {
     'product-recon': 'Product Reconciliation Engine',
     'job-archives': 'Reconciliation Report & Historical Logs',
+    'admin-settings': 'Admin Settings & Role Configurator',
+  };
+
+  const getInitials = () => {
+    if (userSession.name) {
+      return userSession.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
+    }
+    return userSession.role === 'Admin' ? 'AD' : 'FN';
   };
 
   // Close dropdown when clicking outside
@@ -62,18 +70,27 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
           >
             {/* Profile Avatar Pic */}
             <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1b2a3e] to-[#119db0] text-white font-bold text-sm flex items-center justify-center shadow-xs border-2 border-white">
-                FA
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1b2a3e] to-[#119db0] text-white font-bold text-xs flex items-center justify-center shadow-xs border-2 border-white">
+                {getInitials()}
               </div>
               <span className="w-3 h-3 rounded-full bg-[#10b981] border-2 border-white absolute bottom-0 right-0" />
             </div>
 
             {/* Profile Text Info */}
             <div className="text-left hidden sm:block">
-              <div className="text-xs font-bold text-[#1b2a3e] flex items-center gap-1 leading-tight">
-                <span>{userSession.title || 'Finance Admin'}</span>
-                <ShieldCheck className="w-3.5 h-3.5 text-[#10b981]" />
+              <div className="text-xs font-bold text-[#1b2a3e] flex items-center gap-1.5 leading-tight">
+                <span>{userSession.name || userSession.title || 'User'}</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                  userSession.role === 'Admin'
+                    ? 'bg-[#1b2a3e] text-white border-[#1b2a3e]'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                }`}>
+                  {userSession.role || 'Admin'}
+                </span>
               </div>
+              <p className="text-[10px] text-[#475569] font-medium truncate mt-0.5">
+                {userSession.title || 'Platform Operator'}
+              </p>
             </div>
 
             <ChevronDown className={`w-4 h-4 text-[#475569] group-hover:text-[#119db0] transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
@@ -85,16 +102,25 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
               {/* Dropdown User Header */}
               <div className="px-4 py-3 border-b border-[#e2e8f0] bg-[#f8fafc]/80">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#1b2a3e] text-[#23c5da] font-bold text-sm flex items-center justify-center shrink-0 border border-[#23c5da]/30">
-                    FA
+                  <div className="w-10 h-10 rounded-full bg-[#1b2a3e] text-[#23c5da] font-bold text-xs flex items-center justify-center shrink-0 border border-[#23c5da]/30">
+                    {getInitials()}
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-bold text-[#1b2a3e] truncate">
-                      {userSession.title || 'Finance Admin'}
+                      {userSession.name || userSession.title}
                     </p>
                     <p className="text-[10px] text-[#119db0] truncate mt-0.5 font-medium">
                       {userSession.username || 'admin@iserveu.in'}
                     </p>
+                    <div className="mt-1">
+                      <span className={`inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
+                        userSession.role === 'Admin'
+                          ? 'bg-[#1b2a3e] text-[#00D2D3]'
+                          : 'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        Role: {userSession.role || 'Admin'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

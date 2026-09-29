@@ -129,21 +129,10 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/5 backdrop-blur-3xl transform skew-x-12 translate-x-12" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="bg-[#00D2D3]/20 text-[#00D2D3] border border-[#00D2D3]/40 font-extrabold text-[10px] tracking-wider uppercase px-3 py-1 rounded-full">
-                ADMIN CONTROL CENTER
-              </span>
-              <span className="text-slate-300 text-xs font-semibold">
-                Segregation of Duties (1 User : 1 Role)
-              </span>
-            </div>
-            <h2 className="text-3xl font-black tracking-tight">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">
               User Management & Role Configurator
             </h2>
-            <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
-              Create Finance users, manage account access, and decide fine-grained role permissions for Admin and Finance operators across the Reconciliation Platform.
-            </p>
           </div>
 
           {/* Action Button */}

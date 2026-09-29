@@ -51,7 +51,7 @@ export default function App() {
   // Initiation Modal
   const [showInitiationModal, setShowInitiationModal] = useState<boolean>(false);
 
-  // User Management Handlers
+  // User & Permission Management Handlers
   const handleAddUser = (newUser: AppUser) => {
     setUsersList((prev) => [newUser, ...prev]);
   };
@@ -62,12 +62,26 @@ export default function App() {
     );
   };
 
+  const handleUpdateUserPrivileges = (userId: string, userPrivileges: Record<string, boolean>) => {
+    setUsersList((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, userPrivileges } : u))
+    );
+  };
+
   const handleDeleteUser = (userId: string) => {
     setUsersList((prev) => prev.filter((u) => u.id !== userId));
   };
 
   const handleUpdatePermissions = (updatedPerms: RolePermission[]) => {
     setPermissionsList(updatedPerms);
+  };
+
+  const handleAddPermission = (newPerm: RolePermission) => {
+    setPermissionsList((prev) => [...prev, newPerm]);
+  };
+
+  const handleDeletePermission = (permId: string) => {
+    setPermissionsList((prev) => prev.filter((p) => p.id !== permId));
   };
 
   // Handle Login
@@ -158,14 +172,17 @@ export default function App() {
             <JobArchives jobs={jobArchives} onStartNewRecon={handleStartNewReconFromReport} />
           )}
 
-          {activeModule === 'admin-settings' && (
+          {activeModule === 'admin-settings' && userSession.role === 'Admin' && (
             <AdminSettings
               usersList={usersList}
               onAddUser={handleAddUser}
               onUpdateUserStatus={handleUpdateUserStatus}
+              onUpdateUserPrivileges={handleUpdateUserPrivileges}
               onDeleteUser={handleDeleteUser}
               permissionsList={permissionsList}
               onUpdatePermissions={handleUpdatePermissions}
+              onAddPermission={handleAddPermission}
+              onDeletePermission={handleDeletePermission}
               userSession={userSession}
             />
           )}

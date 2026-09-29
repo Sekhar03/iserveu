@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   UserPlus, ShieldCheck, Users, Lock, CheckCircle2, AlertCircle,
-  Search, Filter, Trash2, Key, Sliders, Check, X, Building, Mail, User, Phone, Contact
+  Search, Filter, Trash2, Key, Sliders, Check, X, Building, Mail, User, Phone, Contact, Plus, Shield, ToggleLeft, ToggleRight, Sparkles
 } from 'lucide-react';
 import { AppUser, UserRole, RolePermission, UserSession } from '../types';
 
@@ -9,9 +9,12 @@ interface AdminSettingsProps {
   usersList: AppUser[];
   onAddUser: (user: AppUser) => void;
   onUpdateUserStatus: (userId: string, status: 'Active' | 'Inactive') => void;
+  onUpdateUserPrivileges: (userId: string, userPrivileges: Record<string, boolean>) => void;
   onDeleteUser: (userId: string) => void;
   permissionsList: RolePermission[];
   onUpdatePermissions: (permissions: RolePermission[]) => void;
+  onAddPermission: (newPerm: RolePermission) => void;
+  onDeletePermission: (permId: string) => void;
   userSession: UserSession;
 }
 
@@ -19,9 +22,12 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   usersList,
   onAddUser,
   onUpdateUserStatus,
+  onUpdateUserPrivileges,
   onDeleteUser,
   permissionsList,
   onUpdatePermissions,
+  onAddPermission,
+  onDeletePermission,
   userSession
 }) => {
   const [activeTab, setActiveTab] = useState<'user-management' | 'role-decide'>('user-management');
@@ -41,6 +47,18 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   const [newDepartment, setNewDepartment] = useState('Finance Operations');
   const [newTitle, setNewTitle] = useState('Finance Analyst');
 
+  // Modal State for Managing Individual User Privileges
+  const [managingPrivilegesUser, setManagingPrivilegesUser] = useState<AppUser | null>(null);
+  const [tempUserPrivileges, setTempUserPrivileges] = useState<Record<string, boolean>>({});
+
+  // Modal State for Add New System Privilege Feature
+  const [isAddPermissionModalOpen, setIsAddPermissionModalOpen] = useState(false);
+  const [newPermName, setNewPermName] = useState('');
+  const [newPermCategory, setNewPermCategory] = useState('Reconciliation Operations');
+  const [newPermDesc, setNewPermDesc] = useState('');
+  const [newPermAdminAllowed, setNewPermAdminAllowed] = useState(true);
+  const [newPermFinanceAllowed, setNewPermFinanceAllowed] = useState(false);
+
   // Success Toast Notification
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -54,7 +72,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
     e.preventDefault();
     if (!newFullName || !newEmail || !newPassword) return;
 
-    // Check duplicate email
     if (usersList.some((u) => u.username.toLowerCase() === newEmail.trim().toLowerCase())) {
       alert('A user with this email address already exists.');
       return;
@@ -71,7 +88,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
       department: newDepartment,
       title: newTitle,
       status: 'Active',
-      createdAt: new Date().toISOString().split('T')[0]
+      createdAt: new Date().toISOString().split('T')[0],
+      userPrivileges: {}
     };
 
     onAddUser(createdUser);
@@ -87,6 +105,48 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
     setNewRole('Finance');
     setNewDepartment('Finance Operations');
     setNewTitle('Finance Analyst');
+  };
+
+  // Open User Privilege Management Modal
+  const handleOpenUserPrivilegesModal = (user: AppUser) => {
+    setManagingPrivilegesUser(user);
+    setTempUserPrivileges(user.userPrivileges ? { ...user.userPrivileges } : {});
+  };
+
+  // Save Specific User Privileges
+  const handleSaveUserPrivileges = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!managingPrivilegesUser) return;
+
+    onUpdateUserPrivileges(managingPrivilegesUser.id, tempUserPrivileges);
+    showSuccessToast(`Updated user-specific privileges for ${managingPrivilegesUser.name}!`);
+    setManagingPrivilegesUser(null);
+  };
+
+  // Handle Adding New System Privilege
+  const handleCreateNewPermission = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPermName || !newPermDesc) return;
+
+    const newPerm: RolePermission = {
+      id: `perm-${Date.now().toString().slice(-4)}`,
+      name: newPermName.trim(),
+      category: newPermCategory,
+      description: newPermDesc.trim(),
+      adminAllowed: newPermAdminAllowed,
+      financeAllowed: newPermFinanceAllowed
+    };
+
+    onAddPermission(newPerm);
+    setIsAddPermissionModalOpen(false);
+    showSuccessToast(`New privilege feature "${newPermName}" added successfully to the system!`);
+
+    // Reset
+    setNewPermName('');
+    setNewPermDesc('');
+    setNewPermCategory('Reconciliation Operations');
+    setNewPermAdminAllowed(true);
+    setNewPermFinanceAllowed(false);
   };
 
   // Toggle Role Permission (Role Decide feature)
@@ -111,11 +171,20 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
     showSuccessToast('Role permissions updated successfully!');
   };
 
+  // Delete Permission Feature
+  const handleDeletePermissionFeature = (permId: string, permName: string) => {
+    if (confirm(`Are you sure you want to remove the privilege "${permName}" from the platform?`)) {
+      onDeletePermission(permId);
+      showSuccessToast(`Privilege "${permName}" removed from the platform.`);
+    }
+  };
+
   // Filtered Users List
   const filteredUsers = usersList.filter((u) => {
     const matchesSearch =
       u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (u.employeeId && u.employeeId.toLowerCase().includes(searchQuery.toLowerCase())) ||
       u.department.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRole = roleFilter === 'All' || u.role === roleFilter;
     return matchesSearch && matchesRole;
@@ -131,7 +200,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
     <div className="space-y-6">
       {/* Top Banner Header */}
       <div className="bg-gradient-to-r from-[#1b2a3e] via-[#152233] to-[#00838F] rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
-        {/* Background wave decorative */}
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/5 backdrop-blur-3xl transform skew-x-12 translate-x-12" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -164,7 +232,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
         <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
           <div className="text-xs font-medium">
-            <span className="font-bold">Finance Role Notice:</span> You are currently viewing Admin Settings in read-only mode. User creation and permission matrix changes ("Role Decide") require an <strong className="font-bold">Admin</strong> account.
+            <span className="font-bold">Finance Role Notice:</span> You are currently viewing Admin Settings in read-only mode. User creation, custom privileges, and permission matrix changes ("Role Decide") require an <strong className="font-bold">Admin</strong> account.
           </div>
         </div>
       )}
@@ -224,7 +292,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>User Directory & Finance User Creation</span>
+          <span>User Directory & Specific User Privileges</span>
         </button>
 
         <button
@@ -236,7 +304,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
           }`}
         >
           <Sliders className="w-4 h-4" />
-          <span>Role Decide (Permission Configurator)</span>
+          <span>Role Decide (Add/Remove System Privileges)</span>
         </button>
       </div>
 
@@ -249,7 +317,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search user by name, email, department..."
+                placeholder="Search by name, email, EMP ID..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
@@ -280,11 +348,11 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
-                  <th className="py-3.5 px-4">User Info</th>
+                  <th className="py-3.5 px-4">User Info & Contact</th>
                   <th className="py-3.5 px-4">Profile Role</th>
                   <th className="py-3.5 px-4">Department & Title</th>
                   <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4">Created Date</th>
+                  <th className="py-3.5 px-4 text-center">User Privileges</th>
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -296,97 +364,114 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                     </td>
                   </tr>
                 ) : (
-                  filteredUsers.map((u) => (
-                    <tr key={u.id} className="hover:bg-slate-50/80 transition">
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-9 h-9 rounded-full font-bold text-xs flex items-center justify-center text-white shrink-0 ${
-                            u.role === 'Admin' ? 'bg-[#1b2a3e]' : 'bg-[#00A8B5]'
-                          }`}>
-                            {u.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-bold text-slate-900">{u.name}</p>
-                              {u.employeeId && (
-                                <span className="bg-slate-100 text-slate-600 font-mono text-[9px] font-extrabold px-1.5 py-0.5 rounded border border-slate-200">
-                                  {u.employeeId}
-                                </span>
+                  filteredUsers.map((u) => {
+                    const customOverridesCount = u.userPrivileges ? Object.keys(u.userPrivileges).length : 0;
+                    return (
+                      <tr key={u.id} className="hover:bg-slate-50/80 transition">
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-9 h-9 rounded-full font-bold text-xs flex items-center justify-center text-white shrink-0 ${
+                              u.role === 'Admin' ? 'bg-[#1b2a3e]' : 'bg-[#00A8B5]'
+                            }`}>
+                              {u.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <p className="font-bold text-slate-900">{u.name}</p>
+                                {u.employeeId && (
+                                  <span className="bg-slate-100 text-slate-600 font-mono text-[9px] font-extrabold px-1.5 py-0.5 rounded border border-slate-200">
+                                    {u.employeeId}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-[11px] text-slate-500 font-medium">{u.username}</p>
+                              {u.mobileNumber && (
+                                <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
+                                  <Phone className="w-3 h-3 text-slate-400" />
+                                  <span>{u.mobileNumber}</span>
+                                </p>
                               )}
                             </div>
-                            <p className="text-[11px] text-slate-500 font-medium">{u.username}</p>
-                            {u.mobileNumber && (
-                              <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
-                                <Phone className="w-3 h-3 text-slate-400" />
-                                <span>{u.mobileNumber}</span>
-                              </p>
-                            )}
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      <td className="py-3.5 px-4">
-                        {u.role === 'Admin' ? (
-                          <span className="inline-flex items-center gap-1.5 bg-[#1b2a3e]/10 text-[#1b2a3e] border border-[#1b2a3e]/30 px-3 py-1 rounded-full font-bold text-[11px]">
-                            <ShieldCheck className="w-3.5 h-3.5 text-[#00A8B5]" />
-                            Admin
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold text-[11px]">
-                            <User className="w-3.5 h-3.5 text-emerald-600" />
-                            Finance
-                          </span>
-                        )}
-                      </td>
+                        <td className="py-3.5 px-4">
+                          {u.role === 'Admin' ? (
+                            <span className="inline-flex items-center gap-1.5 bg-[#1b2a3e]/10 text-[#1b2a3e] border border-[#1b2a3e]/30 px-3 py-1 rounded-full font-bold text-[11px]">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#00A8B5]" />
+                              Admin
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-bold text-[11px]">
+                              <User className="w-3.5 h-3.5 text-emerald-600" />
+                              Finance
+                            </span>
+                          )}
+                        </td>
 
-                      <td className="py-3.5 px-4">
-                        <p className="font-semibold text-slate-800">{u.title}</p>
-                        <p className="text-[11px] text-slate-400">{u.department}</p>
-                      </td>
+                        <td className="py-3.5 px-4">
+                          <p className="font-semibold text-slate-800">{u.title}</p>
+                          <p className="text-[11px] text-slate-400">{u.department}</p>
+                        </td>
 
-                      <td className="py-3.5 px-4">
-                        {u.status === 'Active' ? (
-                          <span className="inline-block bg-emerald-100 text-emerald-700 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
-                            Active
-                          </span>
-                        ) : (
-                          <span className="inline-block bg-slate-200 text-slate-600 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
-                            Inactive
-                          </span>
-                        )}
-                      </td>
+                        <td className="py-3.5 px-4">
+                          {u.status === 'Active' ? (
+                            <span className="inline-block bg-emerald-100 text-emerald-700 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
+                              Active
+                            </span>
+                          ) : (
+                            <span className="inline-block bg-slate-200 text-slate-600 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
+                              Inactive
+                            </span>
+                          )}
+                        </td>
 
-                      <td className="py-3.5 px-4 text-slate-500 font-mono text-[11px]">
-                        {u.createdAt}
-                      </td>
-
-                      <td className="py-3.5 px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        {/* User-Specific Privileges Button & Badge */}
+                        <td className="py-3.5 px-4 text-center">
                           <button
-                            onClick={() => onUpdateUserStatus(u.id, u.status === 'Active' ? 'Inactive' : 'Active')}
-                            disabled={!isAdmin || u.username === userSession.username}
-                            className={`p-1.5 rounded-lg border transition text-[11px] font-bold cursor-pointer ${
-                              u.status === 'Active'
-                                ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100'
-                                : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                            } disabled:opacity-40 disabled:cursor-not-allowed`}
-                            title={u.status === 'Active' ? 'Deactivate User' : 'Activate User'}
+                            onClick={() => handleOpenUserPrivilegesModal(u)}
+                            disabled={!isAdmin}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00A8B5]/10 text-[#00838F] border border-[#00A8B5]/30 hover:bg-[#00A8B5]/20 font-bold text-xs transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                            title="Add or Revoke privileges for this specific user"
                           >
-                            {u.status === 'Active' ? 'Deactivate' : 'Activate'}
+                            <Key className="w-3.5 h-3.5 text-[#00A8B5]" />
+                            <span>Manage Privileges</span>
+                            {customOverridesCount > 0 && (
+                              <span className="ml-1 px-1.5 py-0.2 bg-[#00A8B5] text-white rounded-full text-[9px] font-black">
+                                {customOverridesCount}
+                              </span>
+                            )}
                           </button>
+                        </td>
 
-                          <button
-                            onClick={() => onDeleteUser(u.id)}
-                            disabled={!isAdmin || u.username === userSession.username || usersList.length <= 1}
-                            className="p-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                            title="Delete User"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        <td className="py-3.5 px-4 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => onUpdateUserStatus(u.id, u.status === 'Active' ? 'Inactive' : 'Active')}
+                              disabled={!isAdmin || u.username === userSession.username}
+                              className={`p-1.5 rounded-lg border transition text-[11px] font-bold cursor-pointer ${
+                                u.status === 'Active'
+                                  ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100'
+                                  : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                              } disabled:opacity-40 disabled:cursor-not-allowed`}
+                              title={u.status === 'Active' ? 'Deactivate User' : 'Activate User'}
+                            >
+                              {u.status === 'Active' ? 'Deactivate' : 'Activate'}
+                            </button>
+
+                            <button
+                              onClick={() => onDeleteUser(u.id)}
+                              disabled={!isAdmin || u.username === userSession.username || usersList.length <= 1}
+                              className="p-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                              title="Delete User"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
@@ -404,14 +489,19 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                 <h3 className="text-lg font-black text-slate-900">Role Decide Feature Configurator</h3>
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                Decide feature access rules for Admin vs Finance roles. Changes take effect immediately across all sessions.
+                Decide feature access rules for Admin vs Finance roles, or add and remove privilege features.
               </p>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[11px] font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
-                Rule Policy: 1 User : 1 Role
-              </span>
+              <button
+                onClick={() => setIsAddPermissionModalOpen(true)}
+                disabled={!isAdmin}
+                className="px-4 py-2.5 rounded-xl bg-[#00A8B5] hover:bg-[#00838F] text-white text-xs font-bold shadow-md transition flex items-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add New Privilege Feature</span>
+              </button>
             </div>
           </div>
 
@@ -434,6 +524,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                       <span>Finance Role</span>
                     </div>
                   </th>
+                  <th className="py-3.5 px-4 text-right">Remove</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-700">
@@ -499,6 +590,18 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                         )}
                       </button>
                     </td>
+
+                    {/* Remove Privilege Feature Button */}
+                    <td className="py-4 px-4 text-right">
+                      <button
+                        onClick={() => handleDeletePermissionFeature(perm.id, perm.name)}
+                        disabled={!isAdmin || permissionsList.length <= 1}
+                        className="p-1.5 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                        title="Remove privilege feature from platform"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -507,7 +610,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
         </div>
       )}
 
-      {/* CREATE FINANCE USER MODAL */}
+      {/* CREATE NEW USER MODAL */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 bg-[#1b2a3e]/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-lg w-full p-7 shadow-2xl border border-slate-200 relative space-y-5">
@@ -518,7 +621,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               <X className="w-5 h-5" />
             </button>
 
-            {/* Modal Header */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1b2a3e] to-[#00A8B5] text-white flex items-center justify-center shadow-md">
                 <UserPlus className="w-6 h-6" />
@@ -529,9 +631,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               </div>
             </div>
 
-            {/* Creation Form */}
             <form onSubmit={handleCreateUser} className="space-y-4 pt-1">
-              
               {/* Full Name */}
               <div className="space-y-1">
                 <label className="block text-xs font-bold text-slate-700">
@@ -622,7 +722,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                 </div>
               </div>
 
-              {/* Role Selection & Department */}
+              {/* Role Selection & Title */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold text-slate-700">Role</label>
@@ -670,7 +770,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                 />
               </div>
 
-              {/* Action Buttons */}
               <div className="flex items-center justify-end gap-3 pt-3">
                 <button
                   type="button"
@@ -685,6 +784,237 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                   className="px-6 py-2.5 rounded-xl bg-[#00A8B5] hover:bg-[#00838F] text-white text-xs font-bold shadow-md shadow-[#00A8B5]/25 transition cursor-pointer"
                 >
                   Create User
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MANAGE INDIVIDUAL USER-SPECIFIC PRIVILEGES MODAL */}
+      {managingPrivilegesUser && (
+        <div className="fixed inset-0 bg-[#1b2a3e]/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-7 shadow-2xl border border-slate-200 relative space-y-5">
+            <button
+              onClick={() => setManagingPrivilegesUser(null)}
+              className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1b2a3e] to-[#00A8B5] text-white flex items-center justify-center shadow-md">
+                <Key className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-slate-900">
+                  User Specific Privileges — {managingPrivilegesUser.name}
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Role: <span className="font-bold text-slate-800">{managingPrivilegesUser.role}</span> | Employee ID: <span className="font-bold text-slate-800">{managingPrivilegesUser.employeeId || 'N/A'}</span>
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              Grant (Add) or Revoke (Remove) specific privileges for this user. Overrides will take precedence over their default <strong className="font-bold">{managingPrivilegesUser.role}</strong> role settings.
+            </p>
+
+            <form onSubmit={handleSaveUserPrivileges} className="space-y-4">
+              <div className="max-h-80 overflow-y-auto rounded-2xl border border-slate-200 divide-y divide-slate-100">
+                {permissionsList.map((perm) => {
+                  const roleDefaultAllowed = managingPrivilegesUser.role === 'Admin' ? perm.adminAllowed : perm.financeAllowed;
+                  const isExplicitlyOverridden = perm.id in tempUserPrivileges;
+                  const currentUserState = isExplicitlyOverridden ? tempUserPrivileges[perm.id] : roleDefaultAllowed;
+
+                  return (
+                    <div key={perm.id} className="p-3.5 flex items-center justify-between gap-4 hover:bg-slate-50">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <p className="font-bold text-xs text-slate-900">{perm.name}</p>
+                          <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                            {perm.category}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">{perm.description}</p>
+                      </div>
+
+                      {/* Privilege Action Selectors */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {/* Grant Privilege Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTempUserPrivileges((prev) => ({ ...prev, [perm.id]: true }));
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                            currentUserState && isExplicitlyOverridden
+                              ? 'bg-emerald-600 text-white shadow-xs'
+                              : currentUserState
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                          }`}
+                        >
+                          + Add Priv.
+                        </button>
+
+                        {/* Revoke Privilege Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTempUserPrivileges((prev) => ({ ...prev, [perm.id]: false }));
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer ${
+                            !currentUserState && isExplicitlyOverridden
+                              ? 'bg-red-600 text-white shadow-xs'
+                              : !currentUserState
+                              ? 'bg-red-50 text-red-600 border border-red-200'
+                              : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                          }`}
+                        >
+                          - Remove Priv.
+                        </button>
+
+                        {/* Reset to Role Default */}
+                        {isExplicitlyOverridden && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTempUserPrivileges((prev) => {
+                                const next = { ...prev };
+                                delete next[perm.id];
+                                return next;
+                              });
+                            }}
+                            className="px-2 py-1 rounded-lg text-[10px] font-semibold text-slate-400 hover:text-slate-600 transition cursor-pointer"
+                            title="Reset to role default"
+                          >
+                            Reset
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setManagingPrivilegesUser(null)}
+                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-[#00A8B5] hover:bg-[#00838F] text-white text-xs font-bold shadow-md transition cursor-pointer"
+                >
+                  Save User Privileges
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD NEW SYSTEM PRIVILEGE FEATURE MODAL */}
+      {isAddPermissionModalOpen && (
+        <div className="fixed inset-0 bg-[#1b2a3e]/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-slate-200 relative space-y-5">
+            <button
+              onClick={() => setIsAddPermissionModalOpen(false)}
+              className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#1b2a3e] to-[#00A8B5] text-white flex items-center justify-center shadow-md">
+                <Plus className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-slate-900">Add New Privilege Feature</h3>
+                <p className="text-xs text-slate-500">Create a new system-wide permission rule</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateNewPermission} className="space-y-4 pt-1">
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-slate-700">Feature Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Discrepancy Queue Clearance"
+                  value={newPermName}
+                  onChange={(e) => setNewPermName(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-slate-700">Category</label>
+                <select
+                  value={newPermCategory}
+                  onChange={(e) => setNewPermCategory(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
+                >
+                  <option value="Reconciliation Operations">Reconciliation Operations</option>
+                  <option value="User Administration">User Administration</option>
+                  <option value="Reporting & Analytics">Reporting & Analytics</option>
+                  <option value="Data Export">Data Export</option>
+                  <option value="Risk Control">Risk Control</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-slate-700">Description <span className="text-red-500">*</span></label>
+                <textarea
+                  required
+                  rows={2}
+                  placeholder="Explain what access this privilege feature grants..."
+                  value={newPermDesc}
+                  onChange={(e) => setNewPermDesc(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
+                />
+              </div>
+
+              {/* Default Role Access Toggles */}
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800">Admin Role</span>
+                  <input
+                    type="checkbox"
+                    checked={newPermAdminAllowed}
+                    onChange={(e) => setNewPermAdminAllowed(e.target.checked)}
+                    className="w-4 h-4 text-[#00A8B5] rounded cursor-pointer"
+                  />
+                </div>
+
+                <div className="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800">Finance Role</span>
+                  <input
+                    type="checkbox"
+                    checked={newPermFinanceAllowed}
+                    onChange={(e) => setNewPermFinanceAllowed(e.target.checked)}
+                    className="w-4 h-4 text-emerald-600 rounded cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setIsAddPermissionModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-[#00A8B5] hover:bg-[#00838F] text-white text-xs font-bold shadow-md transition cursor-pointer"
+                >
+                  Add Privilege Feature
                 </button>
               </div>
             </form>

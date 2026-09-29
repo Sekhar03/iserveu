@@ -12,6 +12,7 @@ export interface AppUser {
   status: 'Active' | 'Inactive';
   createdAt: string;
   password?: string;
+  userPrivileges?: Record<string, boolean>; // custom user-level overrides
 }
 
 export interface RolePermission {

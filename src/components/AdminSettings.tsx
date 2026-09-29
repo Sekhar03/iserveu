@@ -147,7 +147,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               }`}
             >
               <UserPlus className="w-4 h-4" />
-              <span>Create Finance User</span>
+              <span>Create New User</span>
             </button>
           </div>
         </div>
@@ -505,8 +505,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                 <UserPlus className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-black text-slate-900">Create Finance User</h3>
-                <p className="text-xs text-slate-500">Add a new Finance operator to the platform</p>
+                <h3 className="text-xl font-black text-slate-900">Create New User</h3>
+                <p className="text-xs text-slate-500">Create an Admin or Finance account on the platform</p>
               </div>
             </div>
 
@@ -572,11 +572,23 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                   <label className="block text-xs font-bold text-slate-700">Role</label>
                   <select
                     value={newRole}
-                    onChange={(e) => setNewRole(e.target.value as UserRole)}
+                    onChange={(e) => {
+                      const selected = e.target.value as UserRole;
+                      setNewRole(selected);
+                      if (selected === 'Admin') {
+                        setNewTitle('System Administrator');
+                        setNewDepartment('Risk & Systems Admin');
+                        setNewPassword('admin@2026');
+                      } else {
+                        setNewTitle('Finance Analyst');
+                        setNewDepartment('Finance Operations');
+                        setNewPassword('finance@2026');
+                      }
+                    }}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
                   >
-                    <option value="Finance">Finance</option>
-                    <option value="Admin">Admin</option>
+                    <option value="Finance">Finance Role</option>
+                    <option value="Admin">Admin Role</option>
                   </select>
                 </div>
 

@@ -4,6 +4,8 @@ export interface AppUser {
   id: string;
   username: string;
   name: string;
+  employeeId?: string;
+  mobileNumber?: string;
   role: UserRole;
   department: string;
   title: string;

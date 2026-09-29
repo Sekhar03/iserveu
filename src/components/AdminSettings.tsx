@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   UserPlus, ShieldCheck, Users, Lock, CheckCircle2, AlertCircle,
-  Search, Filter, Trash2, Key, Sliders, Check, X, Building, Mail, User, Sparkles, Shield, ToggleLeft, ToggleRight
+  Search, Filter, Trash2, Key, Sliders, Check, X, Building, Mail, User, Phone, Contact
 } from 'lucide-react';
 import { AppUser, UserRole, RolePermission, UserSession } from '../types';
 
@@ -34,6 +34,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [newFullName, setNewFullName] = useState('');
   const [newEmail, setNewEmail] = useState('');
+  const [newMobileNumber, setNewMobileNumber] = useState('');
+  const [newEmployeeId, setNewEmployeeId] = useState('');
   const [newPassword, setNewPassword] = useState('finance@2026');
   const [newRole, setNewRole] = useState<UserRole>('Finance');
   const [newDepartment, setNewDepartment] = useState('Finance Operations');
@@ -63,6 +65,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
       username: newEmail.trim(),
       password: newPassword,
       name: newFullName.trim(),
+      employeeId: newEmployeeId.trim() || `EMP-${Math.floor(1000 + Math.random() * 9000)}`,
+      mobileNumber: newMobileNumber.trim() || '+91 98765 43210',
       role: newRole,
       department: newDepartment,
       title: newTitle,
@@ -77,6 +81,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
     // Reset Form
     setNewFullName('');
     setNewEmail('');
+    setNewMobileNumber('');
+    setNewEmployeeId('');
     setNewPassword('finance@2026');
     setNewRole('Finance');
     setNewDepartment('Finance Operations');
@@ -300,8 +306,21 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                             {u.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900">{u.name}</p>
-                            <p className="text-[11px] text-slate-500">{u.username}</p>
+                            <div className="flex items-center gap-2">
+                              <p className="font-bold text-slate-900">{u.name}</p>
+                              {u.employeeId && (
+                                <span className="bg-slate-100 text-slate-600 font-mono text-[9px] font-extrabold px-1.5 py-0.5 rounded border border-slate-200">
+                                  {u.employeeId}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-slate-500 font-medium">{u.username}</p>
+                            {u.mobileNumber && (
+                              <p className="text-[10px] text-slate-400 font-semibold flex items-center gap-1 mt-0.5">
+                                <Phone className="w-3 h-3 text-slate-400" />
+                                <span>{u.mobileNumber}</span>
+                              </p>
+                            )}
                           </div>
                         </div>
                       </td>
@@ -534,7 +553,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               {/* Email / Username */}
               <div className="space-y-1">
                 <label className="block text-xs font-bold text-slate-700">
-                  Email / Username <span className="text-red-500">*</span>
+                  Email ID / Username <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -546,6 +565,43 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                     onChange={(e) => setNewEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
                   />
+                </div>
+              </div>
+
+              {/* Employee ID & Mobile Number Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Employee ID <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Contact className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. EMP-1004"
+                      value={newEmployeeId}
+                      onChange={(e) => setNewEmployeeId(e.target.value)}
+                      className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Mobile Number <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="tel"
+                      required
+                      placeholder="e.g. +91 98765 43210"
+                      value={newMobileNumber}
+                      onChange={(e) => setNewMobileNumber(e.target.value)}
+                      className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#00A8B5]"
+                    />
+                  </div>
                 </div>
               </div>
 

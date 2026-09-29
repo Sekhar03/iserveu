@@ -203,17 +203,14 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <div className="w-full max-w-[420px] bg-white rounded-3xl p-7 border border-[#00A8B5]/30 shadow-2xl shadow-slate-200/80 space-y-5 relative z-10">
             
-            {/* Header Brand & Risk Portal Badge */}
+            {/* Header Brand */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-start">
                 <img
                   src="/iserveu_official_logo.svg"
                   alt="iServeU Logo"
                   className="h-10 w-auto object-contain"
                 />
-                <span className="bg-[#e6fbf3] text-[#00838F] font-bold text-[10px] tracking-wider uppercase px-3 py-1 rounded-full border border-[#00A8B5]/30 shadow-2xs">
-                  RISK PORTAL
-                </span>
               </div>
 
               <div className="space-y-0.5">
@@ -238,9 +235,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   SELECT PROFILE ROLE
-                </span>
-                <span className="bg-[#e6fbf3] text-[#00838F] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-[#00A8B5]/20">
-                  1 User : 1 Role
                 </span>
               </div>
 
@@ -361,15 +355,6 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
                 )}
               </button>
             </form>
-
-            {/* Admin Notice Hint */}
-            <div className="text-center text-[11px] text-slate-400 font-medium pt-1 border-t border-slate-100">
-              {selectedRole === 'Admin' ? (
-                <span>Admin users can create Finance users & configure role permissions.</span>
-              ) : (
-                <span>Finance role enables reconciliation matching & report viewing.</span>
-              )}
-            </div>
           </div>
         </div>
 

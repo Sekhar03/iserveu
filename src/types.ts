@@ -30,9 +30,24 @@ export interface UserSession {
   role: UserRole;
   title: string;
   isLoggedIn: boolean;
+  id?: string;
+  userPrivileges?: Record<string, boolean>;
 }
 
-export type ModuleKey = 'product-recon' | 'job-archives' | 'admin-settings';
+export type ModuleKey = 'product-recon' | 'job-archives' | 'admin-settings' | 'user-management';
+
+export const hasUserPrivilege = (
+  user: { role: UserRole; userPrivileges?: Record<string, boolean> },
+  permId: string,
+  permissionsList: RolePermission[]
+): boolean => {
+  if (user.userPrivileges && typeof user.userPrivileges[permId] === 'boolean') {
+    return user.userPrivileges[permId];
+  }
+  const perm = permissionsList.find((p) => p.id === permId);
+  if (!perm) return false;
+  return user.role === 'Admin' ? perm.adminAllowed : perm.financeAllowed;
+};
 
 export type BusinessVerticalId = 'agency-banking' | 'acquiring' | 'issuing' | 'bbps';
 

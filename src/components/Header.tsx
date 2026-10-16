@@ -19,7 +19,8 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
   const titles: Record<ModuleKey, string> = {
     'product-recon': 'Product Reconciliation Engine',
     'job-archives': 'Reconciliation Report & Historical Logs',
-    'admin-settings': 'Admin Settings & Role Configurator',
+    'admin-settings': 'User Management & Privilege Control',
+    'user-management': 'User Management & Privilege Control',
   };
 
   const getInitials = () => {

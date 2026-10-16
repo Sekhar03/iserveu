@@ -8,6 +8,7 @@ import { SingleScreenRecon } from './components/SingleScreenRecon';
 import { JobArchives } from './components/JobArchives';
 import { AdminSettings } from './components/AdminSettings';
 import { NsdlDashboardBanner } from './components/NsdlDashboardBanner';
+import { UserManagement } from './components/UserManagement';
 import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
 import { INITIAL_USERS, INITIAL_ROLE_PERMISSIONS } from './data/initialUsers';
 
@@ -58,6 +59,20 @@ export default function App() {
     setUsersList((prev) => [newUser, ...prev]);
   };
 
+  const handleUpdateUser = (updatedUser: AppUser) => {
+    setUsersList((prev) =>
+      prev.map((u) => (u.id === updatedUser.id ? updatedUser : u))
+    );
+    if (userSession.username.toLowerCase() === updatedUser.username.toLowerCase()) {
+      setUserSession((prev) => ({
+        ...prev,
+        name: updatedUser.name,
+        role: updatedUser.role,
+        title: updatedUser.title
+      }));
+    }
+  };
+
   const handleUpdateUserStatus = (userId: string, newStatus: 'Active' | 'Inactive') => {
     setUsersList((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
@@ -68,6 +83,14 @@ export default function App() {
     setUsersList((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, userPrivileges } : u))
     );
+    // If updating current user's session privileges:
+    const currentUser = usersList.find((u) => u.id === userId);
+    if (currentUser && currentUser.username.toLowerCase() === userSession.username.toLowerCase()) {
+      setUserSession((prev) => ({
+        ...prev,
+        userPrivileges
+      }));
+    }
   };
 
   const handleDeleteUser = (userId: string) => {
@@ -82,8 +105,23 @@ export default function App() {
     setPermissionsList((prev) => [...prev, newPerm]);
   };
 
+  const handleUpdatePermission = (updatedPerm: RolePermission) => {
+    setPermissionsList((prev) =>
+      prev.map((p) => (p.id === updatedPerm.id ? updatedPerm : p))
+    );
+  };
+
   const handleDeletePermission = (permId: string) => {
     setPermissionsList((prev) => prev.filter((p) => p.id !== permId));
+    // Clean up user overrides referencing this deleted privilege
+    setUsersList((prev) =>
+      prev.map((u) => {
+        if (!u.userPrivileges || !(permId in u.userPrivileges)) return u;
+        const nextOverrides = { ...u.userPrivileges };
+        delete nextOverrides[permId];
+        return { ...u, userPrivileges: nextOverrides };
+      })
+    );
   };
 
   // Handle Login
@@ -188,16 +226,18 @@ export default function App() {
               <JobArchives jobs={jobArchives} onStartNewRecon={handleStartNewReconFromReport} />
             )}
 
-            {activeModule === 'admin-settings' && userSession.role === 'Admin' && (
-              <AdminSettings
+            {(activeModule === 'user-management' || activeModule === 'admin-settings') && (
+              <UserManagement
                 usersList={usersList}
                 onAddUser={handleAddUser}
+                onUpdateUser={handleUpdateUser}
                 onUpdateUserStatus={handleUpdateUserStatus}
                 onUpdateUserPrivileges={handleUpdateUserPrivileges}
                 onDeleteUser={handleDeleteUser}
                 permissionsList={permissionsList}
                 onUpdatePermissions={handleUpdatePermissions}
                 onAddPermission={handleAddPermission}
+                onUpdatePermission={handleUpdatePermission}
                 onDeletePermission={handleDeletePermission}
                 userSession={userSession}
               />

@@ -53,11 +53,13 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
           return;
         }
         onLoginSuccess({
+          id: matchedUser.id,
           username: matchedUser.username,
           name: matchedUser.name,
           role: matchedUser.role,
           title: matchedUser.title,
-          isLoggedIn: true
+          isLoggedIn: true,
+          userPrivileges: matchedUser.userPrivileges || {}
         });
       } else {
         // Fallback for default demo login

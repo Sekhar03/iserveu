@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, History, ChevronDown, ChevronRight, Settings } from 'lucide-react';
+import { Layers, History, ChevronDown, ChevronRight, Settings, Users } from 'lucide-react';
 import { ModuleKey, UserSession, BusinessVerticalId } from '../types';
 import { BUSINESS_VERTICALS } from '../data/categoriesAndSubProducts';
 
@@ -116,24 +116,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
           </button>
 
-          {/* 3. Admin Settings & Role Configurator Item (Visible only to Admin role) */}
-          {userSession.role === 'Admin' && (
+          {/* 3. User Management & Privilege Control (Visible to Admin or Authorized Users) */}
+          {(userSession.role === 'Admin' || userSession.userPrivileges?.['perm-001'] || userSession.userPrivileges?.['perm-002']) && (
             <button
               type="button"
-              onClick={() => onSelectModule('admin-settings')}
+              onClick={() => onSelectModule('user-management')}
               className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer ${
-                activeModule === 'admin-settings'
+                activeModule === 'user-management' || activeModule === 'admin-settings'
                   ? 'bg-[#119db0] text-white shadow-lg shadow-[#119db0]/25 font-bold'
                   : 'text-slate-300 hover:bg-[#253650] hover:text-white'
               }`}
             >
-              <span className={activeModule === 'admin-settings' ? 'text-white' : 'text-[#23c5da]'}>
-                <Settings className="w-5 h-5" />
+              <span className={activeModule === 'user-management' || activeModule === 'admin-settings' ? 'text-white' : 'text-[#23c5da]'}>
+                <Users className="w-5 h-5" />
               </span>
               <div className="flex items-center justify-between w-full">
-                <span>Admin Settings</span>
+                <span>User Management</span>
                 <span className="text-[9px] bg-[#00D2D3]/20 text-[#00D2D3] font-bold px-1.5 py-0.5 rounded border border-[#00D2D3]/30">
-                  Admin
+                  {userSession.role === 'Admin' ? 'Admin' : 'Privilege'}
                 </span>
               </div>
             </button>

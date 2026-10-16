@@ -7,7 +7,6 @@ import { Header } from './components/Header';
 import { SingleScreenRecon } from './components/SingleScreenRecon';
 import { JobArchives } from './components/JobArchives';
 import { AdminSettings } from './components/AdminSettings';
-import { NsdlDashboardBanner } from './components/NsdlDashboardBanner';
 import { UserManagement } from './components/UserManagement';
 import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
 import { INITIAL_USERS, INITIAL_ROLE_PERMISSIONS } from './data/initialUsers';
@@ -207,19 +206,14 @@ export default function App() {
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
           <main className="p-6 sm:p-8 max-w-7xl mx-auto w-full">
             {activeModule === 'product-recon' && (
-              <>
-                {/* Welcome to NSDL Banner matching screenshot image 108 */}
-                <NsdlDashboardBanner />
-
-                <SingleScreenRecon
-                  onReconciliationInitiated={handleReconciliationInitiated}
-                  initialVertical={activeVertical}
-                  initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
-                  initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
-                  initialDate="2026-07-28"
-                  initialCycle="Cycle 1 (00:00 - 03:00 Window)"
-                />
-              </>
+              <SingleScreenRecon
+                onReconciliationInitiated={handleReconciliationInitiated}
+                initialVertical={activeVertical}
+                initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
+                initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
+                initialDate="2026-07-28"
+                initialCycle="Cycle 1 (00:00 - 03:00 Window)"
+              />
             )}
 
             {activeModule === 'job-archives' && (

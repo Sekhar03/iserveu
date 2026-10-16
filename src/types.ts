@@ -34,7 +34,37 @@ export interface UserSession {
   userPrivileges?: Record<string, boolean>;
 }
 
-export type ModuleKey = 'product-recon' | 'job-archives' | 'admin-settings' | 'user-management';
+export type ModuleKey = 'product-recon' | 'job-archives' | 'admin-settings' | 'user-management' | 'audit-trail';
+
+export type AuditCategory =
+  | 'User & IAM'
+  | 'Privilege & Security'
+  | 'Reconciliation Engine'
+  | 'Discrepancy Handling'
+  | 'Accounting & TTUM'
+  | 'Authentication'
+  | 'Data Export & Reports';
+
+export type AuditSeverity = 'INFO' | 'SUCCESS' | 'WARNING' | 'CRITICAL';
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  actor: {
+    userId?: string;
+    name: string;
+    email: string;
+    role: UserRole | 'System';
+    ipAddress?: string;
+  };
+  module: AuditCategory;
+  action: string;
+  severity: AuditSeverity;
+  status: 'SUCCESS' | 'FAILED' | 'FLAGGED';
+  targetResource: string;
+  details: string;
+  metadata?: Record<string, any>;
+}
 
 export const hasUserPrivilege = (
   user: { role: UserRole; userPrivileges?: Record<string, boolean> },

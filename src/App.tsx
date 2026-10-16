@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserSession, ModuleKey, BusinessVerticalId, Category, SubProduct, FileState, ReconRecord, ReconJob, AppUser, RolePermission } from './types';
+import { UserSession, ModuleKey, BusinessVerticalId, Category, SubProduct, FileState, ReconRecord, ReconJob, AppUser, RolePermission, AuditLogEntry, AuditCategory, AuditSeverity } from './types';
 import { CheckCircle2, X } from 'lucide-react';
 import { LoginPortal } from './components/LoginPortal';
 import { Sidebar } from './components/Sidebar';
@@ -8,8 +8,10 @@ import { SingleScreenRecon } from './components/SingleScreenRecon';
 import { JobArchives } from './components/JobArchives';
 import { AdminSettings } from './components/AdminSettings';
 import { UserManagement } from './components/UserManagement';
+import { AuditTrail } from './components/AuditTrail';
 import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
 import { INITIAL_USERS, INITIAL_ROLE_PERMISSIONS } from './data/initialUsers';
+import { INITIAL_AUDIT_LOGS } from './data/mockAuditLogs';
 
 export default function App() {
   // Registered Users State (Admin can add new Finance users)
@@ -53,9 +55,58 @@ export default function App() {
   // Initiation Modal
   const [showInitiationModal, setShowInitiationModal] = useState<boolean>(false);
 
+  // Audit Trail Logs State
+  const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+
+  const logAuditEvent = (
+    action: string,
+    module: AuditCategory,
+    details: string,
+    targetResource: string,
+    severity: AuditSeverity = 'INFO',
+    metadata?: Record<string, any>
+  ) => {
+    const newEntry: AuditLogEntry = {
+      id: `AUD-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST',
+      actor: {
+        userId: userSession.id || 'user-curr',
+        name: userSession.name || 'Admin Operator',
+        email: userSession.username || 'admin@iserveu.in',
+        role: userSession.role,
+        ipAddress: '192.168.1.104'
+      },
+      module,
+      action,
+      severity,
+      status: severity === 'CRITICAL' ? 'FLAGGED' : 'SUCCESS',
+      targetResource,
+      details,
+      metadata
+    };
+    setAuditLogs((prev) => [newEntry, ...prev]);
+  };
+
+  const handleAddAuditLog = (entry: AuditLogEntry) => {
+    setAuditLogs((prev) => [entry, ...prev]);
+  };
+
   // User & Permission Management Handlers
   const handleAddUser = (newUser: AppUser) => {
     setUsersList((prev) => [newUser, ...prev]);
+    logAuditEvent(
+      'USER_CREATED',
+      'User & IAM',
+      `Created new user account "${newUser.name}" (${newUser.role}) in department ${newUser.department}.`,
+      `User: ${newUser.name} (${newUser.employeeId || newUser.username})`,
+      'SUCCESS',
+      {
+        email: newUser.username,
+        role: newUser.role,
+        department: newUser.department,
+        employeeId: newUser.employeeId
+      }
+    );
   };
 
   const handleUpdateUser = (updatedUser: AppUser) => {
@@ -70,47 +121,132 @@ export default function App() {
         title: updatedUser.title
       }));
     }
+    logAuditEvent(
+      'USER_UPDATED',
+      'User & IAM',
+      `Updated user profile details for "${updatedUser.name}".`,
+      `User: ${updatedUser.name} (${updatedUser.employeeId || updatedUser.username})`,
+      'INFO',
+      {
+        role: updatedUser.role,
+        title: updatedUser.title,
+        department: updatedUser.department
+      }
+    );
   };
 
   const handleUpdateUserStatus = (userId: string, newStatus: 'Active' | 'Inactive') => {
+    const targetUser = usersList.find((u) => u.id === userId);
     setUsersList((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
+    );
+    logAuditEvent(
+      'USER_STATUS_TOGGLED',
+      'User & IAM',
+      `Changed user account status to "${newStatus}" for ${targetUser?.name || userId}.`,
+      `User: ${targetUser?.name || userId}`,
+      newStatus === 'Inactive' ? 'WARNING' : 'SUCCESS',
+      {
+        targetUserId: userId,
+        newStatus,
+        previousStatus: targetUser?.status
+      }
     );
   };
 
   const handleUpdateUserPrivileges = (userId: string, userPrivileges: Record<string, boolean>) => {
+    const targetUser = usersList.find((u) => u.id === userId);
     setUsersList((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, userPrivileges } : u))
     );
     // If updating current user's session privileges:
-    const currentUser = usersList.find((u) => u.id === userId);
-    if (currentUser && currentUser.username.toLowerCase() === userSession.username.toLowerCase()) {
+    if (targetUser && targetUser.username.toLowerCase() === userSession.username.toLowerCase()) {
       setUserSession((prev) => ({
         ...prev,
         userPrivileges
       }));
     }
+    const overrideCount = Object.keys(userPrivileges).length;
+    logAuditEvent(
+      'USER_PRIVILEGES_MODIFIED',
+      'Privilege & Security',
+      `Updated custom privilege overrides (${overrideCount} active) for ${targetUser?.name || userId}.`,
+      `User: ${targetUser?.name || userId}`,
+      'SUCCESS',
+      {
+        targetUserId: userId,
+        overridesCount: overrideCount,
+        overrides: userPrivileges
+      }
+    );
   };
 
   const handleDeleteUser = (userId: string) => {
+    const targetUser = usersList.find((u) => u.id === userId);
     setUsersList((prev) => prev.filter((u) => u.id !== userId));
+    logAuditEvent(
+      'USER_DELETED',
+      'User & IAM',
+      `Permanently deleted user account "${targetUser?.name || userId}" from the platform.`,
+      `User: ${targetUser?.name || userId}`,
+      'WARNING',
+      {
+        deletedUserId: userId,
+        email: targetUser?.username,
+        role: targetUser?.role
+      }
+    );
   };
 
   const handleUpdatePermissions = (updatedPerms: RolePermission[]) => {
     setPermissionsList(updatedPerms);
+    logAuditEvent(
+      'ROLE_BASELINE_UPDATED',
+      'Privilege & Security',
+      'Modified Role Decide permission baseline matrix across Admin and Finance roles.',
+      'Role Matrix Configuration',
+      'WARNING',
+      { totalPermissions: updatedPerms.length }
+    );
   };
 
   const handleAddPermission = (newPerm: RolePermission) => {
     setPermissionsList((prev) => [...prev, newPerm]);
+    logAuditEvent(
+      'SYSTEM_PRIVILEGE_ADDED',
+      'Privilege & Security',
+      `Added new system privilege capability "${newPerm.name}" in category ${newPerm.category}.`,
+      `Privilege: ${newPerm.name}`,
+      'SUCCESS',
+      {
+        privilegeId: newPerm.id,
+        category: newPerm.category,
+        adminAllowed: newPerm.adminAllowed,
+        financeAllowed: newPerm.financeAllowed
+      }
+    );
   };
 
   const handleUpdatePermission = (updatedPerm: RolePermission) => {
     setPermissionsList((prev) =>
       prev.map((p) => (p.id === updatedPerm.id ? updatedPerm : p))
     );
+    logAuditEvent(
+      'SYSTEM_PRIVILEGE_MODIFIED',
+      'Privilege & Security',
+      `Modified system privilege configuration for "${updatedPerm.name}".`,
+      `Privilege: ${updatedPerm.name}`,
+      'INFO',
+      {
+        privilegeId: updatedPerm.id,
+        adminAllowed: updatedPerm.adminAllowed,
+        financeAllowed: updatedPerm.financeAllowed
+      }
+    );
   };
 
   const handleDeletePermission = (permId: string) => {
+    const targetPerm = permissionsList.find((p) => p.id === permId);
     setPermissionsList((prev) => prev.filter((p) => p.id !== permId));
     // Clean up user overrides referencing this deleted privilege
     setUsersList((prev) =>
@@ -120,6 +256,14 @@ export default function App() {
         delete nextOverrides[permId];
         return { ...u, userPrivileges: nextOverrides };
       })
+    );
+    logAuditEvent(
+      'SYSTEM_PRIVILEGE_REMOVED',
+      'Privilege & Security',
+      `Removed privilege capability "${targetPerm?.name || permId}" from platform and cleaned user overrides.`,
+      `Privilege: ${targetPerm?.name || permId}`,
+      'WARNING',
+      { deletedPermId: permId }
     );
   };
 
@@ -165,6 +309,24 @@ export default function App() {
       if (prev.some((j) => j.id === job.id)) return prev;
       return [job, ...prev];
     });
+
+    logAuditEvent(
+      'RECON_JOB_INITIATED',
+      'Reconciliation Engine',
+      `Initiated transaction matching for ${subProduct.name} (${date} — ${cycle}): ${matched.length} matched, ${mismatched.length} discrepancies.`,
+      `Job: ${job.id} (${subProduct.name})`,
+      'SUCCESS',
+      {
+        jobId: job.id,
+        category: category.name,
+        date,
+        cycle,
+        totalRecords: job.totalRecords,
+        matchedCount: matched.length,
+        mismatchedCount: mismatched.length,
+        matchRatePct: `${job.matchRate}%`
+      }
+    );
 
     setShowInitiationModal(true);
   };
@@ -233,6 +395,14 @@ export default function App() {
                 onAddPermission={handleAddPermission}
                 onUpdatePermission={handleUpdatePermission}
                 onDeletePermission={handleDeletePermission}
+                userSession={userSession}
+              />
+            )}
+
+            {activeModule === 'audit-trail' && (
+              <AuditTrail
+                logs={auditLogs}
+                onAddAuditLog={handleAddAuditLog}
                 userSession={userSession}
               />
             )}

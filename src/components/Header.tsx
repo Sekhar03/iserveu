@@ -21,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
     'job-archives': 'Reconciliation Report & Historical Logs',
     'admin-settings': 'User Management & Privilege Control',
     'user-management': 'User Management & Privilege Control',
+    'audit-trail': 'Audit Trail & Regulatory Compliance Logs',
   };
 
   const getInitials = () => {

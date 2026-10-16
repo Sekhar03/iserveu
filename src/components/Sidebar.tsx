@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, History, ChevronDown, ChevronRight, Settings, Users } from 'lucide-react';
+import { Layers, History, ChevronDown, ChevronRight, Settings, Users, ClipboardList } from 'lucide-react';
 import { ModuleKey, UserSession, BusinessVerticalId } from '../types';
 import { BUSINESS_VERTICALS } from '../data/categoriesAndSubProducts';
 
@@ -138,6 +138,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </button>
           )}
+
+          {/* 4. Audit Trail & Regulatory Compliance Module */}
+          <button
+            type="button"
+            onClick={() => onSelectModule('audit-trail')}
+            className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer ${
+              activeModule === 'audit-trail'
+                ? 'bg-[#119db0] text-white shadow-lg shadow-[#119db0]/25 font-bold'
+                : 'text-slate-300 hover:bg-[#253650] hover:text-white'
+            }`}
+          >
+            <span className={activeModule === 'audit-trail' ? 'text-white' : 'text-[#23c5da]'}>
+              <ClipboardList className="w-5 h-5" />
+            </span>
+            <div className="flex items-center justify-between w-full">
+              <span>Audit Trail</span>
+              <span className="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">
+                RBI Logs
+              </span>
+            </div>
+          </button>
         </nav>
       </div>
 

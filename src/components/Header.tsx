@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ShieldCheck, LogOut, KeyRound, ChevronDown, CheckCircle, Mail, X } from 'lucide-react';
+import { ShieldCheck, LogOut, KeyRound, ChevronDown, CheckCircle, Mail, X, Wallet } from 'lucide-react';
 import { ModuleKey, UserSession } from '../types';
 
 interface HeaderProps {
@@ -52,15 +52,36 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
 
   return (
     <>
-      <header className="h-18 bg-white border-b border-[#e2e8f0] px-8 flex items-center justify-between sticky top-0 z-20 shadow-xs">
-        <div>
-          <h1 className="text-xl font-bold text-[#1b2a3e] tracking-tight">
-            {titles[activeModule]}
-          </h1>
-          <p className="text-xs text-[#475569] font-medium">
-            Automated Transaction Matching & Discrepancy Reporting
-          </p>
+      <header className="h-18 bg-white border-b border-[#e2e8f0] px-6 md:px-8 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* NSDL Payments Bank | iServeU Co-branded Logo */}
+          <div className="flex items-center">
+            <img
+              src="/nsdl_iserveu_header_logo.svg"
+              alt="NSDL Payments Bank | iServeU"
+              className="h-8 sm:h-9 md:h-10 w-auto object-contain shrink-0"
+            />
+          </div>
+
+          <div className="h-7 w-px bg-slate-200 hidden md:block" />
+
+          <div>
+            <h1 className="text-sm sm:text-base md:text-lg font-bold text-[#1b2a3e] tracking-tight">
+              {titles[activeModule]}
+            </h1>
+            <p className="text-[11px] text-[#475569] font-medium hidden md:block">
+              Automated Transaction Matching & Discrepancy Reporting
+            </p>
+          </div>
         </div>
+
+        {/* Top Right Section: Wallet & Profile */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* Wallet ₹ 0 indicator as seen in NSDL dashboard */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold">
+            <Wallet className="w-4 h-4 text-slate-600" />
+            <span>Wallet: <span className="font-extrabold text-slate-900">₹ 0</span></span>
+          </div>
 
         {/* Top Right Profile Section */}
         <div className="relative" ref={dropdownRef}>
@@ -154,6 +175,7 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
               </div>
             </div>
           )}
+        </div>
         </div>
       </header>
 

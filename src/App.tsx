@@ -7,6 +7,7 @@ import { Header } from './components/Header';
 import { SingleScreenRecon } from './components/SingleScreenRecon';
 import { JobArchives } from './components/JobArchives';
 import { AdminSettings } from './components/AdminSettings';
+import { NsdlDashboardBanner } from './components/NsdlDashboardBanner';
 import { INITIAL_JOB_ARCHIVES } from './data/mockArchives';
 import { INITIAL_USERS, INITIAL_ROLE_PERMISSIONS } from './data/initialUsers';
 
@@ -27,6 +28,7 @@ export default function App() {
   // Sidebar & Module State
   const [activeModule, setActiveModule] = useState<ModuleKey>('product-recon');
   const [activeVertical, setActiveVertical] = useState<BusinessVerticalId>('acquiring');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
   const handleSelectVertical = (vertId: BusinessVerticalId) => {
     setActiveVertical(vertId);
@@ -141,52 +143,67 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc]">
-      {/* Sidebar */}
-      <Sidebar
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-sans">
+      {/* Top Header matching image 108 */}
+      <Header
         activeModule={activeModule}
-        onSelectModule={setActiveModule}
-        activeVertical={activeVertical}
-        onSelectVertical={handleSelectVertical}
         userSession={userSession}
         onLogout={handleLogout}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
-      {/* Main Workspace Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        <Header activeModule={activeModule} userSession={userSession} onLogout={handleLogout} />
+      <div className="flex-1 flex min-w-0">
+        {/* Sidebar */}
+        <Sidebar
+          activeModule={activeModule}
+          onSelectModule={setActiveModule}
+          activeVertical={activeVertical}
+          onSelectVertical={handleSelectVertical}
+          userSession={userSession}
+          onLogout={handleLogout}
+          isOpen={isSidebarOpen}
+        />
 
-        <main className="p-8 max-w-7xl mx-auto w-full">
-          {activeModule === 'product-recon' && (
-            <SingleScreenRecon
-              onReconciliationInitiated={handleReconciliationInitiated}
-              initialVertical={activeVertical}
-              initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
-              initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
-              initialDate="2026-07-28"
-              initialCycle="Cycle 1 (00:00 - 03:00 Window)"
-            />
-          )}
+        {/* Main Workspace Area */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+          <main className="p-6 sm:p-8 max-w-7xl mx-auto w-full">
+            {activeModule === 'product-recon' && (
+              <>
+                {/* Welcome to NSDL Banner matching screenshot image 108 */}
+                <NsdlDashboardBanner />
 
-          {activeModule === 'job-archives' && (
-            <JobArchives jobs={jobArchives} onStartNewRecon={handleStartNewReconFromReport} />
-          )}
+                <SingleScreenRecon
+                  onReconciliationInitiated={handleReconciliationInitiated}
+                  initialVertical={activeVertical}
+                  initialCategoryId={activeVertical === 'acquiring' ? 'upi' : activeVertical === 'issuing' ? 'imps' : activeVertical === 'bbps' ? 'bbps' : 'aeps'}
+                  initialSubProductId={activeVertical === 'acquiring' ? 'nsdlpaupi' : activeVertical === 'issuing' ? 'nsdlimps' : activeVertical === 'bbps' ? 'bbpscou' : 'aadharpay'}
+                  initialDate="2026-07-28"
+                  initialCycle="Cycle 1 (00:00 - 03:00 Window)"
+                />
+              </>
+            )}
 
-          {activeModule === 'admin-settings' && userSession.role === 'Admin' && (
-            <AdminSettings
-              usersList={usersList}
-              onAddUser={handleAddUser}
-              onUpdateUserStatus={handleUpdateUserStatus}
-              onUpdateUserPrivileges={handleUpdateUserPrivileges}
-              onDeleteUser={handleDeleteUser}
-              permissionsList={permissionsList}
-              onUpdatePermissions={handleUpdatePermissions}
-              onAddPermission={handleAddPermission}
-              onDeletePermission={handleDeletePermission}
-              userSession={userSession}
-            />
-          )}
-        </main>
+            {activeModule === 'job-archives' && (
+              <JobArchives jobs={jobArchives} onStartNewRecon={handleStartNewReconFromReport} />
+            )}
+
+            {activeModule === 'admin-settings' && userSession.role === 'Admin' && (
+              <AdminSettings
+                usersList={usersList}
+                onAddUser={handleAddUser}
+                onUpdateUserStatus={handleUpdateUserStatus}
+                onUpdateUserPrivileges={handleUpdateUserPrivileges}
+                onDeleteUser={handleDeleteUser}
+                permissionsList={permissionsList}
+                onUpdatePermissions={handleUpdatePermissions}
+                onAddPermission={handleAddPermission}
+                onDeletePermission={handleDeletePermission}
+                userSession={userSession}
+              />
+            )}
+          </main>
+        </div>
       </div>
 
       {/* Reconciliation Initiated Modal */}
@@ -200,29 +217,29 @@ export default function App() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Circular Check Icon with Mint Rounded Square */}
-            <div className="w-20 h-20 rounded-3xl bg-[#e6fbf3] text-[#00b074] flex items-center justify-center mx-auto shadow-xs">
-              <div className="w-10 h-10 rounded-full border-[3px] border-[#00b074] flex items-center justify-center text-[#00b074]">
-                <CheckCircle2 className="w-9 h-9 fill-[#00b074] text-white stroke-[2.5]" />
+            {/* Circular Check Icon with NSDL Burgundy / Emerald Accent */}
+            <div className="w-20 h-20 rounded-3xl bg-[#851419]/10 text-[#851419] flex items-center justify-center mx-auto shadow-xs">
+              <div className="w-10 h-10 rounded-full border-[3px] border-[#851419] flex items-center justify-center text-[#851419]">
+                <CheckCircle2 className="w-9 h-9 fill-[#851419] text-white stroke-[2.5]" />
               </div>
             </div>
 
             <div className="space-y-3">
-              <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-[#e6fbf3] text-[#00a389] px-4 py-1.5 rounded-full border border-[#a7f3d0]">
+              <span className="inline-block text-[11px] font-extrabold uppercase tracking-wider bg-[#851419]/10 text-[#851419] px-4 py-1.5 rounded-full border border-[#851419]/25">
                 RECONCILIATION INITIATED
               </span>
               <h3 className="text-2xl font-extrabold text-[#0f172a] tracking-tight">
                 Reconciliation Initiated Successfully!
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed max-w-sm mx-auto">
-                Reconciliation process for <span className="font-bold text-[#0f172a]">{selectedSubProduct.name} {selectedSubProduct.description ? `(${selectedSubProduct.description})` : ''}</span> ({targetDate} — {targetCycle}) has been initiated. Completed results are available in the <span className="font-bold text-[#00a389]">Report</span> section.
+                Reconciliation process for <span className="font-bold text-[#0f172a]">{selectedSubProduct.name} {selectedSubProduct.description ? `(${selectedSubProduct.description})` : ''}</span> ({targetDate} — {targetCycle}) has been initiated for NSDL Payments Bank.
               </p>
             </div>
 
             <div className="space-y-3 pt-2">
               <button
                 onClick={() => setShowInitiationModal(false)}
-                className="w-full py-3.5 rounded-2xl bg-[#00b074] hover:bg-[#009663] text-white font-bold text-sm shadow-md shadow-[#00b074]/25 transition cursor-pointer flex items-center justify-center"
+                className="w-full py-3.5 rounded-2xl bg-[#851419] hover:bg-[#721115] text-white font-bold text-sm shadow-md shadow-[#851419]/25 transition cursor-pointer flex items-center justify-center"
               >
                 <span>Start New Reconciliation</span>
               </button>

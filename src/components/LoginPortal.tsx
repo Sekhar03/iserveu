@@ -13,7 +13,7 @@ interface LoginPortalProps {
 
 export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLoginSuccess }) => {
   const [selectedRole, setSelectedRole] = useState<UserRole>('Admin');
-  const [username, setUsername] = useState('admin@iserveu.in');
+  const [username, setUsername] = useState('nsdlmaadmin');
   const [password, setPassword] = useState('admin@2026');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -24,7 +24,7 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
     setSelectedRole(role);
     setErrorMessage('');
     if (role === 'Admin') {
-      setUsername('admin@iserveu.in');
+      setUsername('nsdlmaadmin');
       setPassword('admin@2026');
     } else {
       // Find first Finance user if available in registered list, else default
@@ -120,7 +120,14 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
       </svg>
 
       {/* Top Header Bar */}
-      <header className="p-6 px-10 flex items-center justify-between relative z-20">
+      <header className="p-5 px-8 sm:px-10 flex items-center justify-between relative z-20">
+        <div className="flex items-center">
+          <img
+            src="/nsdl_iserveu_header_logo.svg"
+            alt="NSDL Payments Bank | iServeU"
+            className="h-9 sm:h-11 w-auto object-contain"
+          />
+        </div>
         <div className="flex items-center gap-2 text-slate-600 text-xs font-semibold hover:text-[#00A8B5] transition cursor-pointer">
           <Globe className="w-4 h-4 text-slate-500" />
           <span>English</span>
@@ -168,8 +175,8 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
                 <circle cx="70" cy="70" r="68" fill="#ffffff" stroke="#f1f5f9" strokeWidth="4" />
                 <foreignObject x="10" y="20" width="120" height="100">
                   <div className="w-full h-full flex flex-col items-center justify-center text-center px-1">
-                    <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-8 w-auto object-contain" />
-                    <span className="text-[9px] font-black text-[#00A8B5] mt-1.5 tracking-wider uppercase leading-snug">
+                    <img src="/nsdl_iserveu_header_logo.svg" alt="NSDL Payments Bank | iServeU" className="h-6 w-auto object-contain" />
+                    <span className="text-[9px] font-black text-[#801824] mt-1 tracking-wider uppercase leading-snug">
                       RECONCILIATION<br/>PORTAL
                     </span>
                   </div>
@@ -207,9 +214,9 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
             <div className="space-y-3">
               <div className="flex items-center justify-start">
                 <img
-                  src="/iserveu_official_logo.svg"
-                  alt="iServeU Logo"
-                  className="h-10 w-auto object-contain"
+                  src="/nsdl_iserveu_header_logo.svg"
+                  alt="NSDL Payments Bank | iServeU"
+                  className="h-9 sm:h-10 w-auto object-contain"
                 />
               </div>
 
@@ -339,11 +346,11 @@ export const LoginPortal: React.FC<LoginPortalProps> = ({ usersList = [], onLogi
                 </a>
               </div>
 
-              {/* Solid Primary Blue / Cyan Action Button */}
+              {/* Solid NSDL Maroon / Red Action Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-3 py-3 px-6 rounded-xl bg-[#0066ff] hover:bg-[#0052cc] text-white font-bold text-sm shadow-md shadow-[#0066ff]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+                className="w-full mt-3 py-3 px-6 rounded-xl bg-[#88131B] hover:bg-[#720e15] text-white font-bold text-sm shadow-md shadow-[#88131B]/25 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
               >
                 {isLoading ? (
                   <>

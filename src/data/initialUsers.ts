@@ -3,6 +3,19 @@ import { AppUser, RolePermission } from '../types';
 export const INITIAL_USERS: AppUser[] = [
   {
     id: 'user-001',
+    username: 'nsdlmaadmin',
+    password: 'admin@2026',
+    name: 'NSDL Admin',
+    employeeId: 'NSDL-1001',
+    mobileNumber: '+91 98765 43210',
+    role: 'Admin',
+    department: 'Risk & Reconciliation Admin',
+    title: 'System Administrator',
+    status: 'Active',
+    createdAt: '2026-01-15'
+  },
+  {
+    id: 'user-000',
     username: 'admin@iserveu.in',
     password: 'admin@2026',
     name: 'Chief Admin Operator',

@@ -1,0 +1,23 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Production build
+dist
+build
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# AI Studio runtime artifacts
+.aistudio
+*.log
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -31,10 +31,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside className="w-[260px] min-w-[260px] bg-[#1b2a3e] text-white flex flex-col justify-between h-screen sticky top-0 border-r border-[#253650] shadow-xl z-20">
       {/* Top Brand Header */}
       <div>
-        <div className="p-6 border-b border-[#253650]">
-          <div className="flex items-center gap-3">
-            <img src="/iserveu_official_logo.svg" alt="iServeU Logo" className="h-10 w-auto object-contain brightness-125" />
-          </div>
+        <div className="p-5 border-b border-[#253650]">
+          <h2 className="text-sm font-bold text-white tracking-wide">
+            Welcome, {userSession.role.toUpperCase()}
+          </h2>
+          <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
+            {userSession.name || userSession.title || 'System Operator'}
+          </p>
         </div>
 
         {/* Navigation Menu */}

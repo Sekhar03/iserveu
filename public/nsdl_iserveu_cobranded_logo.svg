@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 74" fill="none">
+  <!-- Definitions for NSDL Emblem Gradients -->
+  <defs>
+    <!-- Golden front ribbon gradient -->
+    <linearGradient id="nsdl-cobrand-gold" x1="20%" y1="90%" x2="90%" y2="20%">
+      <stop offset="0%" stop-color="#C67D18"/>
+      <stop offset="25%" stop-color="#E59E27"/>
+      <stop offset="55%" stop-color="#F7C952"/>
+      <stop offset="80%" stop-color="#EBA72C"/>
+      <stop offset="100%" stop-color="#CA7F1A"/>
+    </linearGradient>
+
+    <!-- Deep bronze/maroon back loop gradient -->
+    <linearGradient id="nsdl-cobrand-bronze" x1="10%" y1="10%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#5A1F18"/>
+      <stop offset="40%" stop-color="#7B2C23"/>
+      <stop offset="70%" stop-color="#933B2B"/>
+      <stop offset="100%" stop-color="#6E261D"/>
+    </linearGradient>
+
+    <!-- Inner fold shadow -->
+    <linearGradient id="nsdl-cobrand-inner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2BF46"/>
+      <stop offset="100%" stop-color="#98471F"/>
+    </linearGradient>
+  </defs>
+
+  <!-- NSDL Möbius Swirl / Ribbon Emblem -->
+  <g transform="translate(6, 6) scale(0.62)">
+    <!-- Back/Under Loop (Bronze-Maroon) -->
+    <path d="M 45 4 C 68 4, 86 16, 88 34 C 88 40, 85 46, 80 50 L 64 38 C 66 35, 68 31, 68 28 C 68 18, 56 12, 44 14 C 32 16, 22 26, 18 38 C 16 43, 16 48, 18 52 L 4 48 C 2 40, 3 32, 7 24 C 14 11, 28 4, 45 4 Z" fill="url(#nsdl-cobrand-bronze)"/>
+    <path d="M 4 48 C 2 56, 3 66, 8 74 C 17 88, 33 96, 52 95 C 62 94.5, 71 90, 78 83 L 64 71 C 59 75, 52 77, 46 76 C 34 74, 24 64, 21 52 C 20 48, 20 44, 22 40 L 4 48 Z" fill="url(#nsdl-cobrand-bronze)"/>
+
+    <!-- Front Golden Ribbon Sweeping Arc -->
+    <path d="M 8 74 C 16 88, 32 96, 51 95 C 64 94, 76 87, 83 76 C 89 67, 91 56, 88 45 L 70 54 C 72 59, 71 65, 67 70 C 62 76, 54 78, 47 77 C 36 75, 27 67, 23 56 C 21 52, 21 47, 22 42 L 5 45 C 4 55, 5 65, 8 74 Z" fill="url(#nsdl-cobrand-gold)"/>
+
+    <!-- Top Right Golden Return Fold -->
+    <path d="M 88 34 C 86 24, 79 15, 70 9 L 57 23 C 62 26, 66 31, 67 36 C 67 42, 63 47, 58 49 L 71 63 C 81 56, 88 46, 88 34 Z" fill="url(#nsdl-cobrand-inner)"/>
+
+    <!-- Center Interlocking Rhombus Accent -->
+    <polygon points="46,38 60,38 52,50 38,50" fill="#F8CE5E" opacity="0.95"/>
+    <polygon points="50,48 64,48 56,60 42,60" fill="#C57E1A"/>
+  </g>
+
+  <!-- NSDL Typography Exactly Matching Provided NSDL Logo.png Asset -->
+  <g transform="translate(74, 48)">
+    <!-- NSDL in Serif -->
+    <text x="0" y="0" font-family="'Playfair Display', 'Didot', 'Georgia', 'Times New Roman', serif" font-size="33" font-weight="900" fill="#801824" letter-spacing="0.5">NSDL</text>
+    <!-- Payments Bank in Heavy Compact Sans-Serif -->
+    <text x="106" y="0" font-family="'Arial Black', 'Impact', 'Trebuchet MS', 'Segoe UI', sans-serif" font-size="28" font-weight="900" fill="#801824" letter-spacing="-0.5">Payments Bank</text>
+  </g>
+
+  <!-- Slim Vertical Divider Bar -->
+  <line x1="436" y1="14" x2="436" y2="58" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- iServeU Wordmark with Trademark -->
+  <g transform="translate(456, 48)">
+    <text x="0" y="0" font-family="'Poppins', 'Inter', 'Segoe UI', sans-serif" font-size="34" font-weight="800" fill="#00A8B5" letter-spacing="-0.8">iServeU</text>
+    <!-- Registered Symbol ® -->
+    <circle cx="138" cy="-21" r="8" stroke="#00A8B5" stroke-width="2" fill="none"/>
+    <text x="134.8" y="-17.2" font-family="'Inter', sans-serif" font-size="9.5" font-weight="800" fill="#00A8B5">®</text>
+  </g>
+</svg>

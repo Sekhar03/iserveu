@@ -10,6 +10,7 @@ interface SidebarProps {
   onSelectVertical: (verticalId: BusinessVerticalId) => void;
   userSession: UserSession;
   onLogout: () => void;
+  isOpen?: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -19,6 +20,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectVertical,
   userSession,
   onLogout,
+  isOpen = true,
 }) => {
   const [isProductReconExpanded, setIsProductReconExpanded] = useState<boolean>(true);
 
@@ -28,7 +30,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <aside className="w-[260px] min-w-[260px] bg-[#1b2a3e] text-white flex flex-col justify-between h-screen sticky top-0 border-r border-[#253650] shadow-xl z-20">
+    <aside
+      className={`${
+        isOpen ? 'w-[260px] min-w-[260px]' : 'hidden'
+      } bg-[#1b2a3e] text-white flex flex-col justify-between h-[calc(100vh-72px)] sticky top-[72px] border-r border-[#253650] shadow-xl z-20 overflow-y-auto transition-all duration-200`}
+    >
       {/* Top Brand Header */}
       <div>
         <div className="p-5 border-b border-[#253650]">

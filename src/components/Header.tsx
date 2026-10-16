@@ -1,14 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ShieldCheck, LogOut, KeyRound, ChevronDown, CheckCircle, Mail, X, Wallet } from 'lucide-react';
+import { ShieldCheck, LogOut, KeyRound, ChevronDown, CheckCircle, Mail, X, Wallet, Menu } from 'lucide-react';
 import { ModuleKey, UserSession } from '../types';
 
 interface HeaderProps {
   activeModule: ModuleKey;
   userSession: UserSession;
   onLogout: () => void;
+  isSidebarOpen?: boolean;
+  onToggleSidebar?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLogout }) => {
+export const Header: React.FC<HeaderProps> = ({
+  activeModule,
+  userSession,
+  onLogout,
+  isSidebarOpen = true,
+  onToggleSidebar
+}) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState(userSession.username || 'admin@iserveu.in');
@@ -54,10 +62,20 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
 
   return (
     <>
-      <header className="h-18 bg-white border-b border-[#e2e8f0] px-6 md:px-8 flex items-center justify-between sticky top-0 z-20 shadow-xs">
-        <div className="flex items-center gap-4 sm:gap-6">
+      <header className="h-[72px] bg-white border-b border-[#e2e8f0] px-4 sm:px-6 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+        <div className="flex items-center gap-3 sm:gap-5 min-w-0">
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition cursor-pointer shrink-0"
+              title={isSidebarOpen ? 'Collapse Sidebar' : 'Expand Sidebar'}
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          )}
+
           {/* NSDL Payments Bank | iServeU Co-branded Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center shrink-0">
             <img
               src="/nsdl_iserveu_header_logo.svg"
               alt="NSDL Payments Bank | iServeU"
@@ -65,13 +83,13 @@ export const Header: React.FC<HeaderProps> = ({ activeModule, userSession, onLog
             />
           </div>
 
-          <div className="h-7 w-px bg-slate-200 hidden md:block" />
+          <div className="h-7 w-px bg-slate-200 hidden lg:block shrink-0" />
 
-          <div>
-            <h1 className="text-sm sm:text-base md:text-lg font-bold text-[#1b2a3e] tracking-tight">
+          <div className="min-w-0 hidden md:block">
+            <h1 className="text-sm md:text-base font-bold text-[#1b2a3e] tracking-tight truncate">
               {titles[activeModule]}
             </h1>
-            <p className="text-[11px] text-[#475569] font-medium hidden md:block">
+            <p className="text-[11px] text-[#475569] font-medium hidden xl:block truncate">
               Automated Transaction Matching & Discrepancy Reporting
             </p>
           </div>
